@@ -1268,7 +1268,7 @@ namespace ClosedXML.Excel
                 drawing.Style.ColorsAndLines.LineWeight = lineWeight;
 
             var fillColor = shape.Attribute("fillcolor");
-            if (fillColor != null && !fillColor.Value.ToLower().Contains("infobackground")) drawing.Style.ColorsAndLines.FillColor = ExtractColor(fillColor.Value);
+            if (fillColor != null && !(fillColor.Value.IndexOf("infobackground", StringComparison.OrdinalIgnoreCase) >= 0)) drawing.Style.ColorsAndLines.FillColor = ExtractColor(fillColor.Value);
 
             var fill = shape.Elements().FirstOrDefault(e => e.Name.LocalName == "fill");
             if (fill != null)
@@ -1431,8 +1431,8 @@ namespace ClosedXML.Excel
         {
             var lockedElement = clientData.Elements().FirstOrDefault(e => e.Name.LocalName == "Locked");
             var lockTextElement = clientData.Elements().FirstOrDefault(e => e.Name.LocalName == "LockText");
-            Boolean locked = lockedElement != null && lockedElement.Value.ToLower() == "true";
-            Boolean lockText = lockTextElement != null && lockTextElement.Value.ToLower() == "true";
+            Boolean locked = lockedElement != null && string.Equals(lockedElement.Value, "true", StringComparison.OrdinalIgnoreCase);
+            Boolean lockText = lockTextElement != null && string.Equals(lockTextElement.Value, "true", StringComparison.OrdinalIgnoreCase);
             drawing.Style.Protection.Locked = locked;
             drawing.Style.Protection.LockText = lockText;
         }
@@ -1441,8 +1441,8 @@ namespace ClosedXML.Excel
         {
             var moveWithCellsElement = clientData.Elements().FirstOrDefault(e => e.Name.LocalName == "MoveWithCells");
             var sizeWithCellsElement = clientData.Elements().FirstOrDefault(e => e.Name.LocalName == "SizeWithCells");
-            Boolean moveWithCells = !(moveWithCellsElement != null && moveWithCellsElement.Value.ToLower() == "true");
-            Boolean sizeWithCells = !(sizeWithCellsElement != null && sizeWithCellsElement.Value.ToLower() == "true");
+            Boolean moveWithCells = !(moveWithCellsElement != null && string.Equals(moveWithCellsElement.Value, "true", StringComparison.OrdinalIgnoreCase));
+            Boolean sizeWithCells = !(sizeWithCellsElement != null && string.Equals(sizeWithCellsElement.Value, "true", StringComparison.OrdinalIgnoreCase));
             if (moveWithCells && !sizeWithCells)
                 drawing.Style.Properties.Positioning = XLDrawingAnchor.MoveWithCells;
             else if (moveWithCells && sizeWithCells)

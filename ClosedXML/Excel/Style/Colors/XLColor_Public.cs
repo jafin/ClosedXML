@@ -141,7 +141,7 @@ namespace ClosedXML.Excel
             if (ReferenceEquals(left, right)) return true;
 
             // If one is null, but not both, return false.
-            if ((left as object) == null || (right as Object) == null) return false;
+            if (!(left is object) || !(right is object)) return false;
 
             return left.Equals(right);
         }

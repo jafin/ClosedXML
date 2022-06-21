@@ -118,7 +118,7 @@ namespace ClosedXML.Excel.CalcEngine
 
         private static object CountBlank(List<Expression> p)
         {
-            if ((p[0] as XObjectExpression)?.Value as CellRangeReference == null)
+            if (!((p[0] as XObjectExpression)?.Value is CellRangeReference))
                 throw new NoValueAvailableException("COUNTBLANK should have a single argument which is a range reference");
 
             var e = p[0] as XObjectExpression;

@@ -10,15 +10,11 @@ namespace ClosedXML.Tests.Extensions
     {
         private class TestClass
         {
-            static TestClass()
-            {
-            }
-
             public static int StaticProperty { get; set; }
-            public static int StaticField;
-
+            public static int StaticField = default;
+#pragma warning disable CS0067
             public static event EventHandler<EventArgs> StaticEvent;
-
+#pragma warning restore CS0067
             public static void StaticMethod()
             {
             }
@@ -30,10 +26,11 @@ namespace ClosedXML.Tests.Extensions
             }
 
             public int InstanceProperty { get; set; }
-            public int InstanceField;
+            public int InstanceField = default;
 
+#pragma warning disable CS0067
             public event EventHandler<EventArgs> InstanceEvent;
-
+#pragma warning restore CS0067
             public void InstanceMethod()
             {
             }

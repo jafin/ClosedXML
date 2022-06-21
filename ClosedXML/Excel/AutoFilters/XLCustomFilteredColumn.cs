@@ -99,13 +99,13 @@ namespace ClosedXML.Excel
         public void Contains(String value)
         {
             ApplyCustomFilter("*" + value + "*", XLFilterOperator.Equal,
-                              s => ((string)s).ToLower().Contains(value.ToLower()));
+                              s => ((string)s).IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         public void NotContains(String value)
         {
             ApplyCustomFilter("*" + value + "*", XLFilterOperator.Equal,
-                              s => !((string)s).ToLower().Contains(value.ToLower()));
+                              s => !(((string)s).IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0));
         }
 
         #endregion

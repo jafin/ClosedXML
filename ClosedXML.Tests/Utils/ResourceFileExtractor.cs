@@ -43,15 +43,7 @@ namespace ClosedXML.Tests
 
         #endregion Static
 
-        #region Private fields
-
-        private readonly Assembly m_assembly;
         private readonly ResourceFileExtractor m_baseExtractor;
-
-        private bool m_isStatic;
-        //private string ResourceFilePath { get; }
-
-        #endregion Private fields
 
         #region Constructors
 
