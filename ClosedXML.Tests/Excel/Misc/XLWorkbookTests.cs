@@ -352,11 +352,13 @@ namespace ClosedXML.Tests.Excel
         }
 
         [Test]
-        public void WbProtect2()
+        public void WbProtect2WithObsoleteMethod()
         {
             using var wb = new XLWorkbook();
             var ws = wb.Worksheets.Add("Sheet1");
-            wb.Protect("", XLProtectionAlgorithm.DefaultProtectionAlgorithm, XLWorkbookProtectionElements.Windows);
+#pragma warning disable CS0618
+            wb.Protect(true, false);
+#pragma warning restore CS0618
             Assert.IsTrue(wb.LockStructure);
             Assert.IsFalse(wb.LockWindows);
             Assert.IsFalse(wb.IsPasswordProtected);
@@ -393,11 +395,13 @@ namespace ClosedXML.Tests.Excel
         }
 
         [Test]
-        public void WbProtect5()
+        public void WbProtect5WithObsoleteMethod()
         {
             using var wb = new XLWorkbook();
             var ws = wb.Worksheets.Add("Sheet1");
-            wb.Protect("Abc@123", XLProtectionAlgorithm.DefaultProtectionAlgorithm, XLWorkbookProtectionElements.Windows);
+#pragma warning disable CS0618
+            wb.Protect(true, false, "Abc@123");
+#pragma warning restore CS0618
             Assert.IsTrue(wb.LockStructure);
             Assert.IsFalse(wb.LockWindows);
             Assert.IsTrue(wb.IsPasswordProtected);
