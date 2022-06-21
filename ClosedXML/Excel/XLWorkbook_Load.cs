@@ -1674,7 +1674,7 @@ namespace ClosedXML.Excel
                 lastColumnNumber = cellAddress.ColumnNumber;
             }
 
-            var xlCell = ws.Cell(in cellAddress);
+            var xlCell = ws.Cell(cellAddress);
 
             if (styleList.TryGetValue(styleIndex, out IXLStyle style))
             {

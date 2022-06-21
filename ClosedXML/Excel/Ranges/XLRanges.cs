@@ -127,10 +127,10 @@ namespace ClosedXML.Excel
         public IEnumerable<IXLRange> GetIntersectedRanges(IXLRangeAddress rangeAddress)
         {
             var xlRangeAddress = (XLRangeAddress)rangeAddress;
-            return GetIntersectedRanges(in xlRangeAddress);
+            return GetIntersectedRanges(xlRangeAddress);
         }
 
-        internal IEnumerable<IXLRange> GetIntersectedRanges(in XLRangeAddress rangeAddress)
+        internal IEnumerable<IXLRange> GetIntersectedRanges(XLRangeAddress rangeAddress)
         {
             return GetRangeIndex(rangeAddress.Worksheet)
                 .GetIntersectedRanges(rangeAddress);
@@ -143,10 +143,10 @@ namespace ClosedXML.Excel
         public IEnumerable<IXLRange> GetIntersectedRanges(IXLAddress address)
         {
             var xlAddress = (XLAddress)address;
-            return GetIntersectedRanges(in xlAddress);
+            return GetIntersectedRanges(xlAddress);
         }
 
-        internal IEnumerable<IXLRange> GetIntersectedRanges(in XLAddress address)
+        internal IEnumerable<IXLRange> GetIntersectedRanges(XLAddress address)
         {
             return GetRangeIndex(address.Worksheet)
                 .GetIntersectedRanges(address);

@@ -20,9 +20,9 @@ namespace ClosedXML.Excel.Ranges.Index
 
         IEnumerable<IXLAddressable> GetAll();
 
-        bool Intersects(in XLRangeAddress rangeAddress);
+        bool Intersects(XLRangeAddress rangeAddress);
 
-        bool Contains(in XLAddress address);
+        bool Contains(XLAddress address);
 
         bool MatchesType(XLRangeType rangeType);
     }

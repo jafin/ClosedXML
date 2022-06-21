@@ -434,9 +434,9 @@ namespace ClosedXML.Excel
         {
             var xlSourceBaseRangeAddress = (XLRangeAddress)sourceBaseRange.RangeAddress;
             var xlTargetBaseRangeAddress = (XLRangeAddress)targetBaseRange.RangeAddress;
-            var xlRangeAddress = this.RangeAddress.Relative(in xlSourceBaseRangeAddress, in xlTargetBaseRangeAddress);
+            var xlRangeAddress = this.RangeAddress.Relative(xlSourceBaseRangeAddress, xlTargetBaseRangeAddress);
 
-            return ((XLRangeBase)targetBaseRange).Range(in xlRangeAddress);
+            return ((XLRangeBase)targetBaseRange).Range(xlRangeAddress);
         }
 
         internal void RemoveConditionalFormatting()
@@ -779,7 +779,7 @@ namespace ClosedXML.Excel
             return Cell(cellAddressInRange.RowNumber, cellAddressInRange.ColumnNumber);
         }
 
-        public XLCell Cell(in XLAddress cellAddressInRange)
+        public XLCell Cell(XLAddress cellAddressInRange)
         {
             Int32 absRow = cellAddressInRange.RowNumber + RangeAddress.FirstAddress.RowNumber - 1;
             Int32 absColumn = cellAddressInRange.ColumnNumber + RangeAddress.FirstAddress.ColumnNumber - 1;
@@ -972,10 +972,10 @@ namespace ClosedXML.Excel
         public XLRange Range(IXLRangeAddress rangeAddress)
         {
             var xlRangeAddress = (XLRangeAddress)rangeAddress;
-            return Range(in xlRangeAddress);
+            return Range(xlRangeAddress);
         }
 
-        internal XLRange Range(in XLRangeAddress rangeAddress)
+        internal XLRange Range(XLRangeAddress rangeAddress)
         {
             var ws = rangeAddress.FirstAddress.Worksheet ??
                      rangeAddress.LastAddress.Worksheet ??
@@ -1515,7 +1515,7 @@ namespace ClosedXML.Excel
 
         public bool Contains(XLAddress address)
         {
-            return RangeAddress.Contains(in address);
+            return RangeAddress.Contains(address);
         }
 
         public void Delete(XLShiftDeletedCells shiftDeleteCells)

@@ -198,10 +198,10 @@ namespace ClosedXML.Excel
         public bool Intersects(IXLRangeAddress otherAddress)
         {
             var xlOtherAddress = (XLRangeAddress)otherAddress;
-            return Intersects(in xlOtherAddress);
+            return Intersects(xlOtherAddress);
         }
 
-        internal bool Intersects(in XLRangeAddress otherAddress)
+        internal bool Intersects(XLRangeAddress otherAddress)
         {
             return !( // See if the two ranges intersect...
                        otherAddress.FirstAddress.ColumnNumber > LastAddress.ColumnNumber
@@ -214,7 +214,7 @@ namespace ClosedXML.Excel
         public bool Contains(IXLAddress address)
         {
             var xlAddress = (XLAddress)address;
-            return Contains(in xlAddress);
+            return Contains(xlAddress);
         }
 
         internal IXLRangeAddress WithoutWorksheet()
@@ -224,7 +224,7 @@ namespace ClosedXML.Excel
                 LastAddress.WithoutWorksheet());
         }
 
-        internal bool Contains(in XLAddress address)
+        internal bool Contains(XLAddress address)
         {
             return FirstAddress.RowNumber <= address.RowNumber &&
                    address.RowNumber <= LastAddress.RowNumber &&
@@ -401,10 +401,10 @@ namespace ClosedXML.Excel
             var xlSourceRangeAddress = (XLRangeAddress)sourceRangeAddress;
             var xlTargetRangeAddress = (XLRangeAddress)targetRangeAddress;
 
-            return Relative(in xlSourceRangeAddress, in xlTargetRangeAddress);
+            return Relative(xlSourceRangeAddress, xlTargetRangeAddress);
         }
 
-        internal XLRangeAddress Relative(in XLRangeAddress sourceRangeAddress, in XLRangeAddress targetRangeAddress)
+        internal XLRangeAddress Relative(XLRangeAddress sourceRangeAddress, XLRangeAddress targetRangeAddress)
         {
             var sheet = targetRangeAddress.Worksheet;
 
@@ -435,10 +435,10 @@ namespace ClosedXML.Excel
                 throw new ArgumentNullException(nameof(otherRangeAddress));
 
             var xlOtherRangeAddress = (XLRangeAddress)otherRangeAddress;
-            return Intersection(in xlOtherRangeAddress);
+            return Intersection(xlOtherRangeAddress);
         }
 
-        internal XLRangeAddress Intersection(in XLRangeAddress otherRangeAddress)
+        internal XLRangeAddress Intersection(XLRangeAddress otherRangeAddress)
         {
             if (!this.Worksheet.Equals(otherRangeAddress.Worksheet))
                 throw new ArgumentOutOfRangeException(nameof(otherRangeAddress), "The other range address is on a different worksheet");

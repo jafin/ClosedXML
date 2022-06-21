@@ -180,7 +180,7 @@ namespace ClosedXML.Excel
                 || IsTransparent(color.Key);
         }
 
-        internal static bool IsTransparent(in XLColorKey colorKey)
+        internal static bool IsTransparent(XLColorKey colorKey)
         {
             return colorKey == NoColor.Key
                 || (colorKey.ColorType == XLColorType.Indexed && colorKey.Indexed == 64);

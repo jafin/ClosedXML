@@ -25,7 +25,7 @@ namespace ClosedXML.Tests.Excel.Ranges
                     for (int j = 2; j <= 4; j++)
                     {
                         var address = new XLAddress(ws, i * 2, j, false, false);
-                        Assert.True(index.Contains(in address));
+                        Assert.True(index.Contains(address));
                     }
                 }
             }
@@ -42,7 +42,7 @@ namespace ClosedXML.Tests.Excel.Ranges
                 for (int i = 1; i <= TEST_COUNT; i++)
                 {
                     var address = new XLAddress(ws, i * 2 + 1, 3, false, false);
-                    Assert.False(index.Contains(in address));
+                    Assert.False(index.Contains(address));
                 }
             }
         }
@@ -61,13 +61,13 @@ namespace ClosedXML.Tests.Excel.Ranges
                         new XLAddress(ws, i * 2, 1 + i % 4, false, false),
                         new XLAddress(ws, i * 2 + 1, 8 - i % 3, false, false));
 
-                    Assert.True(index.Intersects(in rangeAddress));
+                    Assert.True(index.Intersects(rangeAddress));
                 }
 
                 for (int i = 2; i < 4; i++)
                 {
                     var columnAddress = XLRangeAddress.EntireColumn(ws, i);
-                    Assert.True(index.Intersects(in columnAddress));
+                    Assert.True(index.Intersects(columnAddress));
                 }
             }
         }
@@ -86,13 +86,13 @@ namespace ClosedXML.Tests.Excel.Ranges
                         new XLAddress(ws, i * 2 + 1, 1 + i % 4, false, false),
                         new XLAddress(ws, i * 2 + 1, 8 - i % 3, false, false));
 
-                    Assert.False(index.Intersects(in rangeAddress));
+                    Assert.False(index.Intersects(rangeAddress));
                 }
 
                 var columnAddress = XLRangeAddress.EntireColumn(ws, 1);
-                Assert.False(index.Intersects(in columnAddress));
+                Assert.False(index.Intersects(columnAddress));
                 columnAddress = XLRangeAddress.EntireColumn(ws, 5);
-                Assert.False(index.Intersects(in columnAddress));
+                Assert.False(index.Intersects(columnAddress));
             }
         }
 
@@ -108,7 +108,7 @@ namespace ClosedXML.Tests.Excel.Ranges
 
                 var address = new XLAddress(ws, 102, 1004, false, false);
 
-                Assert.True(index.Contains(in address));
+                Assert.True(index.Contains(address));
             }
         }
 
@@ -124,7 +124,7 @@ namespace ClosedXML.Tests.Excel.Ranges
 
                 var rangeAddress = new XLRangeAddress(ws, "F102:E103");
 
-                Assert.True(index.Intersects(in rangeAddress));
+                Assert.True(index.Intersects(rangeAddress));
             }
         }
 
@@ -140,7 +140,7 @@ namespace ClosedXML.Tests.Excel.Ranges
 
                 var address = new XLAddress(ws, 103, 4, false, false);
 
-                Assert.True(index.Contains(in address));
+                Assert.True(index.Contains(address));
             }
         }
 
@@ -156,7 +156,7 @@ namespace ClosedXML.Tests.Excel.Ranges
 
                 var rangeAddress = new XLRangeAddress(ws, "C103:E103");
 
-                Assert.True(index.Intersects(in rangeAddress));
+                Assert.True(index.Intersects(rangeAddress));
             }
         }
 

@@ -51,7 +51,7 @@ namespace ClosedXML.Excel.Ranges.Index
             return _quadTree.Add(range);
         }
 
-        public bool Contains(in XLAddress address)
+        public bool Contains(XLAddress address)
         {
             CheckWorksheet(address.Worksheet);
 
@@ -98,7 +98,7 @@ namespace ClosedXML.Excel.Ranges.Index
             return _quadTree.GetIntersectedRanges(address);
         }
 
-        public bool Intersects(in XLRangeAddress rangeAddress)
+        public bool Intersects(XLRangeAddress rangeAddress)
         {
             CheckWorksheet(rangeAddress.Worksheet);
 
