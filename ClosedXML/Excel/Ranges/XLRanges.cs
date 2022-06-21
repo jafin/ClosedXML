@@ -14,7 +14,7 @@ namespace ClosedXML.Excel
         /// </summary>
         private readonly Dictionary<IXLWorksheet, IXLRangeIndex<XLRange>> _indexes;
         private IEnumerable<XLRange> Ranges => _indexes.Values.SelectMany(index => index.GetAll());
-        private bool _styleInitialized = false;
+        private bool _styleInitialized;
 
         private IXLRangeIndex<XLRange> GetRangeIndex(IXLWorksheet worksheet)
         {
@@ -40,7 +40,7 @@ namespace ClosedXML.Excel
             return this;
         }
 
-        public void Add(XLRange range)
+        public void Add(IXLRange range)
         {
             if (GetRangeIndex(range.Worksheet).Add(range))
                 Count++;
@@ -48,7 +48,7 @@ namespace ClosedXML.Excel
             if (_styleInitialized)
                 return;
 
-            var worksheetStyle = range?.Worksheet?.Style;
+            var worksheetStyle = range.Worksheet?.Style;
             if (worksheetStyle == null)
                 return;
 
@@ -58,7 +58,7 @@ namespace ClosedXML.Excel
 
         public void Add(IXLRangeBase range)
         {
-            Add(range.AsRange() as XLRange);
+            Add(range.AsRange());
         }
 
         public void Add(IXLCell cell)
@@ -122,7 +122,7 @@ namespace ClosedXML.Excel
 
         /// <summary>
         /// Filter ranges from a collection that intersect the specified address. Is much more efficient
-        /// that using Linq expression .Where().
+        /// that using LINQ expression .Where().
         /// </summary>
         public IEnumerable<IXLRange> GetIntersectedRanges(IXLRangeAddress rangeAddress)
         {
@@ -138,7 +138,7 @@ namespace ClosedXML.Excel
 
         /// <summary>
         /// Filter ranges from a collection that intersect the specified address. Is much more efficient
-        /// that using Linq expression .Where().
+        /// that using LINQ expression .Where().
         /// </summary>
         public IEnumerable<IXLRange> GetIntersectedRanges(IXLAddress address)
         {
@@ -258,16 +258,13 @@ namespace ClosedXML.Excel
             }
         }
 
-        public override IXLRanges RangesUsed
-        {
-            get { return this; }
-        }
+        public override IXLRanges RangesUsed => this;
 
         #endregion IXLStylized Members
 
         public override string ToString()
         {
-            String retVal = Ranges.Aggregate(String.Empty, (agg, r) => agg + (r.ToString() + ","));
+            string retVal = Ranges.Aggregate(string.Empty, (agg, r) => agg + (r + ","));
             if (retVal.Length > 0) retVal = retVal.Substring(0, retVal.Length - 1);
             return retVal;
         }
@@ -283,7 +280,7 @@ namespace ClosedXML.Excel
                 return false;
 
             return Ranges.Count() == other.Ranges.Count() &&
-                   Ranges.Select(thisRange => Enumerable.Contains(other.Ranges, thisRange)).All(foundOne => foundOne);
+                   Ranges.Select(thisRange => other.Ranges.Contains(thisRange)).All(foundOne => foundOne);
         }
 
         public override int GetHashCode()

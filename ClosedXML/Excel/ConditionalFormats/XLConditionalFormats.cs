@@ -39,6 +39,22 @@ namespace ClosedXML.Excel
             _conditionalFormats.RemoveAll(predicate);
         }
 
+
+        // Get the top left corner of the rectangle covering all the ranges
+        private (int row, int col) GetTopLeftFromRange(IXLRanges ranges)
+        {
+            var minRow = int.MaxValue;
+            var minCol = int.MaxValue;
+            foreach (var range in ranges)
+            {
+                if (range.RangeAddress.FirstAddress.RowNumber < minRow)
+                    minRow = range.RangeAddress.FirstAddress.RowNumber;
+                if (range.RangeAddress.FirstAddress.ColumnNumber < minCol)
+                    minCol = range.RangeAddress.FirstAddress.ColumnNumber;
+            }
+            return (minRow, minCol);
+        }
+
         /// <summary>
         /// The method consolidate the same conditional formats, which are located in adjacent ranges.
         /// </summary>
@@ -63,11 +79,9 @@ namespace ClosedXML.Excel
                         f != item && f.Ranges.First().Worksheet.Position == firstRange.Worksheet.Position &&
                         XLConditionalFormat.NoRangeComparer.Equals(f, item);
 
-                    //Get the top left corner of the rectangle covering all the ranges
-                    var baseAddress = new XLAddress(
-                        item.Ranges.Select(r => r.RangeAddress.FirstAddress.RowNumber).Min(),
-                        item.Ranges.Select(r => r.RangeAddress.FirstAddress.ColumnNumber).Min(),
-                        false, false);
+                    
+                    var topLeftAddress = GetTopLeftFromRange(item.Ranges);
+                    var baseAddress = new XLAddress(topLeftAddress.row,topLeftAddress.col, false, false);
                     var baseCell = firstRange.Worksheet.Cell(baseAddress) as XLCell;
 
                     int i = 1;

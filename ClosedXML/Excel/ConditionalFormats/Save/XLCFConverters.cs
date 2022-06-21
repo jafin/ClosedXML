@@ -31,10 +31,11 @@ namespace ClosedXML.Excel
             };
         }
 
-        public static ConditionalFormattingRule Convert(IXLConditionalFormat conditionalFormat, Int32 priority, XLWorkbook.SaveContext context)
+        public static ConditionalFormattingRule Convert(IXLConditionalFormat conditionalFormat, int priority, XLWorkbook.SaveContext context)
         {
             if (!Converters.TryGetValue(conditionalFormat.ConditionalFormatType, out var converter))
-                throw new NotImplementedException(string.Format("Conditional formatting rule '{0}' hasn't been implemented", conditionalFormat.ConditionalFormatType));
+                throw new NotImplementedException(
+                    $"Conditional formatting rule '{conditionalFormat.ConditionalFormatType}' hasn't been implemented");
 
             return converter.Convert(conditionalFormat, priority, context);
         }
