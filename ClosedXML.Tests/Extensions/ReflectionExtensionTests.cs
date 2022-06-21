@@ -10,6 +10,10 @@ namespace ClosedXML.Tests.Extensions
     {
         private class TestClass
         {
+            static TestClass()
+            {
+            }
+
             public static int StaticProperty { get; set; }
             public static int StaticField = default;
 #pragma warning disable CS0067
