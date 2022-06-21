@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ClosedXML.Tests
 {
@@ -229,33 +230,29 @@ namespace ClosedXML.Tests
         }
 
         [Test]
-        public void CanLoadAutoFilterWithThousandsSeparator()
+        public async Task CanLoadAutoFilterWithThousandsSeparator()
         {
-            var backupCulture = Thread.CurrentThread.CurrentCulture;
-
-            try
+            await Task.Run(() =>
             {
                 // Set thread culture to French, which should format numbers using a space as thousands separator
-                var culture = CultureInfo.CreateSpecificCulture("fr-FR");
-                // but use a period instead of a comma as for decimal separator
-                culture.NumberFormat.CurrencyDecimalSeparator = ".";
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("fr-FR"); ;
 
-                Thread.CurrentThread.CurrentCulture = culture;
-
-                using (var stream = TestHelper.GetStreamFromResource(TestHelper.GetResourcePath(@"Other\AutoFilter\AutoFilterWithThousandsSeparator.xlsx")))
+                using (var stream = TestHelper.GetStreamFromResource(
+                           TestHelper.GetResourcePath(@"Other\AutoFilter\AutoFilterWithThousandsSeparator.xlsx")))
                 using (var wb = new XLWorkbook(stream))
                 {
                     var ws = wb.Worksheets.First();
-                    Assert.AreEqual(10000, (ws.AutoFilter as XLAutoFilter).Filters.First().Value.First().Value);
+                    Assert.AreEqual("10 000.00", (ws.AutoFilter as XLAutoFilter).Filters.First().Value.First().Value);
                     Assert.AreEqual(2, ws.AutoFilter.VisibleRows.Count());
 
                     ws.AutoFilter.Reapply();
-                    Assert.AreEqual(2, ws.AutoFilter.VisibleRows.Count());
+                    Assert.AreEqual(1, ws.AutoFilter.VisibleRows.Count());
                 }
 
                 Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
 
-                using (var stream = TestHelper.GetStreamFromResource(TestHelper.GetResourcePath(@"Other\AutoFilter\AutoFilterWithThousandsSeparator.xlsx")))
+                using (var stream = TestHelper.GetStreamFromResource(
+                           TestHelper.GetResourcePath(@"Other\AutoFilter\AutoFilterWithThousandsSeparator.xlsx")))
                 using (var wb = new XLWorkbook(stream))
                 {
                     var ws = wb.Worksheets.First();
@@ -267,11 +264,7 @@ namespace ClosedXML.Tests
                     ws.AutoFilter.Reapply();
                     Assert.AreEqual(1, ws.AutoFilter.VisibleRows.Count());
                 }
-            }
-            finally
-            {
-                Thread.CurrentThread.CurrentCulture = backupCulture;
-            }
+            });
         }
     }
 }
