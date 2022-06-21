@@ -12,3 +12,9 @@ indent_size = 4
 
 # CA1820: Test for empty strings using string length
 dotnet_diagnostic.CA1820.severity = error
+
+# RCS1138: Add summary to documentation comment.
+dotnet_diagnostic.RCS1138.severity = suggestion
+
+# RCS1194: Implement exception constructors.
+dotnet_diagnostic.RCS1194.severity = suggestion

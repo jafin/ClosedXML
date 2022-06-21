@@ -5523,7 +5523,7 @@ namespace ClosedXML.Excel
 
                 if (xlWorksheet.Internals.CellsCollection.Deleted.TryGetValue(distinctRow, out HashSet<int> deletedColumns))
                 {
-                    foreach (var deletedColumn in deletedColumns)
+                    foreach (var deletedColumn in deletedColumns.ToList())
                     {
                         var key = $"{XLHelper.GetColumnLetterFromNumber(deletedColumn)}{distinctRow.ToInvariantString()}";
 
