@@ -2,6 +2,7 @@
 using ClosedXML.Extensions;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -9,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ClosedXML.Excel
 {
@@ -2064,7 +2066,7 @@ namespace ClosedXML.Excel
             rCnt = Math.Min(rCnt, fromRange.RowCount());
             cCnt = Math.Min(cCnt, fromRange.ColumnCount());
             var toRange = Worksheet.Range(this, Worksheet.Cell(_rowNumber + rCnt - 1, _columnNumber + cCnt - 1));
-            var formats = srcSheet.ConditionalFormats.Where(f => f.Ranges.GetIntersectedRanges(fromRange.RangeAddress).Any());
+            var formats = srcSheet.ConditionalFormats.Where(f => f.Ranges.GetIntersectedRanges(fromRange.RangeAddress).Any()).ToList();
 
             foreach (var cf in formats)
             {

@@ -12,16 +12,10 @@ namespace ClosedXML.Excel
             return Repository.GetOrCreate(ref key);
         }
 
-        private static readonly XLStyleKey DefaultKey = new XLStyleKey
-        {
-            Alignment = XLAlignmentValue.Default.Key,
-            Border = XLBorderValue.Default.Key,
-            Fill = XLFillValue.Default.Key,
-            Font = XLFontValue.Default.Key,
-            IncludeQuotePrefix = false,
-            NumberFormat = XLNumberFormatValue.Default.Key,
-            Protection = XLProtectionValue.Default.Key
-        };
+        private static readonly XLStyleKey DefaultKey = new XLStyleKey(XLAlignmentValue.Default.Key, XLBorderValue.Default.Key,
+            XLFillValue.Default.Key,
+            XLFontValue.Default.Key, false, XLNumberFormatValue.Default.Key, XLProtectionValue.Default.Key);
+       
 
         internal static readonly XLStyleValue Default = FromKey(ref DefaultKey);
 

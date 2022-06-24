@@ -3038,43 +3038,44 @@ namespace ClosedXML.Excel
             Properties.Title = p.Title;
         }
 
-        private void ApplyStyle(IXLStylized xlStylized, Int32 styleIndex, Stylesheet s, Fills fills, Borders borders,
+        private void ApplyStyle(IXLStylized xlStylized, int styleIndex, Stylesheet s, Fills fills, Borders borders,
                                 Fonts fonts, NumberingFormats numberingFormats)
         {
-            if (s == null) return; //No Stylesheet, no Styles
+            if (s == null) return; // No Stylesheet, no Styles
 
             var cellFormat = (CellFormat)s.CellFormats.ElementAt(styleIndex);
 
             var xlStyle = XLStyle.Default.Key;
 
-            xlStyle.IncludeQuotePrefix = OpenXmlHelper.GetBooleanValueAsBool(cellFormat.QuotePrefix, false);
+            var xlStyleKeyBuilder = new XLStyleKeyBuilder(xlStyle);
+            xlStyleKeyBuilder.WithIncludeQuotePrefix(OpenXmlHelper.GetBooleanValueAsBool(cellFormat.QuotePrefix, false));
 
             if (cellFormat.ApplyProtection != null)
             {
                 var protection = cellFormat.Protection;
 
                 if (protection == null)
-                    xlStyle.Protection = XLProtectionValue.Default.Key;
+                    xlStyleKeyBuilder.WithProtection(XLProtectionValue.Default.Key);
                 else
                 {
-                    xlStyle.Protection = new XLProtectionKey
+                    xlStyleKeyBuilder.WithProtection(new XLProtectionKey
                     {
                         Hidden = protection.Hidden != null && protection.Hidden.HasValue &&
-                                                              protection.Hidden.Value,
+                                 protection.Hidden.Value,
                         Locked = protection.Locked == null ||
-                                (protection.Locked.HasValue && protection.Locked.Value)
-                    };
+                                 (protection.Locked.HasValue && protection.Locked.Value)
+                    });
                 }
             }
 
             if (UInt32HasValue(cellFormat.FillId))
             {
-                var fill = (Fill)fills.ElementAt((Int32)cellFormat.FillId.Value);
+                var fill = (Fill)fills.ElementAt((int)cellFormat.FillId.Value);
                 if (fill.PatternFill != null)
                 {
                     LoadFill(fill, xlStylized.InnerStyle.Fill, differentialFillFormat: false);
                 }
-                xlStyle.Fill = (xlStylized.InnerStyle as XLStyle).Value.Key.Fill;
+                xlStyleKeyBuilder.WithFill((xlStylized.InnerStyle as XLStyle).Value.Key.Fill);
             }
 
             var alignment = cellFormat.Alignment;
@@ -3084,32 +3085,32 @@ namespace ClosedXML.Excel
                 if (alignment.Horizontal != null)
                     xlAlignment.Horizontal = alignment.Horizontal.Value.ToClosedXml();
                 if (alignment.Indent != null && alignment.Indent != 0)
-                    xlAlignment.Indent = Int32.Parse(alignment.Indent.ToString());
+                    xlAlignment.Indent = int.Parse(alignment.Indent.ToString());
                 if (alignment.JustifyLastLine != null)
                     xlAlignment.JustifyLastLine = alignment.JustifyLastLine;
                 if (alignment.ReadingOrder != null)
                 {
                     xlAlignment.ReadingOrder =
-                        (XLAlignmentReadingOrderValues)Int32.Parse(alignment.ReadingOrder.ToString());
+                        (XLAlignmentReadingOrderValues)int.Parse(alignment.ReadingOrder.ToString());
                 }
                 if (alignment.RelativeIndent != null)
                     xlAlignment.RelativeIndent = alignment.RelativeIndent;
                 if (alignment.ShrinkToFit != null)
                     xlAlignment.ShrinkToFit = alignment.ShrinkToFit;
                 if (alignment.TextRotation != null)
-                    xlAlignment.TextRotation = (Int32)alignment.TextRotation.Value;
+                    xlAlignment.TextRotation = (int)alignment.TextRotation.Value;
                 if (alignment.Vertical != null)
                     xlAlignment.Vertical = alignment.Vertical.Value.ToClosedXml();
                 if (alignment.WrapText != null)
                     xlAlignment.WrapText = alignment.WrapText;
 
-                xlStyle.Alignment = xlAlignment;
+                xlStyleKeyBuilder.WithAlignment(xlAlignment);
             }
 
             if (UInt32HasValue(cellFormat.BorderId))
             {
                 uint borderId = cellFormat.BorderId.Value;
-                var border = (Border)borders.ElementAt((Int32)borderId);
+                var border = (Border)borders.ElementAt((int)borderId);
                 var xlBorder = xlStyle.Border;
                 if (border != null)
                 {
@@ -3159,58 +3160,58 @@ namespace ClosedXML.Excel
                             xlBorder.DiagonalUp = border.DiagonalUp;
                     }
 
-                    xlStyle.Border = xlBorder;
+                    xlStyleKeyBuilder.WithBorder(xlBorder);
                 }
             }
 
             if (UInt32HasValue(cellFormat.FontId))
             {
                 var fontId = cellFormat.FontId;
-                var font = (DocumentFormat.OpenXml.Spreadsheet.Font)fonts.ElementAt((Int32)fontId.Value);
+                var font = (DocumentFormat.OpenXml.Spreadsheet.Font)fonts.ElementAt((int)fontId.Value);
 
-                var xlFont = xlStyle.Font;
+                var xLFontKeyBuilder = new XLFontKeyBuilder(xlStyle.Font);
                 if (font != null)
                 {
-                    xlFont.Bold = GetBoolean(font.Bold);
+                    xLFontKeyBuilder.WithBold(GetBoolean(font.Bold));
 
                     if (font.Color != null)
-                        xlFont.FontColor = font.Color.ToClosedXMLColor(_colorList).Key;
+                        xLFontKeyBuilder.WithFontColor(font.Color.ToClosedXMLColor(_colorList).Key);
 
                     if (font.FontFamilyNumbering != null && (font.FontFamilyNumbering).Val != null)
                     {
-                        xlFont.FontFamilyNumbering =
-                            (XLFontFamilyNumberingValues)Int32.Parse((font.FontFamilyNumbering).Val.ToString());
+                            xLFontKeyBuilder.WithFontFamilyNumbering(
+                            (XLFontFamilyNumberingValues)int.Parse((font.FontFamilyNumbering).Val.ToString()));
                     }
                     if (font.FontName != null)
                     {
                         if ((font.FontName).Val != null)
-                            xlFont.FontName = (font.FontName).Val;
+                            xLFontKeyBuilder.WithFontName((font.FontName).Val);
                     }
                     if (font.FontSize != null)
                     {
-                        if ((font.FontSize).Val != null)
-                            xlFont.FontSize = (font.FontSize).Val;
+                        if (font.FontSize.Val != null)
+                            xLFontKeyBuilder.WithFontSize((font.FontSize).Val);
                     }
 
-                    xlFont.Italic = GetBoolean(font.Italic);
-                    xlFont.Shadow = GetBoolean(font.Shadow);
-                    xlFont.Strikethrough = GetBoolean(font.Strike);
+                    xLFontKeyBuilder.WithItalic(GetBoolean(font.Italic));
+                    xLFontKeyBuilder.WithShadow(GetBoolean(font.Shadow));
+                    xLFontKeyBuilder.WithStrikethrough(GetBoolean(font.Strike));
 
                     if (font.Underline != null)
                     {
-                        xlFont.Underline = font.Underline.Val != null
+                        xLFontKeyBuilder.WithUnderline(font.Underline.Val != null
                                             ? (font.Underline).Val.Value.ToClosedXml()
-                                            : XLFontUnderlineValues.Single;
+                                            : XLFontUnderlineValues.Single);
                     }
 
                     if (font.VerticalTextAlignment != null)
                     {
-                        xlFont.VerticalAlignment = font.VerticalTextAlignment.Val != null
+                        xLFontKeyBuilder.WithVerticalAlignment(font.VerticalTextAlignment.Val != null
                                                     ? (font.VerticalTextAlignment).Val.Value.ToClosedXml()
-                                                    : XLFontVerticalTextAlignmentValues.Baseline;
+                                                    : XLFontVerticalTextAlignmentValues.Baseline);
                     }
 
-                    xlStyle.Font = xlFont;
+                    xlStyleKeyBuilder.WithFont(xLFontKeyBuilder.Build());
                 }
             }
 
@@ -3218,7 +3219,7 @@ namespace ClosedXML.Excel
             {
                 var numberFormatId = cellFormat.NumberFormatId;
 
-                string formatCode = String.Empty;
+                string formatCode = string.Empty;
                 if (numberingFormats != null)
                 {
                     var numberingFormat =
@@ -3238,23 +3239,26 @@ namespace ClosedXML.Excel
                     xlNumberFormat.NumberFormatId = -1;
                 }
                 else
-                    xlNumberFormat.NumberFormatId = (Int32)numberFormatId.Value;
-                xlStyle.NumberFormat = xlNumberFormat;
+                    xlNumberFormat.NumberFormatId = (int)numberFormatId.Value;
+
+                xlStyleKeyBuilder.WithNumberFormat(xlNumberFormat);
             }
 
-            //When loading columns we must propagate style to each column but not deeper. In other cases we do not propagate at all.
+            xlStyle = xlStyleKeyBuilder.Build();
+
+            // When loading columns we must propagate style to each column but not deeper. In other cases we do not propagate at all.
             if (xlStylized is IXLColumns columns)
                 columns.Cast<XLColumn>().ForEach(col => col.InnerStyle = new XLStyle(col, xlStyle));
             else
                 xlStylized.InnerStyle = new XLStyle(xlStylized, xlStyle);
         }
 
-        private static Boolean UInt32HasValue(UInt32Value value)
+        private static bool UInt32HasValue(UInt32Value value)
         {
             return value != null && value.HasValue;
         }
 
-        private static Boolean GetBoolean(BooleanPropertyType property)
+        private static bool GetBoolean(BooleanPropertyType property)
         {
             if (property != null)
             {

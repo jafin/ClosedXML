@@ -7,24 +7,24 @@ namespace ClosedXML.Excel
     {
         #region Static members
 
-        public static XLStyle Default { get { return new XLStyle(XLStyleValue.Default); } }
+        public static XLStyle Default
+        {
+            get { return new XLStyle(XLStyleValue.Default); }
+        }
 
         internal static XLStyleKey GenerateKey(IXLStyle initialStyle)
         {
             if (initialStyle == null)
                 return Default.Key;
-            if (initialStyle is XLStyle)
-                return (initialStyle as XLStyle).Key;
+            if (initialStyle is XLStyle style)
+                return style.Key;
 
-            return new XLStyleKey
-            {
-                Font = XLFont.GenerateKey(initialStyle.Font),
-                Alignment = XLAlignment.GenerateKey(initialStyle.Alignment),
-                Border = XLBorder.GenerateKey(initialStyle.Border),
-                Fill = XLFill.GenerateKey(initialStyle.Fill),
-                NumberFormat = XLNumberFormat.GenerateKey(initialStyle.NumberFormat),
-                Protection = XLProtection.GenerateKey(initialStyle.Protection)
-            };
+            return new XLStyleKey(XLAlignment.GenerateKey(initialStyle.Alignment),
+                XLBorder.GenerateKey(initialStyle.Border),
+                XLFill.GenerateKey(initialStyle.Fill),
+                XLFont.GenerateKey(initialStyle.Font), default(bool), XLNumberFormat.GenerateKey(initialStyle.NumberFormat),
+                XLProtection.GenerateKey(initialStyle.Protection)
+            );
         }
 
         internal static XLStyle CreateEmptyStyle()
@@ -43,17 +43,15 @@ namespace ClosedXML.Excel
         internal XLStyleKey Key
         {
             get { return Value.Key; }
-            private set
-            {
-                Value = XLStyleValue.FromKey(ref value);
-            }
+            private set { Value = XLStyleValue.FromKey(ref value); }
         }
 
         #endregion properties
 
         #region constructors
 
-        public XLStyle(IXLStylized container, IXLStyle initialStyle = null, Boolean useDefaultModify = true) : this(container, GenerateKey(initialStyle))
+        public XLStyle(IXLStylized container, IXLStyle initialStyle = null, Boolean useDefaultModify = true) : this(container,
+            GenerateKey(initialStyle))
         {
         }
 
@@ -95,7 +93,7 @@ namespace ClosedXML.Excel
             get { return new XLFont(this, Value.Font); }
             set
             {
-                Modify(k => { k.Font = XLFont.GenerateKey(value); return k; });
+                Modify(k => new XLStyleKeyBuilder(k).WithFont(XLFont.GenerateKey(value)).Build());
             }
         }
 
@@ -104,7 +102,7 @@ namespace ClosedXML.Excel
             get { return new XLAlignment(this, Value.Alignment); }
             set
             {
-                Modify(k => { k.Alignment = XLAlignment.GenerateKey(value); return k; });
+                Modify(k => new XLStyleKeyBuilder(k).WithAlignment(XLAlignment.GenerateKey(value)).Build());
             }
         }
 
@@ -113,7 +111,7 @@ namespace ClosedXML.Excel
             get { return new XLBorder(_container, this, Value.Border); }
             set
             {
-                Modify(k => { k.Border = XLBorder.GenerateKey(value); return k; });
+                Modify(k => new XLStyleKeyBuilder(k).WithBorder(XLBorder.GenerateKey(value)).Build());
             }
         }
 
@@ -122,7 +120,7 @@ namespace ClosedXML.Excel
             get { return new XLFill(this, Value.Fill); }
             set
             {
-                Modify(k => { k.Fill = XLFill.GenerateKey(value); return k; });
+                Modify(k => new XLStyleKeyBuilder(k).WithFill(XLFill.GenerateKey(value)).Build());
             }
         }
 
@@ -131,7 +129,7 @@ namespace ClosedXML.Excel
             get { return Value.IncludeQuotePrefix; }
             set
             {
-                Modify(k => { k.IncludeQuotePrefix = value; return k; });
+                Modify(k => new XLStyleKeyBuilder(k).WithIncludeQuotePrefix(value).Build());
             }
         }
 
@@ -146,7 +144,7 @@ namespace ClosedXML.Excel
             get { return new XLNumberFormat(this, Value.NumberFormat); }
             set
             {
-                Modify(k => { k.NumberFormat = XLNumberFormat.GenerateKey(value); return k; });
+                Modify(k => new XLStyleKeyBuilder(k).WithNumberFormat(XLNumberFormat.GenerateKey(value)).Build());
             }
         }
 
@@ -155,7 +153,7 @@ namespace ClosedXML.Excel
             get { return new XLProtection(this, Value.Protection); }
             set
             {
-                Modify(k => { k.Protection = XLProtection.GenerateKey(value); return k; });
+                Modify(k => new XLStyleKeyBuilder(k).WithProtection(XLProtection.GenerateKey(value)).Build());
             }
         }
 

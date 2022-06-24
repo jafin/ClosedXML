@@ -67,7 +67,7 @@ namespace ClosedXML.Excel
 
             while (formats.Count > 0)
             {
-                var item = formats.First();
+                var item = formats[0];
 
                 if (!_conditionalFormatTypesExcludedFromConsolidation.Contains(item.ConditionalFormatType))
                 {

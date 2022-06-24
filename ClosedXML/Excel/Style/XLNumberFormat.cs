@@ -114,8 +114,7 @@ namespace ClosedXML.Excel
             _style.Modify(styleKey =>
             {
                 var numberFormat = styleKey.NumberFormat;
-                styleKey.NumberFormat = modification(numberFormat);
-                return styleKey;
+                return new XLStyleKeyBuilder(styleKey).WithNumberFormat(modification(numberFormat)).Build();
             });
         }
 

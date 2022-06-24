@@ -1,24 +1,45 @@
-﻿using System;
+﻿#nullable enable
+using System;
 
 namespace ClosedXML.Excel
 {
-    internal struct XLStyleKey : IEquatable<XLStyleKey>
+    internal readonly struct XLStyleKey : IEquatable<XLStyleKey>
     {
-        public XLAlignmentKey Alignment { get; set; }
+        public XLStyleKey(XLAlignmentKey alignment, XLBorderKey border, XLFillKey fill, XLFontKey font, bool includeQuotePrefix,
+            XLNumberFormatKey numberFormat, XLProtectionKey protection) : this()
+        {
+            Alignment = alignment;
+            Border = border;
+            Fill = fill;
+            Font = font;
+            IncludeQuotePrefix = includeQuotePrefix;
+            NumberFormat = numberFormat;
+            Protection = protection;
+            _hashCode = CalculateHashCode();
+        }
 
-        public XLBorderKey Border { get; set; }
+        public XLAlignmentKey Alignment { get; }
 
-        public XLFillKey Fill { get; set; }
+        public XLBorderKey Border { get; }
 
-        public XLFontKey Font { get; set; }
+        public XLFillKey Fill { get; }
 
-        public Boolean IncludeQuotePrefix { get; set; }
+        public XLFontKey Font { get; }
 
-        public XLNumberFormatKey NumberFormat { get; set; }
+        public bool IncludeQuotePrefix { get; }
 
-        public XLProtectionKey Protection { get; set; }
+        public XLNumberFormatKey NumberFormat { get; }
+
+        public XLProtectionKey Protection { get; }
+
+        private readonly int _hashCode;
 
         public override int GetHashCode()
+        {
+            return _hashCode;
+        }
+
+        private int CalculateHashCode()
         {
             var hashCode = -476701294;
             hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
@@ -45,21 +66,15 @@ namespace ClosedXML.Excel
         public override string ToString()
         {
             return
-                this == XLStyle.Default.Key ? "Default" : 
-                string.Format("Alignment: {0} Border: {1} Fill: {2} Font: {3} IncludeQuotePrefix: {4} NumberFormat: {5} Protection: {6}",
-                    Alignment == XLStyle.Default.Key.Alignment ? "Default" : Alignment.ToString(),
-                    Border == XLStyle.Default.Key.Border ? "Default" : Border.ToString(),
-                    Fill == XLStyle.Default.Key.Fill ? "Default" : Fill.ToString(),
-                    Font == XLStyle.Default.Key.Font ? "Default" : Font.ToString(),
-                    IncludeQuotePrefix == XLStyle.Default.Key.IncludeQuotePrefix ? "Default" : IncludeQuotePrefix.ToString(),
-                    NumberFormat == XLStyle.Default.Key.NumberFormat ? "Default" : NumberFormat.ToString(),
-                    Protection == XLStyle.Default.Key.Protection ? "Default" : Protection.ToString());
+                this == XLStyle.Default.Key
+                    ? "Default"
+                    : $"Alignment: {(Alignment == XLStyle.Default.Key.Alignment ? "Default" : Alignment.ToString())} Border: {(Border == XLStyle.Default.Key.Border ? "Default" : Border.ToString())} Fill: {(Fill == XLStyle.Default.Key.Fill ? "Default" : Fill.ToString())} Font: {(Font == XLStyle.Default.Key.Font ? "Default" : Font.ToString())} IncludeQuotePrefix: {(IncludeQuotePrefix == XLStyle.Default.Key.IncludeQuotePrefix ? "Default" : IncludeQuotePrefix.ToString())} NumberFormat: {(NumberFormat == XLStyle.Default.Key.NumberFormat ? "Default" : NumberFormat.ToString())} Protection: {(Protection == XLStyle.Default.Key.Protection ? "Default" : Protection.ToString())}";
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is XLStyleKey)
-                return Equals((XLStyleKey)obj);
+            if (obj is XLStyleKey key)
+                return Equals(key);
             return base.Equals(obj);
         }
 

@@ -12,19 +12,10 @@ namespace ClosedXML.Excel
             return Repository.GetOrCreate(ref key);
         }
 
-        private static readonly XLFontKey DefaultKey = new XLFontKey
-        {
-            Bold = false,
-            Italic = false,
-            Underline = XLFontUnderlineValues.None,
-            Strikethrough = false,
-            VerticalAlignment = XLFontVerticalTextAlignmentValues.Baseline,
-            FontSize = 11,
-            FontColor = XLColor.FromArgb(0, 0, 0).Key,
-            FontName = "Calibri",
-            FontFamilyNumbering = XLFontFamilyNumberingValues.Swiss,
-            FontCharSet = XLFontCharSet.Default
-        };
+        private static readonly XLFontKey DefaultKey = new XLFontKey(false, false, XLFontUnderlineValues.None, false,
+            XLFontVerticalTextAlignmentValues.Baseline, false, 11,
+            XLColor.FromArgb(0, 0, 0).Key, "Calibri", XLFontFamilyNumberingValues.Swiss, XLFontCharSet.Default);
+        
         internal static readonly XLFontValue Default = FromKey(ref DefaultKey);
 
         public XLFontKey Key { get; private set; }

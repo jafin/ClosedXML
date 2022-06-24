@@ -112,8 +112,7 @@ namespace ClosedXML.Excel
             _style.Modify(styleKey =>
             {
                 var protection = styleKey.Protection;
-                styleKey.Protection = modification(protection);
-                return styleKey;
+                return new XLStyleKeyBuilder(styleKey).WithProtection(modification(protection)).Build();
             });
         }
 

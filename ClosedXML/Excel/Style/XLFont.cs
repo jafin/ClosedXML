@@ -25,31 +25,14 @@ namespace ClosedXML.Excel
 
         internal static XLFontKey GenerateKey(IXLFontBase defaultFont)
         {
-            if (defaultFont == null)
+            return defaultFont switch
             {
-                return XLFontValue.Default.Key;
-            }
-            else if (defaultFont is XLFont)
-            {
-                return (defaultFont as XLFont).Key;
-            }
-            else
-            {
-                return new XLFontKey
-                {
-                    Bold = defaultFont.Bold,
-                    Italic = defaultFont.Italic,
-                    Underline = defaultFont.Underline,
-                    Strikethrough = defaultFont.Strikethrough,
-                    VerticalAlignment = defaultFont.VerticalAlignment,
-                    Shadow = defaultFont.Shadow,
-                    FontSize = defaultFont.FontSize,
-                    FontColor = defaultFont.FontColor.Key,
-                    FontName = defaultFont.FontName,
-                    FontFamilyNumbering = defaultFont.FontFamilyNumbering,
-                    FontCharSet = defaultFont.FontCharSet
-                };
-            }
+                null => XLFontValue.Default.Key,
+                XLFont font => font.Key,
+                _ => new XLFontKey(defaultFont.Bold, defaultFont.Italic, defaultFont.Underline, defaultFont.Strikethrough,
+                    defaultFont.VerticalAlignment, defaultFont.Shadow, defaultFont.FontSize, defaultFont.FontColor.Key, defaultFont.FontName,
+                    defaultFont.FontFamilyNumbering, defaultFont.FontCharSet)
+            };
         }
 
         #endregion Static members
@@ -94,8 +77,7 @@ namespace ClosedXML.Excel
             _style.Modify(styleKey =>
             {
                 var font = styleKey.Font;
-                styleKey.Font = modification(font);
-                return styleKey;
+                return new XLStyleKeyBuilder(styleKey).WithFont(modification(font)).Build();
             });
         }
 
@@ -106,7 +88,7 @@ namespace ClosedXML.Excel
             get { return Key.Bold; }
             set
             {
-                Modify(k => { k.Bold = value; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithBold(value).Build());
             }
         }
 
@@ -115,7 +97,7 @@ namespace ClosedXML.Excel
             get { return Key.Italic; }
             set
             {
-                Modify(k => { k.Italic = value; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithItalic(value).Build());
             }
         }
 
@@ -124,7 +106,7 @@ namespace ClosedXML.Excel
             get { return Key.Underline; }
             set
             {
-                Modify(k => { k.Underline = value; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithUnderline(value).Build());
             }
         }
 
@@ -133,7 +115,7 @@ namespace ClosedXML.Excel
             get { return Key.Strikethrough; }
             set
             {
-                Modify(k => { k.Strikethrough = value; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithStrikethrough(value).Build());
             }
         }
 
@@ -142,7 +124,7 @@ namespace ClosedXML.Excel
             get { return Key.VerticalAlignment; }
             set
             {
-                Modify(k => { k.VerticalAlignment = value; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithVerticalAlignment(value).Build());
             }
         }
 
@@ -151,7 +133,7 @@ namespace ClosedXML.Excel
             get { return Key.Shadow; }
             set
             {
-                Modify(k => { k.Shadow = value; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithShadow(value).Build());
             }
         }
 
@@ -160,7 +142,7 @@ namespace ClosedXML.Excel
             get { return Key.FontSize; }
             set
             {
-                Modify(k => { k.FontSize = value; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithFontSize(value).Build());
             }
         }
 
@@ -175,7 +157,7 @@ namespace ClosedXML.Excel
             {
                 if (value == null)
                     throw new ArgumentNullException(nameof(value), "Color cannot be null");
-                Modify(k => { k.FontColor = value.Key; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithFontColor(value.Key).Build());
             }
         }
 
@@ -184,7 +166,7 @@ namespace ClosedXML.Excel
             get { return Key.FontName; }
             set
             {
-                Modify(k => { k.FontName = value; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithFontName(value).Build());
             }
         }
 
@@ -193,7 +175,7 @@ namespace ClosedXML.Excel
             get { return Key.FontFamilyNumbering; }
             set
             {
-                Modify(k => { k.FontFamilyNumbering = value; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithFontFamilyNumbering(value).Build());
             }
         }
 
@@ -202,7 +184,7 @@ namespace ClosedXML.Excel
             get { return Key.FontCharSet; }
             set
             {
-                Modify(k => { k.FontCharSet = value; return k; });
+                Modify(k => new XLFontKeyBuilder(k).WithFontCharSet(value).Build());
             }
         }
 

@@ -76,8 +76,7 @@ namespace ClosedXML.Excel
             _style.Modify(styleKey =>
             {
                 var fill = styleKey.Fill;
-                styleKey.Fill = modification(fill);
-                return styleKey;
+                return new XLStyleKeyBuilder(styleKey).WithFill(modification(fill)).Build();
             });
         }
 

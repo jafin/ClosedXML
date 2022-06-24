@@ -1,16 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ClosedXML.Excel
 {
-    public class XLDictionary<T>: Dictionary<Int32, T>
+    public class XLDictionary<T>: Dictionary<int, T>
     {
         public XLDictionary()
         {
-            
         }
+        
         public XLDictionary(XLDictionary<T> other)
         {
             other.Values.ForEach(Add);

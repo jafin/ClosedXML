@@ -1,45 +1,65 @@
-﻿using System;
+﻿#nullable enable
+using System;
 
 namespace ClosedXML.Excel
 {
-    internal struct XLFontKey : IEquatable<XLFontKey>
+    internal readonly struct XLFontKey : IEquatable<XLFontKey>
     {
-        public bool Bold { get; set; }
+        public XLFontKey(bool bold, bool italic, XLFontUnderlineValues underline, bool strikethrough,
+            XLFontVerticalTextAlignmentValues verticalAlignment, bool shadow, double fontSize, XLColorKey fontColor, string fontName,
+            XLFontFamilyNumberingValues fontFamilyNumbering, XLFontCharSet fontCharSet) : this()
+        {
+            Bold = bold;
+            Italic = italic;
+            Underline = underline;
+            Strikethrough = strikethrough;
+            VerticalAlignment = verticalAlignment;
+            Shadow = shadow;
+            FontSize = fontSize;
+            FontColor = fontColor;
+            FontName = fontName;
+            FontFamilyNumbering = fontFamilyNumbering;
+            FontCharSet = fontCharSet;
+            _hashCode = CalculateHashCode();
+        }
 
-        public bool Italic { get; set; }
+        public bool Bold { get; }
 
-        public XLFontUnderlineValues Underline { get; set; }
+        public bool Italic { get; }
 
-        public bool Strikethrough { get; set; }
+        public XLFontUnderlineValues Underline { get; }
 
-        public XLFontVerticalTextAlignmentValues VerticalAlignment { get; set; }
+        public bool Strikethrough { get; }
 
-        public bool Shadow { get; set; }
+        public XLFontVerticalTextAlignmentValues VerticalAlignment { get; }
 
-        public double FontSize { get; set; }
+        public bool Shadow { get; }
 
-        public XLColorKey FontColor { get; set; }
+        public double FontSize { get; }
 
-        public string FontName { get; set; }
+        public XLColorKey FontColor { get; }
 
-        public XLFontFamilyNumberingValues FontFamilyNumbering { get; set; }
+        public string FontName { get; }
 
-        public XLFontCharSet FontCharSet { get; set; }
+        public XLFontFamilyNumberingValues FontFamilyNumbering { get; }
+
+        public XLFontCharSet FontCharSet { get; }
+        private readonly int _hashCode;
 
         public bool Equals(XLFontKey other)
         {
             return
                 Bold == other.Bold
-             && Italic == other.Italic
-             && Underline == other.Underline
-             && Strikethrough == other.Strikethrough
-             && VerticalAlignment == other.VerticalAlignment
-             && Shadow == other.Shadow
-             && FontSize == other.FontSize
-             && FontColor == other.FontColor
-             && FontFamilyNumbering == other.FontFamilyNumbering
-             && FontCharSet == other.FontCharSet
-             && string.Equals(FontName, other.FontName, StringComparison.InvariantCultureIgnoreCase);
+                && Italic == other.Italic
+                && Underline == other.Underline
+                && Strikethrough == other.Strikethrough
+                && VerticalAlignment == other.VerticalAlignment
+                && Shadow == other.Shadow
+                && FontSize == other.FontSize
+                && FontColor == other.FontColor
+                && FontFamilyNumbering == other.FontFamilyNumbering
+                && FontCharSet == other.FontCharSet
+                && string.Equals(FontName, other.FontName, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public override bool Equals(object obj)
@@ -50,6 +70,11 @@ namespace ClosedXML.Excel
         }
 
         public override int GetHashCode()
+        {
+            return _hashCode;
+        }
+
+        private int CalculateHashCode()
         {
             var hashCode = 1158783753;
             hashCode = hashCode * -1521134295 + Bold.GetHashCode();

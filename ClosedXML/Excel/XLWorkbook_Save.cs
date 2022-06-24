@@ -4514,34 +4514,34 @@ namespace ClosedXML.Excel
 
         private bool FontsAreEqual(Font f, XLFontValue xlFont)
         {
-            var nf = XLFontValue.Default.Key;
-            nf.Bold = f.Bold != null;
-            nf.Italic = f.Italic != null;
+            var xlFontKeyBuilder = new XLFontKeyBuilder(XLFontValue.Default.Key);
+            xlFontKeyBuilder.WithBold(f.Bold != null);
+            xlFontKeyBuilder.WithItalic(f.Italic != null);
 
             if (f.Underline != null)
             {
-                nf.Underline = f.Underline.Val != null
+                xlFontKeyBuilder.WithUnderline(f.Underline.Val != null
                     ? f.Underline.Val.Value.ToClosedXml()
-                    : XLFontUnderlineValues.Single;
+                    : XLFontUnderlineValues.Single);
             }
-            nf.Strikethrough = f.Strike != null;
+            xlFontKeyBuilder.WithStrikethrough(f.Strike != null);
             if (f.VerticalTextAlignment != null)
             {
-                nf.VerticalAlignment = f.VerticalTextAlignment.Val != null
+                xlFontKeyBuilder.WithVerticalAlignment(f.VerticalTextAlignment.Val != null
                     ? f.VerticalTextAlignment.Val.Value.ToClosedXml()
-                    : XLFontVerticalTextAlignmentValues.Baseline;
+                    : XLFontVerticalTextAlignmentValues.Baseline);
             }
-            nf.Shadow = f.Shadow != null;
+            xlFontKeyBuilder.WithShadow(f.Shadow != null);
             if (f.FontSize != null)
-                nf.FontSize = f.FontSize.Val;
+                xlFontKeyBuilder.WithFontSize(f.FontSize.Val);
             if (f.Color != null)
-                nf.FontColor = f.Color.ToClosedXMLColor(_colorList).Key;
+                xlFontKeyBuilder.WithFontColor(f.Color.ToClosedXMLColor(_colorList).Key);
             if (f.FontName != null)
-                nf.FontName = f.FontName.Val;
+                xlFontKeyBuilder.WithFontName(f.FontName.Val);
             if (f.FontFamilyNumbering != null)
-                nf.FontFamilyNumbering = (XLFontFamilyNumberingValues)f.FontFamilyNumbering.Val.Value;
+                xlFontKeyBuilder.WithFontFamilyNumbering((XLFontFamilyNumberingValues)f.FontFamilyNumbering.Val.Value);
 
-            return nf.Equals(xlFont.Key);
+            return xlFontKeyBuilder.Build().Equals(xlFont.Key);
         }
 
         private static Dictionary<XLNumberFormatValue, NumberFormatInfo> ResolveNumberFormats(
@@ -6003,8 +6003,6 @@ namespace ClosedXML.Excel
                 worksheetPart.Worksheet.RemoveAllChildren<ConditionalFormatting>();
                 var previousElement = cm.GetPreviousElementFor(XLWorksheetContents.ConditionalFormatting);
 
-                //List<IXLConditionalFormat> conditionalFormats = xlWorksheet.ConditionalFormats.ToList(); // Required for IndexOf method
-
                 var indexedConditionalFormats = xlWorksheet.ConditionalFormats
                     .Select((conditionFormat, idx) => new { conditionFormat, idx })
                     .ToDictionary(x=>x.conditionFormat, x=>x.idx);
@@ -6022,10 +6020,16 @@ namespace ClosedXML.Excel
                         SequenceOfReferences =
                             new ListValue<StringValue> { InnerText = cfGroup.RangeId }
                     };
-                    foreach (var cf in cfGroup.CfList)
+
+                    var cfRules = ParallelExtensions.OrderedParallel(cfGroup.CfList, cf =>
                     {
                         var priority = indexedConditionalFormats[cf] + 1;
-                        conditionalFormatting.Append(XLCFConverters.Convert(cf, priority, context));
+                        return XLCFConverters.Convert(cf, priority, context);
+                    });
+
+                    foreach (var cfRule in cfRules)
+                    {
+                        conditionalFormatting.Append(cfRule);
                     }
 
                     worksheetPart.Worksheet.InsertAfter(conditionalFormatting, previousElement);
@@ -6099,6 +6103,7 @@ namespace ClosedXML.Excel
             }
         }
 
+    
         private static void MergeCells(WorksheetPart worksheetPart, XLWorksheet xlWorksheet, XLWorksheetContentManager cm)
         {
             if ((xlWorksheet).Internals.MergedRanges.Any())

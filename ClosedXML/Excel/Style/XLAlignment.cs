@@ -37,12 +37,14 @@ namespace ClosedXML.Excel
                     WrapText = d.WrapText
                 };
             }
+
             return key;
         }
 
         #endregion Static members
 
         #region Properties
+
         private readonly XLStyle _style;
 
         private XLAlignmentValue _value;
@@ -86,12 +88,16 @@ namespace ClosedXML.Excel
             set
             {
                 Boolean updateIndent = !(
-                                               value == XLAlignmentHorizontalValues.Left
-                                            || value == XLAlignmentHorizontalValues.Right
-                                            || value == XLAlignmentHorizontalValues.Distributed
-                                        );
+                    value == XLAlignmentHorizontalValues.Left
+                    || value == XLAlignmentHorizontalValues.Right
+                    || value == XLAlignmentHorizontalValues.Distributed
+                );
 
-                Modify(k => { k.Horizontal = value; return k; });
+                Modify(k =>
+                {
+                    k.Horizontal = value;
+                    return k;
+                });
                 if (updateIndent)
                     Indent = 0;
             }
@@ -100,7 +106,14 @@ namespace ClosedXML.Excel
         public XLAlignmentVerticalValues Vertical
         {
             get { return Key.Vertical; }
-            set { Modify(k => { k.Vertical = value; return k; }); }
+            set
+            {
+                Modify(k =>
+                {
+                    k.Vertical = value;
+                    return k;
+                });
+            }
         }
 
         public Int32 Indent
@@ -114,41 +127,74 @@ namespace ClosedXML.Excel
                         Horizontal = XLAlignmentHorizontalValues.Left;
 
                     if (value > 0 && !(
-                                       Horizontal == XLAlignmentHorizontalValues.Left
-                                    || Horizontal == XLAlignmentHorizontalValues.Right
-                                    || Horizontal == XLAlignmentHorizontalValues.Distributed
-                                ))
+                            Horizontal == XLAlignmentHorizontalValues.Left
+                            || Horizontal == XLAlignmentHorizontalValues.Right
+                            || Horizontal == XLAlignmentHorizontalValues.Distributed
+                        ))
                     {
                         throw new ArgumentException(
                             "For indents, only left, right, and distributed horizontal alignments are supported.");
                     }
                 }
-                Modify(k => { k.Indent = value; return k; });
+
+                Modify(k =>
+                {
+                    k.Indent = value;
+                    return k;
+                });
             }
         }
 
         public Boolean JustifyLastLine
         {
             get { return Key.JustifyLastLine; }
-            set { Modify(k => { k.JustifyLastLine = value; return k; }); }
+            set
+            {
+                Modify(k =>
+                {
+                    k.JustifyLastLine = value;
+                    return k;
+                });
+            }
         }
 
         public XLAlignmentReadingOrderValues ReadingOrder
         {
             get { return Key.ReadingOrder; }
-            set { Modify(k => { k.ReadingOrder = value; return k; }); }
+            set
+            {
+                Modify(k =>
+                {
+                    k.ReadingOrder = value;
+                    return k;
+                });
+            }
         }
 
         public Int32 RelativeIndent
         {
             get { return Key.RelativeIndent; }
-            set { Modify(k => { k.RelativeIndent = value; return k; }); }
+            set
+            {
+                Modify(k =>
+                {
+                    k.RelativeIndent = value;
+                    return k;
+                });
+            }
         }
 
         public Boolean ShrinkToFit
         {
             get { return Key.ShrinkToFit; }
-            set { Modify(k => { k.ShrinkToFit = value; return k; }); }
+            set
+            {
+                Modify(k =>
+                {
+                    k.ShrinkToFit = value;
+                    return k;
+                });
+            }
         }
 
         public Int32 TextRotation
@@ -161,14 +207,25 @@ namespace ClosedXML.Excel
                 if (rotation != 255 && (rotation < -90 || rotation > 180))
                     throw new ArgumentException("TextRotation must be between -90 and 180 degrees, or 255.");
 
-                Modify(k => { k.TextRotation = rotation; return k; });
+                Modify(k =>
+                {
+                    k.TextRotation = rotation;
+                    return k;
+                });
             }
         }
 
         public Boolean WrapText
         {
             get { return Key.WrapText; }
-            set { Modify(k => { k.WrapText = value; return k; }); }
+            set
+            {
+                Modify(k =>
+                {
+                    k.WrapText = value;
+                    return k;
+                });
+            }
         }
 
         public Boolean TopToBottom
@@ -270,8 +327,8 @@ namespace ClosedXML.Excel
             _style.Modify(styleKey =>
             {
                 var align = styleKey.Alignment;
-                styleKey.Alignment = modification(align);
-                return styleKey;
+                return new XLStyleKey(modification(align), styleKey.Border, styleKey.Fill, styleKey.Font, styleKey.IncludeQuotePrefix,
+                    styleKey.NumberFormat, styleKey.Protection);
             });
         }
 

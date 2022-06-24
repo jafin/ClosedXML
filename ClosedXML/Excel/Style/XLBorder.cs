@@ -465,8 +465,9 @@ namespace ClosedXML.Excel
             _style.Modify(styleKey =>
             {
                 var border = styleKey.Border;
-                styleKey.Border = modification(border);
-                return styleKey;
+                return new XLStyleKey(styleKey.Alignment, modification(border), styleKey.Fill, styleKey.Font, styleKey.IncludeQuotePrefix,
+                    styleKey.NumberFormat, styleKey.Protection);
+                
             });
         }
 
