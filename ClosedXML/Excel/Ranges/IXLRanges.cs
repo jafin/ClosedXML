@@ -11,6 +11,12 @@ namespace ClosedXML.Excel
         /// <param name="range">The range to add to this group.</param>
         void Add(IXLRangeBase range);
 
+        /// <summary>
+        /// Adds the specified range to this group.
+        /// </summary>
+        /// <param name="range">The range to add to this group.</param>
+        void Add(IXLRange range);
+
         void Add(IXLCell range);
 
         /// <summary>

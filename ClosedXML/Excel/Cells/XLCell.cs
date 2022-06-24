@@ -1367,7 +1367,7 @@ namespace ClosedXML.Excel
         {
             return Worksheet.Row(_rowNumber);
         }
-
+        
         public IXLCell CopyTo(IXLCell target)
         {
             (target as XLCell).CopyFrom(this, XLCellCopyOptions.All);
@@ -2066,7 +2066,7 @@ namespace ClosedXML.Excel
             var toRange = Worksheet.Range(this, Worksheet.Cell(_rowNumber + rCnt - 1, _columnNumber + cCnt - 1));
             var formats = srcSheet.ConditionalFormats.Where(f => f.Ranges.GetIntersectedRanges(fromRange.RangeAddress).Any());
 
-            foreach (var cf in formats.ToList())
+            foreach (var cf in formats)
             {
                 var fmtRanges = cf.Ranges
                     .GetIntersectedRanges(fromRange.RangeAddress)

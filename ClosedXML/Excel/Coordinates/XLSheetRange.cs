@@ -2,7 +2,7 @@ using System;
 
 namespace ClosedXML.Excel
 {
-    internal struct XLSheetRange:IEquatable<XLSheetRange>
+    internal readonly struct XLSheetRange:IEquatable<XLSheetRange>
     {
         public XLSheetRange(XLSheetPoint firstPoint, XLSheetPoint lastPoint)
         {

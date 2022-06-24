@@ -16,9 +16,9 @@ namespace ClosedXML.Excel
             {
                 key = XLBorderValue.Default.Key;
             }
-            else if (defaultBorder is XLBorder)
+            else if (defaultBorder is XLBorder border)
             {
-                key = (defaultBorder as XLBorder).Key;
+                key = border.Key;
             }
             else
             {

@@ -11,8 +11,8 @@ namespace ClosedXML.Excel
             if (defaultNumberFormat == null)
                 return XLNumberFormatValue.Default.Key;
 
-            if (defaultNumberFormat is XLNumberFormat)
-                return (defaultNumberFormat as XLNumberFormat).Key;
+            if (defaultNumberFormat is XLNumberFormat format)
+                return format.Key;
 
             return new XLNumberFormatKey
             {

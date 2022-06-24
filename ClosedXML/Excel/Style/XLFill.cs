@@ -14,9 +14,9 @@ namespace ClosedXML.Excel
             {
                 key = XLFillValue.Default.Key;
             }
-            else if (defaultFill is XLFill)
+            else if (defaultFill is XLFill fill)
             {
-                key = (defaultFill as XLFill).Key;
+                key = fill.Key;
             }
             else
             {

@@ -75,11 +75,9 @@ namespace ClosedXML.Excel
                     item.Ranges.ForEach(r => rangesToJoin.Add(r));
                     var firstRange = item.Ranges.First();
                     var skippedRanges = new XLRanges();
-                    Func<IXLConditionalFormat, bool> IsSameFormat = f =>
-                        f != item && f.Ranges.First().Worksheet.Position == firstRange.Worksheet.Position &&
-                        XLConditionalFormat.NoRangeComparer.Equals(f, item);
-
-                    
+                    bool IsSameFormat(IXLConditionalFormat f) => f != item
+                                                                 && f.Ranges.First().Worksheet.Position == firstRange.Worksheet.Position
+                                                                 && XLConditionalFormat.NoRangeComparer.Equals(f, item);
                     var topLeftAddress = GetTopLeftFromRange(item.Ranges);
                     var baseAddress = new XLAddress(topLeftAddress.row,topLeftAddress.col, false, false);
                     var baseCell = firstRange.Worksheet.Cell(baseAddress) as XLCell;

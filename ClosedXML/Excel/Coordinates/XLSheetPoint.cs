@@ -2,7 +2,7 @@ using System;
 
 namespace ClosedXML.Excel
 {
-    internal struct XLSheetPoint:IEquatable<XLSheetPoint>
+    internal readonly struct XLSheetPoint:IEquatable<XLSheetPoint>
     {
         public XLSheetPoint(Int32  row, Int32 column)
         {
