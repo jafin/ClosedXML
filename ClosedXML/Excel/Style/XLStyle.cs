@@ -186,9 +186,7 @@ namespace ClosedXML.Excel
 
         public bool Equals(IXLStyle other)
         {
-            var otherS = other as XLStyle;
-
-            if (otherS == null)
+            if (!(other is XLStyle otherS))
                 return false;
 
             return Key == otherS.Key &&
@@ -200,13 +198,15 @@ namespace ClosedXML.Excel
             return Equals(obj as XLStyle);
         }
 
+
         public override int GetHashCode()
         {
-            var hashCode = 416600561;
-            hashCode = hashCode * -1521134295 + Key.GetHashCode();
-            return hashCode;
+            unchecked
+            {
+                var hashCode = 17;
+                return hashCode * 23 + Key.GetHashCode();
+            }
         }
-
         #endregion Overridden
     }
 }

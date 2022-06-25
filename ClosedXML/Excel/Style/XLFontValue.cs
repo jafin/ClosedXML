@@ -58,7 +58,10 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            return -280332839 + EqualityComparer<XLFontKey>.Default.GetHashCode(Key);
+            unchecked
+            {
+                return -280332839 + EqualityComparer<XLFontKey>.Default.GetHashCode(Key);
+            }            
         }
     }
 }

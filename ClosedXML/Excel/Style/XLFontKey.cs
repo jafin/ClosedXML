@@ -76,19 +76,22 @@ namespace ClosedXML.Excel
 
         private int CalculateHashCode()
         {
-            var hashCode = 1158783753;
-            hashCode = hashCode * -1521134295 + Bold.GetHashCode();
-            hashCode = hashCode * -1521134295 + Italic.GetHashCode();
-            hashCode = hashCode * -1521134295 + (int)Underline;
-            hashCode = hashCode * -1521134295 + Strikethrough.GetHashCode();
-            hashCode = hashCode * -1521134295 + (int)VerticalAlignment;
-            hashCode = hashCode * -1521134295 + Shadow.GetHashCode();
-            hashCode = hashCode * -1521134295 + FontSize.GetHashCode();
-            hashCode = hashCode * -1521134295 + FontColor.GetHashCode();
-            hashCode = hashCode * -1521134295 + StringComparer.InvariantCultureIgnoreCase.GetHashCode(FontName);
-            hashCode = hashCode * -1521134295 + (int)FontFamilyNumbering;
-            hashCode = hashCode * -1521134295 + (int)FontCharSet;
-            return hashCode;
+            unchecked
+            {
+                var hashCode = 1158783753;
+                hashCode = hashCode * -1521134295 + Bold.GetHashCode();
+                hashCode = hashCode * -1521134295 + Italic.GetHashCode();
+                hashCode = hashCode * -1521134295 + (int)Underline;
+                hashCode = hashCode * -1521134295 + Strikethrough.GetHashCode();
+                hashCode = hashCode * -1521134295 + (int)VerticalAlignment;
+                hashCode = hashCode * -1521134295 + Shadow.GetHashCode();
+                hashCode = hashCode * -1521134295 + FontSize.GetHashCode();
+                hashCode = hashCode * -1521134295 + FontColor.GetHashCode();
+                hashCode = hashCode * -1521134295 + StringComparer.InvariantCultureIgnoreCase.GetHashCode(FontName);
+                hashCode = hashCode * -1521134295 + (int)FontFamilyNumbering;
+                hashCode = hashCode * -1521134295 + (int)FontCharSet;
+                return hashCode;
+            }
         }
 
         public override string ToString()
