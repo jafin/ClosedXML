@@ -4,7 +4,7 @@ using ClosedXML.Excel;
 
 namespace ClosedXML.Examples
 {
-    public class LoadFiles
+    public static class LoadFiles
     {
         public static void LoadAllFiles()
         {

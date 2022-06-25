@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ClosedXML.Examples
 {
-    public class Program
+    public static class Program
     {
         public static string BaseCreatedDirectory
         {

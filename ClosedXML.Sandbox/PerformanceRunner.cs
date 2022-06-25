@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ClosedXML.Sandbox
 {
-    internal class PerformanceRunner
+    internal static class PerformanceRunner
     {
         public static void TimeAction(Action action)
         {

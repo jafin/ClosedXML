@@ -9,7 +9,7 @@ using System.IO;
 
 namespace ClosedXML.Examples
 {
-    public class CreateFiles
+    public static class CreateFiles
     {
         public static void CreateAllFiles()
         {
