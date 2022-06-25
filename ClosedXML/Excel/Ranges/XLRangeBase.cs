@@ -1581,7 +1581,7 @@ namespace ClosedXML.Excel
                     break;
 
                 default:
-                    cellsQuery = new XLCell[] { };
+                    cellsQuery = Array.Empty<XLCell>();
                     break;
             }
 

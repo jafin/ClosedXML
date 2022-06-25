@@ -13,7 +13,7 @@ namespace ClosedXML.Excel.InsertData
 
         public UntypedObjectReader(IEnumerable data)
         {
-            _data = (data ?? new object[0]).Cast<object>();
+            _data = (data ?? Array.Empty<object>()).Cast<object>();
             _readers = CreateReaders().ToList();
 
             IEnumerable<IInsertDataReader> CreateReaders()
