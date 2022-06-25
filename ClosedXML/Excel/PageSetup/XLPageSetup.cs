@@ -78,8 +78,8 @@ namespace ClosedXML.Excel
         }
         public void SetRowsToRepeatAtTop(Int32 firstRowToRepeatAtTop, Int32 lastRowToRepeatAtTop)
         {
-            if (firstRowToRepeatAtTop <= 0) throw new ArgumentOutOfRangeException("The first row has to be greater than zero.");
-            if (firstRowToRepeatAtTop > lastRowToRepeatAtTop) throw new ArgumentOutOfRangeException("The first row has to be less than the second row.");
+            if (firstRowToRepeatAtTop <= 0) throw new ArgumentOutOfRangeException(nameof(firstRowToRepeatAtTop),"The first row has to be greater than zero.");
+            if (firstRowToRepeatAtTop > lastRowToRepeatAtTop) throw new ArgumentOutOfRangeException(nameof(firstRowToRepeatAtTop),"The first row has to be less than the second row.");
 
             FirstRowToRepeatAtTop = firstRowToRepeatAtTop;
             LastRowToRepeatAtTop = lastRowToRepeatAtTop;
@@ -100,8 +100,8 @@ namespace ClosedXML.Excel
         }
         public void SetColumnsToRepeatAtLeft(Int32 firstColumnToRepeatAtLeft, Int32 lastColumnToRepeatAtLeft)
         {
-            if (firstColumnToRepeatAtLeft <= 0) throw new ArgumentOutOfRangeException("The first column has to be greater than zero.");
-            if (firstColumnToRepeatAtLeft > lastColumnToRepeatAtLeft) throw new ArgumentOutOfRangeException("The first column has to be less than the second column.");
+            if (firstColumnToRepeatAtLeft <= 0) throw new ArgumentOutOfRangeException(nameof(firstColumnToRepeatAtLeft),"The first column has to be greater than zero.");
+            if (firstColumnToRepeatAtLeft > lastColumnToRepeatAtLeft) throw new ArgumentOutOfRangeException(nameof(firstColumnToRepeatAtLeft),"The first column has to be less than the second column.");
 
             FirstColumnToRepeatAtLeft = firstColumnToRepeatAtLeft;
             LastColumnToRepeatAtLeft = lastColumnToRepeatAtLeft;

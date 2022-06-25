@@ -100,7 +100,7 @@ namespace ClosedXML.Excel.CalcEngine.Functions
 
         public static string ToRoman(int number)
         {
-            if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value betwheen 1 and 3999");
+            if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException(nameof(number),"insert value between 1 and 3999");
             if (number < 1) return string.Empty;
             if (number >= 1000) return "M" + ToRoman(number - 1000);
             if (number >= 900) return "CM" + ToRoman(number - 900); 
@@ -115,7 +115,7 @@ namespace ClosedXML.Excel.CalcEngine.Functions
             if (number >= 5) return "V" + ToRoman(number - 5);
             if (number >= 4) return "IV" + ToRoman(number - 4);
             if (number >= 1) return "I" + ToRoman(number - 1);
-            throw new ArgumentOutOfRangeException("something bad happened");
+            throw new ArgumentOutOfRangeException(nameof(number),"something bad happened");
         }
 
         public static int RomanToArabic(string text)
@@ -149,17 +149,17 @@ namespace ClosedXML.Excel.CalcEngine.Functions
             if (text.StartsWith("I", StringComparison.InvariantCultureIgnoreCase))
                 return 1 + RomanToArabic(text.Substring(1));
             
-            throw new ArgumentOutOfRangeException("text is not a valid roman number");
+            throw new ArgumentOutOfRangeException(nameof(text),"text is not a valid roman number");
         }
 
         public static string ChangeBase(long number, int radix)
         {
             if (number < 0)
-                throw new ArgumentOutOfRangeException("number must be greater or equal to 0");
+                throw new ArgumentOutOfRangeException(nameof(number),"number must be greater or equal to 0");
             if (radix < 2)
-                throw new ArgumentOutOfRangeException("radix must be greater or equal to 2");
+                throw new ArgumentOutOfRangeException(nameof(radix), "radix must be greater or equal to 2");
             if (radix > 36)
-                throw new ArgumentOutOfRangeException("radix must be smaller than or equal to 36");
+                throw new ArgumentOutOfRangeException(nameof(radix), "radix must be smaller than or equal to 36");
 
             StringBuilder sb = new StringBuilder();
             long remaining = number;

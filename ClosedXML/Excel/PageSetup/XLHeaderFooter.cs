@@ -45,7 +45,7 @@ namespace ClosedXML.Excel
             retVal += centerText.Length > 0 ? "&C" + centerText : String.Empty;
             retVal += rightText.Length > 0 ? "&R" + rightText : String.Empty;
             if (retVal.Length > 255)
-                throw new ArgumentOutOfRangeException("Headers and Footers cannot be longer than 255 characters (including style markups)");
+                throw new ArgumentOutOfRangeException(nameof(occurrence),"Headers and Footers cannot be longer than 255 characters (including style markups)");
             return retVal;
         }
 

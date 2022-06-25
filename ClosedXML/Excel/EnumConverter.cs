@@ -735,7 +735,7 @@ namespace ClosedXML.Excel
                 case XLIconSetStyle.FiveQuarters: return IconSetValues.FiveQuarters;
 
                 default:
-                    throw new ArgumentOutOfRangeException("Not implemented value!");
+                    throw new ArgumentOutOfRangeException(nameof(value),"Not implemented value!");
             }
         }
 
@@ -778,7 +778,7 @@ namespace ClosedXML.Excel
                     return Xdr.EditAsValues.TwoCell;
 
                 default:
-                    throw new ArgumentOutOfRangeException("Not implemented value!");
+                    throw new ArgumentOutOfRangeException(nameof(value),"Not implemented value!");
             }
         }
 
