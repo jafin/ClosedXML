@@ -361,7 +361,7 @@ namespace ClosedXML.Excel
 
         public int GetHashCode(IXLAddress obj)
         {
-            return ((XLAddress)obj).GetHashCode();
+            return HashCode.Combine((XLAddress)obj);
         }
 
         #endregion IEquatable<XLCellAddress> Members

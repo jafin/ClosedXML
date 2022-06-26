@@ -25,14 +25,13 @@ namespace ClosedXML.Excel.CalcEngine
 
         public int GetHashCode(IXLAddress obj)
         {
-            return new
-            {
-                WorksheetName = obj.Worksheet.Name.ToUpperInvariant(),
-                obj.ColumnNumber,
-                obj.RowNumber,
-                FixedColumn = (_ignoreFixed ? false : obj.FixedColumn),
-                FixedRow = (_ignoreFixed ? false : obj.FixedRow)
-            }.GetHashCode();
+            var hashCode = new HashCode();
+            hashCode.Add(obj.Worksheet.Name, StringComparer.InvariantCultureIgnoreCase);
+            hashCode.Add(obj.ColumnNumber);
+            hashCode.Add(obj.RowNumber);
+            hashCode.Add(!_ignoreFixed && obj.FixedColumn);
+            hashCode.Add(!_ignoreFixed && obj.FixedRow);
+            return hashCode.ToHashCode();
         }
     }
 }

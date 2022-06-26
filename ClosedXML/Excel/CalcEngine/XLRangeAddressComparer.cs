@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ClosedXML.Excel.CalcEngine
 {
@@ -21,11 +22,7 @@ namespace ClosedXML.Excel.CalcEngine
 
         public int GetHashCode(IXLRangeAddress obj)
         {
-            return new
-            {
-                FirstHash = _addressComparer.GetHashCode(obj.FirstAddress),
-                LastHash = _addressComparer.GetHashCode(obj.LastAddress),
-            }.GetHashCode();
+            return HashCode.Combine(_addressComparer.GetHashCode(obj.FirstAddress), _addressComparer.GetHashCode(obj.LastAddress));
         }
     }
 }

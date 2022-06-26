@@ -65,28 +65,26 @@ namespace ClosedXML.Excel
                     xValues = xValues
                     .Union(xx.Values.Values.Where(v => v.IsFormula).Select(f => ((XLCell)obj.Ranges.First().FirstCell()).GetFormulaR1C1(f.Value)));
 
-                unchecked
-                {
-                    var hashCode = xStyle.GetHashCode();
-                    hashCode = (hashCode * 397) ^ xx.StyleValue.GetHashCode();
-                    hashCode = (hashCode * 397) ^ xx.CopyDefaultModify.GetHashCode();
-                    hashCode = (hashCode * 397) ^ xValues.GetHashCode();
-                    hashCode = (hashCode * 397) ^ (xx.Colors != null ? xx.Colors.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (xx.ContentTypes != null ? xx.ContentTypes.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (xx.IconSetOperators != null ? xx.IconSetOperators.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (_compareRange && xx.Ranges != null ? xx.Ranges.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (int)xx.ConditionalFormatType;
-                    hashCode = (hashCode * 397) ^ (int)xx.TimePeriod;
-                    hashCode = (hashCode * 397) ^ (int)xx.IconSetStyle;
-                    hashCode = (hashCode * 397) ^ (int)xx.Operator;
-                    hashCode = (hashCode * 397) ^ xx.Bottom.GetHashCode();
-                    hashCode = (hashCode * 397) ^ xx.Percent.GetHashCode();
-                    hashCode = (hashCode * 397) ^ xx.ReverseIconOrder.GetHashCode();
-                    hashCode = (hashCode * 397) ^ xx.ShowIconOnly.GetHashCode();
-                    hashCode = (hashCode * 397) ^ xx.ShowBarOnly.GetHashCode();
-                    hashCode = (hashCode * 397) ^ xx.StopIfTrue.GetHashCode();
-                    return hashCode;
-                }
+                var hashCode = new HashCode();
+                hashCode.Add(xStyle);
+                hashCode.Add(xx.StyleValue);
+                hashCode.Add(xx.CopyDefaultModify);
+                hashCode.Add(xValues);
+                hashCode.Add(xx.Colors != null ? xx.Colors.GetHashCode() : 0);
+                hashCode.Add(xx.ContentTypes != null ? xx.ContentTypes.GetHashCode() : 0);
+                hashCode.Add(xx.IconSetOperators != null ? xx.IconSetOperators.GetHashCode() : 0);
+                hashCode.Add(_compareRange && xx.Ranges != null ? xx.Ranges.GetHashCode() : 0);
+                hashCode.Add(xx.ConditionalFormatType);
+                hashCode.Add(xx.TimePeriod);
+                hashCode.Add(xx.IconSetStyle);
+                hashCode.Add(xx.Operator);
+                hashCode.Add(xx.Bottom);
+                hashCode.Add(xx.Percent);
+                hashCode.Add(xx.ReverseIconOrder);
+                hashCode.Add(xx.StopIfTrue);
+                hashCode.Add(xx.ShowIconOnly);
+                hashCode.Add(xx.ShowBarOnly);
+                return hashCode.ToHashCode();
             }
         }
 
