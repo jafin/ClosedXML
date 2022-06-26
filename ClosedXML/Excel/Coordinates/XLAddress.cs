@@ -356,12 +356,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            var hashCode = 2122234362;
-            hashCode = hashCode * -1521134295 + _fixedRow.GetHashCode();
-            hashCode = hashCode * -1521134295 + _fixedColumn.GetHashCode();
-            hashCode = hashCode * -1521134295 + _rowNumber.GetHashCode();
-            hashCode = hashCode * -1521134295 + _columnNumber.GetHashCode();
-            return hashCode;
+            return HashCode.Combine(_fixedRow, _fixedColumn, _rowNumber, _columnNumber);
         }
 
         public int GetHashCode(IXLAddress obj)

@@ -1,4 +1,5 @@
-﻿using ClosedXML.Excel.Caching;
+﻿using System;
+using ClosedXML.Excel.Caching;
 using System.Collections.Generic;
 
 namespace ClosedXML.Excel
@@ -58,10 +59,11 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return -280332839 + EqualityComparer<XLFontKey>.Default.GetHashCode(Key);
-            }            
+            return HashCode.Combine(Key);
+            // unchecked
+            // {
+            //     return -280332839 + EqualityComparer<XLFontKey>.Default.GetHashCode(Key);
+            // }            
         }
     }
 }

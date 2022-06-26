@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -79,10 +80,10 @@ namespace ClosedXML.Excel
 
         public static IEnumerable<XLTableTheme> GetAllThemes()
         {
-            return (allThemes ?? (allThemes = typeof(XLTableTheme).GetFields(BindingFlags.Static | BindingFlags.Public)
+            return allThemes ??= typeof(XLTableTheme).GetFields(BindingFlags.Static | BindingFlags.Public)
                 .Where(fi => fi.FieldType.Equals(typeof(XLTableTheme)))
                 .Select(fi => (XLTableTheme)fi.GetValue(null))
-                .ToArray()));
+                .ToArray();
         }
 
         public static XLTableTheme FromName(string name)
@@ -94,12 +95,7 @@ namespace ClosedXML.Excel
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-            XLTableTheme theme = obj as XLTableTheme;
-            if (theme == null)
+            if (!(obj is XLTableTheme theme))
             {
                 return false;
             }
@@ -108,7 +104,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            return this.Name.GetHashCode();
+            return HashCode.Combine(Name);
         }
 
         public override string ToString()

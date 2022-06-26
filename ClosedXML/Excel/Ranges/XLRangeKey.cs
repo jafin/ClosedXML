@@ -39,10 +39,7 @@ namespace ClosedXML.Excel
         /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return ((int)RangeType * 397) ^ RangeAddress.GetHashCode();
-            }
+            return HashCode.Combine(RangeType, RangeAddress);
         }
 
         public static bool operator ==(XLRangeKey left, XLRangeKey right)

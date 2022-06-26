@@ -1,4 +1,5 @@
-﻿using ClosedXML.Excel.Caching;
+﻿using System;
+using ClosedXML.Excel.Caching;
 
 namespace ClosedXML.Excel
 {
@@ -62,7 +63,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            return 990326508 + Key.GetHashCode();
+            return HashCode.Combine(Key);
         }
     }
 }

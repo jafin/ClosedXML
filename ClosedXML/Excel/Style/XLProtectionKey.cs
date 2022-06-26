@@ -10,10 +10,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            var hashCode = -1357408252;
-            hashCode = hashCode * -1521134295 + Locked.GetHashCode();
-            hashCode = hashCode * -1521134295 + Hidden.GetHashCode();
-            return hashCode;
+            return HashCode.Combine(Locked, Hidden);
         }
 
         public bool Equals(XLProtectionKey other)

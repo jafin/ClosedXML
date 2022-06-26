@@ -143,17 +143,19 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            return Text.GetHashCode()
-                ^ Bold.GetHashCode()
-                ^ Italic.GetHashCode()
-                ^ (Int32)Underline
-                ^ Strikethrough.GetHashCode()
-                ^ (Int32)VerticalAlignment
-                ^ Shadow.GetHashCode()
-                ^ FontSize.GetHashCode()
-                ^ FontColor.GetHashCode()
-                ^ FontName.GetHashCode()
-                ^ (Int32)FontFamilyNumbering;
+            var hash = new HashCode();
+            hash.Add(Text);
+            hash.Add(Bold);
+            hash.Add(Italic);
+            hash.Add(Underline);
+            hash.Add(Strikethrough);
+            hash.Add(VerticalAlignment);
+            hash.Add(Shadow);
+            hash.Add(FontSize);
+            hash.Add(FontColor);
+            hash.Add(FontName);
+            hash.Add(FontFamilyNumbering);
+            return hash.ToHashCode();
         }
     }
 }

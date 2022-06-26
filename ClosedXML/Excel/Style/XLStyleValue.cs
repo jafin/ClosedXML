@@ -60,10 +60,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            if (_hashCode.HasValue)
-                return _hashCode.Value;
-
-            _hashCode = -280332839 + Key.GetHashCode();
+            _hashCode =  HashCode.Combine(Key);
             return _hashCode.Value;
         }
 

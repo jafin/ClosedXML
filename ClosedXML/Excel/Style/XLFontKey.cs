@@ -76,22 +76,19 @@ namespace ClosedXML.Excel
 
         private int CalculateHashCode()
         {
-            unchecked
-            {
-                var hashCode = 1158783753;
-                hashCode = hashCode * -1521134295 + Bold.GetHashCode();
-                hashCode = hashCode * -1521134295 + Italic.GetHashCode();
-                hashCode = hashCode * -1521134295 + (int)Underline;
-                hashCode = hashCode * -1521134295 + Strikethrough.GetHashCode();
-                hashCode = hashCode * -1521134295 + (int)VerticalAlignment;
-                hashCode = hashCode * -1521134295 + Shadow.GetHashCode();
-                hashCode = hashCode * -1521134295 + FontSize.GetHashCode();
-                hashCode = hashCode * -1521134295 + FontColor.GetHashCode();
-                hashCode = hashCode * -1521134295 + StringComparer.InvariantCultureIgnoreCase.GetHashCode(FontName);
-                hashCode = hashCode * -1521134295 + (int)FontFamilyNumbering;
-                hashCode = hashCode * -1521134295 + (int)FontCharSet;
-                return hashCode;
-            }
+            var hashCode = new HashCode();
+            hashCode.Add(Bold);
+            hashCode.Add(Italic);
+            hashCode.Add(Underline);
+            hashCode.Add(Strikethrough);
+            hashCode.Add(VerticalAlignment);
+            hashCode.Add(Shadow);
+            hashCode.Add(FontSize);
+            hashCode.Add(FontColor);
+            hashCode.Add(FontName, StringComparer.InvariantCultureIgnoreCase);
+            hashCode.Add(FontFamilyNumbering);
+            hashCode.Add(FontCharSet);
+            return hashCode.ToHashCode();
         }
 
         public override string ToString()

@@ -12,18 +12,15 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            var hashCode = 2043579837;
+            var hashCode = new HashCode();
+            if (HasNoFill()) return hashCode.ToHashCode();
 
-            if (HasNoFill()) return hashCode;
+            hashCode.Add(PatternType);
+            hashCode.Add(BackgroundColor);
 
-            hashCode = hashCode * -1521134295 + (int)PatternType;
-            hashCode = hashCode * -1521134295 + BackgroundColor.GetHashCode();
-
-            if (HasNoForeground()) return hashCode;
-                
-            hashCode = hashCode * -1521134295 + PatternColor.GetHashCode();
-            
-            return hashCode;
+            if (HasNoForeground()) return hashCode.ToHashCode();
+            hashCode.Add(PatternColor);
+            return hashCode.ToHashCode();
         }
 
         public bool Equals(XLFillKey other)

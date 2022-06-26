@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace ClosedXML.Excel
 {
@@ -363,11 +364,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            var hashCode = -778064135;
-            hashCode = hashCode * -1521134295 + FirstAddress.GetHashCode();
-            hashCode = hashCode * -1521134295 + LastAddress.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<XLWorksheet>.Default.GetHashCode(Worksheet);
-            return hashCode;
+            return HashCode.Combine(FirstAddress, LastAddress) * -1521134295 + EqualityComparer<XLWorksheet>.Default.GetHashCode(Worksheet);
         }
 
         public bool Equals(XLRangeAddress other)

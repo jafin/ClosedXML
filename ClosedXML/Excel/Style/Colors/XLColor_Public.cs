@@ -118,10 +118,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            var hashCode = 229333804;
-            hashCode = hashCode * -1521134295 + HasValue.GetHashCode();
-            hashCode = hashCode * -1521134295 + Key.GetHashCode();
-            return hashCode;
+            return HashCode.Combine(HasValue, Key);
         }
 
         public override string ToString()

@@ -131,17 +131,7 @@ namespace ClosedXML.Excel
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = FirstMarkerColor.GetHashCode();
-                hashCode = (hashCode * 397) ^ HighMarkerColor.GetHashCode();
-                hashCode = (hashCode * 397) ^ LastMarkerColor.GetHashCode();
-                hashCode = (hashCode * 397) ^ LowMarkerColor.GetHashCode();
-                hashCode = (hashCode * 397) ^ MarkersColor.GetHashCode();
-                hashCode = (hashCode * 397) ^ NegativeColor.GetHashCode();
-                hashCode = (hashCode * 397) ^ SeriesColor.GetHashCode();
-                return hashCode;
-            }
+           return HashCode.Combine(FirstMarkerColor, HighMarkerColor, LastMarkerColor, LowMarkerColor, MarkersColor, NegativeColor, SeriesColor);
         }
 
         #endregion IEquatable implementation

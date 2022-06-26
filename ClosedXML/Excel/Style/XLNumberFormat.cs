@@ -141,11 +141,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = 416600561;
-                return hashCode * -1521134295 + Key.GetHashCode();
-            }
+            return HashCode.Combine(Key);
         }
 
         #endregion Overridden

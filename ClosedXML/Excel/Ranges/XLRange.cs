@@ -894,8 +894,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            return RangeAddress.GetHashCode()
-                   ^ Worksheet.GetHashCode();
+            return HashCode.Combine(RangeAddress, Worksheet);
         }
 
         public new IXLRange Clear(XLClearOptions clearOptions = XLClearOptions.All)

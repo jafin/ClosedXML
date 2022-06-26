@@ -10,13 +10,14 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = -759193072;
-                hashCode = hashCode * -1521134295 + NumberFormatId;
-                hashCode = hashCode * -1521134295 + (Format == null ? 0 : Format.GetHashCode());
-                return hashCode;
-            }
+            return HashCode.Combine(NumberFormatId, Format);
+            // unchecked
+            // {
+            //     var hashCode = -759193072;
+            //     hashCode = hashCode * -1521134295 + NumberFormatId;
+            //     hashCode = hashCode * -1521134295 + (Format == null ? 0 : Format.GetHashCode());
+            //     return hashCode;
+            // }
         }
 
         public bool Equals(XLNumberFormatKey other)

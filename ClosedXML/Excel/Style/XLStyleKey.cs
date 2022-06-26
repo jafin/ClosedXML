@@ -41,18 +41,7 @@ namespace ClosedXML.Excel
 
         private int CalculateHashCode()
         {
-            unchecked
-            {
-                var hashCode = -476701294;
-                hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
-                hashCode = hashCode * -1521134295 + Border.GetHashCode();
-                hashCode = hashCode * -1521134295 + Fill.GetHashCode();
-                hashCode = hashCode * -1521134295 + Font.GetHashCode();
-                hashCode = hashCode * -1521134295 + IncludeQuotePrefix.GetHashCode();
-                hashCode = hashCode * -1521134295 + NumberFormat.GetHashCode();
-                hashCode = hashCode * -1521134295 + Protection.GetHashCode();
-                return hashCode;
-            }
+            return HashCode.Combine(Alignment, Border, Fill, Font, IncludeQuotePrefix, NumberFormat, Protection);
         }
 
         public bool Equals(XLStyleKey other)

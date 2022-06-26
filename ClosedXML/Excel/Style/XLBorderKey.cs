@@ -30,27 +30,26 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            var hashCode = -198124310;
-            hashCode = hashCode * -1521134295 + (int)LeftBorder;
-            hashCode = hashCode * -1521134295 + (int)RightBorder;
-            hashCode = hashCode * -1521134295 + (int)TopBorder;
-            hashCode = hashCode * -1521134295 + (int)BottomBorder;
-            hashCode = hashCode * -1521134295 + (int)DiagonalBorder;
-            hashCode = hashCode * -1521134295 + DiagonalUp.GetHashCode();
-            hashCode = hashCode * -1521134295 + DiagonalDown.GetHashCode();
+            var hashCode = new HashCode();
+            hashCode.Add(LeftBorder);
+            hashCode.Add(RightBorder);
+            hashCode.Add(TopBorder);
+            hashCode.Add(BottomBorder);
+            hashCode.Add(DiagonalBorder);
+            hashCode.Add(DiagonalUp);
+            hashCode.Add(DiagonalDown);
 
             if (LeftBorder != XLBorderStyleValues.None)
-                hashCode = hashCode * -1521134295 + LeftBorderColor.GetHashCode();
+                hashCode.Add(LeftBorderColor);
             if (RightBorder != XLBorderStyleValues.None)
-                hashCode = hashCode * -1521134295 + RightBorderColor.GetHashCode();
+                hashCode.Add(RightBorderColor);
             if (TopBorder != XLBorderStyleValues.None)
-                hashCode = hashCode * -1521134295 + TopBorderColor.GetHashCode();
+                hashCode.Add(TopBorderColor);
             if (BottomBorder != XLBorderStyleValues.None)
-                hashCode = hashCode * -1521134295 + BottomBorderColor.GetHashCode();
+                hashCode.Add(BottomBorderColor);
             if (DiagonalBorder != XLBorderStyleValues.None)
-                hashCode = hashCode * -1521134295 + DiagonalBorderColor.GetHashCode();
-
-            return hashCode;
+                hashCode.Add(DiagonalBorderColor);
+            return hashCode.ToHashCode();
         }
 
         public bool Equals(XLBorderKey other)

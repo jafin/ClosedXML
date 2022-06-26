@@ -94,8 +94,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            return NumberFormatId
-                   ^ Format.GetHashCode();
+            return HashCode.Combine(NumberFormatId, Format);
         }
 
         #endregion

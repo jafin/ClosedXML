@@ -1,4 +1,5 @@
-﻿using ClosedXML.Excel.Caching;
+﻿using System;
+using ClosedXML.Excel.Caching;
 
 namespace ClosedXML.Excel
 {
@@ -32,14 +33,13 @@ namespace ClosedXML.Excel
 
         public override bool Equals(object obj)
         {
-            var cached = obj as XLProtectionValue;
-            return cached != null &&
+            return obj is XLProtectionValue cached &&
                    Key.Equals(cached.Key);
         }
 
         public override int GetHashCode()
         {
-            return 909014992 + Key.GetHashCode();
+            return HashCode.Combine(Key);
         }
     }
 }

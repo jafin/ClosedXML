@@ -20,7 +20,7 @@ namespace ClosedXML.Excel
 
         public override int GetHashCode()
         {
-            return FirstPoint.GetHashCode() ^ LastPoint.GetHashCode();
+            return HashCode.Combine(FirstPoint, LastPoint);
         }
     }
 }

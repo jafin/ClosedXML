@@ -198,14 +198,9 @@ namespace ClosedXML.Excel
             return Equals(obj as XLStyle);
         }
 
-
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = 17;
-                return hashCode * 23 + Key.GetHashCode();
-            }
+            return HashCode.Combine(Key);
         }
         #endregion Overridden
     }
