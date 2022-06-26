@@ -427,5 +427,8 @@ namespace ClosedXML.Excel
         IXLColumn WorksheetColumn();
 
         IXLRow WorksheetRow();
+
+        string GetFormulaR1C1(string value);
+        string GetFormulaA1(string value);
     }
 }

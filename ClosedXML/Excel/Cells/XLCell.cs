@@ -2151,17 +2151,17 @@ namespace ClosedXML.Excel
                 Style.NumberFormat.NumberFormatId = 46;
         }
 
-        internal string GetFormulaR1C1(string value)
+        public string GetFormulaR1C1(string value)
         {
             return GetFormula(value, FormulaConversionType.A1ToR1C1, 0, 0);
         }
 
-        internal string GetFormulaA1(string value)
+        public string GetFormulaA1(string value)
         {
             return GetFormula(value, FormulaConversionType.R1C1ToA1, 0, 0);
         }
 
-        private string GetFormula(string strValue, FormulaConversionType conversionType, int rowsToShift,
+        internal string GetFormula(string strValue, FormulaConversionType conversionType, int rowsToShift,
                                   int columnsToShift)
         {
             if (string.IsNullOrWhiteSpace(strValue))
@@ -2783,7 +2783,7 @@ namespace ClosedXML.Excel
 
         #region Nested type: FormulaConversionType
 
-        private enum FormulaConversionType
+        internal enum FormulaConversionType
         {
             A1ToR1C1,
             R1C1ToA1
