@@ -10,9 +10,9 @@ namespace ClosedXML.Excel
     internal class XLDateTimeGroupFilteredColumn : IXLDateTimeGroupFilteredColumn
     {
         private readonly XLAutoFilter _autoFilter;
-        private readonly Int32 _column;
+        private readonly short _column;
 
-        public XLDateTimeGroupFilteredColumn(XLAutoFilter autoFilter, Int32 column)
+        public XLDateTimeGroupFilteredColumn(XLAutoFilter autoFilter, short column)
         {
             _autoFilter = autoFilter;
             _column = column;

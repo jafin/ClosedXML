@@ -759,7 +759,7 @@ namespace ClosedXML.Excel
 
                                         if (df.BaseField?.Value != null)
                                         {
-                                            var col = pt.SourceRange.Column(df.BaseField.Value + 1);
+                                            var col = pt.SourceRange.Column((short)(df.BaseField.Value + 1));
 
                                             var items = col.CellsUsed()
                                                         .Select(c => c.Value)
@@ -1190,7 +1190,7 @@ namespace ClosedXML.Excel
         private static XLMarker LoadMarker(IXLWorksheet ws, Xdr.MarkerType marker)
         {
             var row = Math.Min(XLHelper.MaxRowNumber, Math.Max(1, Convert.ToInt32(marker.RowId.InnerText) + 1));
-            var column = Math.Min(XLHelper.MaxColumnNumber, Math.Max(1, Convert.ToInt32(marker.ColumnId.InnerText) + 1));
+            var column = (short)(Math.Min(XLHelper.MaxColumnNumber, Math.Max(1, Convert.ToInt32(marker.ColumnId.InnerText) + 1)));
             return new XLMarker(
                 ws.Cell(row, column),
                 new Point(
@@ -1666,7 +1666,7 @@ namespace ClosedXML.Excel
             XLAddress cellAddress;
             if (cell.CellReference == null)
             {
-                cellAddress = new XLAddress(ws, rowIndex, ++lastColumnNumber, false, false);
+                cellAddress = new XLAddress(ws, rowIndex, (short)(++lastColumnNumber), false, false);
             }
             else
             {
@@ -2233,7 +2233,7 @@ namespace ClosedXML.Excel
         {
             foreach (var filterColumn in af.Elements<FilterColumn>())
             {
-                Int32 column = (int)filterColumn.ColumnId.Value + 1;
+                short column = (short)(filterColumn.ColumnId.Value + 1);
                 if (filterColumn.CustomFilters != null)
                 {
                     var filterList = new List<XLFilter>();
@@ -2329,7 +2329,7 @@ namespace ClosedXML.Excel
 
                     var filterList = new List<XLFilter>();
 
-                    autoFilter.Filters.Add((int)filterColumn.ColumnId.Value + 1, filterList);
+                    autoFilter.Filters.Add((short)(filterColumn.ColumnId.Value + 1), filterList);
 
                     Boolean isText = false;
                     foreach (var filter in filterColumn.Filters.OfType<Filter>())
@@ -2480,7 +2480,7 @@ namespace ClosedXML.Excel
                 var condition = sort.Elements<SortCondition>().FirstOrDefault();
                 if (condition != null)
                 {
-                    Int32 column = ws.Range(condition.Reference.Value).FirstCell().Address.ColumnNumber - autoFilter.Range.FirstCell().Address.ColumnNumber + 1;
+                    short column = (short)(ws.Range(condition.Reference.Value).FirstCell().Address.ColumnNumber - autoFilter.Range.FirstCell().Address.ColumnNumber + 1);
                     autoFilter.SortColumn = column;
                     autoFilter.Sorted = true;
                     autoFilter.SortOrder = condition.Descending != null && condition.Descending.Value ? XLSortOrder.Descending : XLSortOrder.Ascending;

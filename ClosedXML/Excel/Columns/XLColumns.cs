@@ -77,8 +77,8 @@ namespace ClosedXML.Excel
 
                 foreach (KeyValuePair<IXLWorksheet, List<int>> kp in toDelete)
                 {
-                    foreach (int c in kp.Value.OrderByDescending(c => c))
-                        kp.Key.Column(c).Delete();
+                    foreach (var c in kp.Value.OrderByDescending(c => c))
+                        kp.Key.Column((short)c).Delete();
                 }
             }
         }

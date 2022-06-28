@@ -530,29 +530,29 @@ namespace ClosedXML.Excel
         private class RestoreOutsideBorder : IDisposable
         {
             private readonly IXLRange _range;
-            private readonly Dictionary<int, XLBorderKey> _topBorders;
-            private readonly Dictionary<int, XLBorderKey> _bottomBorders;
-            private readonly Dictionary<int, XLBorderKey> _leftBorders;
-            private readonly Dictionary<int, XLBorderKey> _rightBorders;
+            private readonly Dictionary<short, XLBorderKey> _topBorders;
+            private readonly Dictionary<short, XLBorderKey> _bottomBorders;
+            private readonly Dictionary<short, XLBorderKey> _leftBorders;
+            private readonly Dictionary<short, XLBorderKey> _rightBorders;
 
             public RestoreOutsideBorder(IXLRange range)
             {
                 _range = range ?? throw new ArgumentNullException(nameof(range));
 
                 _topBorders = range.FirstRow().Cells().ToDictionary(
-                    c => c.Address.ColumnNumber - range.RangeAddress.FirstAddress.ColumnNumber + 1,
+                    c => (short)(c.Address.ColumnNumber - range.RangeAddress.FirstAddress.ColumnNumber + 1),
                     c => (c.Style as XLStyle).Key.Border);
 
                 _bottomBorders = range.LastRow().Cells().ToDictionary(
-                    c => c.Address.ColumnNumber - range.RangeAddress.FirstAddress.ColumnNumber + 1,
+                    c => (short)(c.Address.ColumnNumber - range.RangeAddress.FirstAddress.ColumnNumber + 1),
                     c => (c.Style as XLStyle).Key.Border);
 
                 _leftBorders = range.FirstColumn().Cells().ToDictionary(
-                    c => c.Address.RowNumber - range.RangeAddress.FirstAddress.RowNumber + 1,
+                    c => (short)(c.Address.RowNumber - range.RangeAddress.FirstAddress.RowNumber + 1),
                     c => (c.Style as XLStyle).Key.Border);
 
                 _rightBorders = range.LastColumn().Cells().ToDictionary(
-                    c => c.Address.RowNumber - range.RangeAddress.FirstAddress.RowNumber + 1,
+                    c => (short)(c.Address.RowNumber - range.RangeAddress.FirstAddress.RowNumber + 1),
                     c => (c.Style as XLStyle).Key.Border);
             }
 

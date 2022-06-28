@@ -8,14 +8,14 @@ namespace ClosedXML.Excel
 
     internal class XLAutoFilter : IXLAutoFilter
     {
-        private readonly Dictionary<Int32, XLFilterColumn> _columns = new Dictionary<int, XLFilterColumn>();
+        private readonly Dictionary<short, XLFilterColumn> _columns = new Dictionary<short, XLFilterColumn>();
 
         public XLAutoFilter()
         {
-            Filters = new Dictionary<int, List<XLFilter>>();
+            Filters = new Dictionary<short, List<XLFilter>>();
         }
 
-        public Dictionary<Int32, List<XLFilter>> Filters { get; private set; }
+        public Dictionary<short, List<XLFilter>> Filters { get; private set; }
 
         #region IXLAutoFilter Members
 
@@ -24,7 +24,7 @@ namespace ClosedXML.Excel
         public IEnumerable<IXLRangeRow> HiddenRows { get => Range.Rows(r => r.WorksheetRow().IsHidden); }
         public Boolean IsEnabled { get; set; }
         public IXLRange Range { get; set; }
-        public Int32 SortColumn { get; set; }
+        public short SortColumn { get; set; }
         public Boolean Sorted { get; set; }
         public XLSortOrder SortOrder { get; set; }
         public IEnumerable<IXLRangeRow> VisibleRows { get => Range.Rows(r => !r.WorksheetRow().IsHidden); }
@@ -43,7 +43,7 @@ namespace ClosedXML.Excel
             return Column(columnNumber);
         }
 
-        public IXLFilterColumn Column(Int32 column)
+        public IXLFilterColumn Column(short column)
         {
             if (column < 1 || column > XLHelper.MaxColumnNumber)
                 throw new ArgumentOutOfRangeException(nameof(column), "Column " + column + " is outside the allowed column range.");
@@ -125,7 +125,7 @@ namespace ClosedXML.Excel
             return this;
         }
 
-        IXLAutoFilter IXLAutoFilter.Sort(Int32 columnToSortBy, XLSortOrder sortOrder, Boolean matchCase,
+        IXLAutoFilter IXLAutoFilter.Sort(short columnToSortBy, XLSortOrder sortOrder, Boolean matchCase,
                                                                                                          Boolean ignoreBlanks)
         {
             return Sort(columnToSortBy, sortOrder, matchCase, ignoreBlanks);
@@ -155,7 +155,7 @@ namespace ClosedXML.Excel
             return this;
         }
 
-        public XLAutoFilter Sort(Int32 columnToSortBy, XLSortOrder sortOrder, Boolean matchCase, Boolean ignoreBlanks)
+        public XLAutoFilter Sort(short columnToSortBy, XLSortOrder sortOrder, Boolean matchCase, Boolean ignoreBlanks)
         {
             if (!IsEnabled)
                 throw new InvalidOperationException("Filter has not been enabled.");

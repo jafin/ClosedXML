@@ -373,7 +373,7 @@ namespace ClosedXML.Excel
             {
                 foreach (var f in this._fieldNames.Values)
                 {
-                    var c = this.TotalsRow().Cell(f.Index + 1);
+                    var c = this.TotalsRow().Cell((short)(f.Index + 1));
                     if (!c.IsEmpty() && newHeaders.Contains(f.Name))
                     {
                         f.TotalsRowLabel = c.GetFormattedString();
@@ -386,7 +386,7 @@ namespace ClosedXML.Excel
                     foreach (var f in this._fieldNames.Values.Cast<XLTableField>())
                     {
                         f.UpdateTableFieldTotalsRowFormula();
-                        var c = this.TotalsRow().Cell(f.Index + 1);
+                        var c = this.TotalsRow().Cell((short)(f.Index + 1));
                         if (!String.IsNullOrWhiteSpace(f.TotalsRowLabel))
                         {
                             c.DataType = XLDataType.Text;
@@ -651,7 +651,7 @@ namespace ClosedXML.Excel
                             RangeAddress.LastAddress);
                     }
 
-                    Int32 co = 1;
+                    short co = 1;
                     foreach (var name in FieldNames.Values.Select(f => f.Name))
                     {
                         rangeRow.Cell(co).SetValue(name);
@@ -704,7 +704,7 @@ namespace ClosedXML.Excel
             return column;
         }
 
-        public override IXLRangeColumns Columns(int firstColumn, int lastColumn)
+        public override IXLRangeColumns Columns(short firstColumn, short lastColumn)
         {
             var columns = base.Columns(firstColumn, lastColumn);
             columns.Cast<XLRangeColumn>().ForEach(column => column.Table = this);
@@ -763,7 +763,7 @@ namespace ClosedXML.Excel
                 dynamic expando = new ExpandoObject();
                 foreach (var f in this.Fields)
                 {
-                    var value = row.Cell(f.Index + 1).Value;
+                    var value = row.Cell((short)(f.Index + 1)).Value;
                     // ExpandoObject supports IDictionary so we can extend it like this
                     var expandoDict = expando as IDictionary<string, object>;
                     expandoDict[f.Name] = value;
@@ -816,7 +816,7 @@ namespace ClosedXML.Excel
 
                 foreach (var f in this.Fields)
                 {
-                    dr[f.Name] = row.Cell(f.Index + 1).Value;
+                    dr[f.Name] = row.Cell((short)(f.Index + 1)).Value;
                 }
 
                 table.Rows.Add(dr);

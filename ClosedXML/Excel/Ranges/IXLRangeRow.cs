@@ -8,7 +8,9 @@ namespace ClosedXML.Excel
         /// Gets the cell in the specified column.
         /// </summary>
         /// <param name="columnNumber">The cell's column.</param>
-        IXLCell Cell(Int32 columnNumber);
+        IXLCell Cell(short columnNumber);
+
+        IXLCell Cell(int columnNumber);
 
         /// <summary>
         /// Gets the cell in the specified column.
@@ -28,7 +30,7 @@ namespace ClosedXML.Excel
         /// </summary>
         /// <param name="firstColumn">The first column in the group of cells to return.</param>
         /// <param name="lastColumn">The last column in the group of cells to return.</param>
-        IXLCells Cells(Int32 firstColumn, Int32 lastColumn);
+        IXLCells Cells(short firstColumn, short lastColumn);
 
         /// <summary>
         /// Returns the specified group of cells.
@@ -42,18 +44,18 @@ namespace ClosedXML.Excel
         /// <para>All cells to the right of this row will be shifted X number of columns.</para>
         /// </summary>
         /// <param name="numberOfColumns">Number of cells to insert.</param>
-        IXLCells InsertCellsAfter(int numberOfColumns);
+        IXLCells InsertCellsAfter(short numberOfColumns);
 
-        IXLCells InsertCellsAfter(int numberOfColumns, Boolean expandRange);
+        IXLCells InsertCellsAfter(short numberOfColumns, Boolean expandRange);
 
         /// <summary>
         /// Inserts X number of cells to the left of this row.
         /// <para>This row and all cells to the right of it will be shifted X number of columns.</para>
         /// </summary>
         /// <param name="numberOfColumns">Number of cells to insert.</param>
-        IXLCells InsertCellsBefore(int numberOfColumns);
+        IXLCells InsertCellsBefore(short numberOfColumns);
 
-        IXLCells InsertCellsBefore(int numberOfColumns, Boolean expandRange);
+        IXLCells InsertCellsBefore(short numberOfColumns, Boolean expandRange);
 
         /// <summary>
         /// Inserts X number of rows on top of this row.

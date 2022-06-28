@@ -289,7 +289,7 @@ namespace ClosedXML.Excel
             return ColumnLeft();
         }
 
-        IXLRangeColumn IXLRangeColumn.ColumnLeft(Int32 step)
+        IXLRangeColumn IXLRangeColumn.ColumnLeft(short step)
         {
             return ColumnLeft(step);
         }
@@ -299,7 +299,7 @@ namespace ClosedXML.Excel
             return ColumnLeft(1);
         }
 
-        public XLRangeColumn ColumnLeft(Int32 step)
+        public XLRangeColumn ColumnLeft(short step)
         {
             return ColumnShift(step * -1);
         }
@@ -313,7 +313,7 @@ namespace ClosedXML.Excel
             return ColumnRight();
         }
 
-        IXLRangeColumn IXLRangeColumn.ColumnRight(Int32 step)
+        IXLRangeColumn IXLRangeColumn.ColumnRight(short step)
         {
             return ColumnRight(step);
         }
@@ -323,7 +323,7 @@ namespace ClosedXML.Excel
             return ColumnRight(1);
         }
 
-        public XLRangeColumn ColumnRight(Int32 step)
+        public XLRangeColumn ColumnRight(short step)
         {
             return ColumnShift(step);
         }

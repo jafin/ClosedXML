@@ -16,7 +16,9 @@ namespace ClosedXML.Excel
         /// </summary>
         /// <param name="row">The cell's row.</param>
         /// <param name="column">The cell's column.</param>
+        IXLCell Cell(int row, short column);
         IXLCell Cell(int row, int column);
+
 
         /// <summary>Gets the cell at the specified address.</summary>
         /// <para>The cell address is relative to the parent range.</para>
@@ -41,6 +43,7 @@ namespace ClosedXML.Excel
         /// </summary>
         /// <param name="columnNumber">1-based column number relative to the first column of this range.</param>
         /// <returns>The relevant column</returns>
+        IXLRangeColumn Column(short columnNumber);
         IXLRangeColumn Column(int columnNumber);
 
         /// <summary>
@@ -89,7 +92,7 @@ namespace ClosedXML.Excel
         /// </summary>
         /// <param name="firstColumn">The first column to return. 1-based column number relative to the first column of this range.</param>
         /// <param name="lastColumn">The last column to return. 1-based column number relative to the first column of this range.</param>
-        IXLRangeColumns Columns(int firstColumn, int lastColumn);
+        IXLRangeColumns Columns(short firstColumn, short lastColumn);
 
         /// <summary>
         /// Gets a collection of the specified columns in this range.
@@ -207,21 +210,22 @@ namespace ClosedXML.Excel
         /// <param name="lastCellRow">    The last cell's row of the range to return.</param>
         /// <param name="lastCellColumn"> The last cell's column of the range to return.</param>
         /// <returns>.</returns>
-        IXLRange Range(int firstCellRow, int firstCellColumn, int lastCellRow, int lastCellColumn);
+        IXLRange Range(int firstCellRow, short firstCellColumn, int lastCellRow, short lastCellColumn);
 
         /// <summary>Gets the number of rows in this range.</summary>
         int RowCount();
 
         /// <summary>Gets the number of columns in this range.</summary>
-        int ColumnCount();
+        short ColumnCount();
 
         /// <summary>
         /// Inserts X number of columns to the right of this range.
         /// <para>All cells to the right of this range will be shifted X number of columns.</para>
         /// </summary>
         /// <param name="numberOfColumns">Number of columns to insert.</param>
-        IXLRangeColumns InsertColumnsAfter(int numberOfColumns);
+        IXLRangeColumns InsertColumnsAfter(short numberOfColumns);
 
+        IXLRangeColumns InsertColumnsAfter(short numberOfColumns, Boolean expandRange);
         IXLRangeColumns InsertColumnsAfter(int numberOfColumns, Boolean expandRange);
 
         /// <summary>
@@ -229,9 +233,9 @@ namespace ClosedXML.Excel
         /// <para>This range and all cells to the right of this range will be shifted X number of columns.</para>
         /// </summary>
         /// <param name="numberOfColumns">Number of columns to insert.</param>
-        IXLRangeColumns InsertColumnsBefore(int numberOfColumns);
+        IXLRangeColumns InsertColumnsBefore(short numberOfColumns);
 
-        IXLRangeColumns InsertColumnsBefore(int numberOfColumns, Boolean expandRange);
+        IXLRangeColumns InsertColumnsBefore(short numberOfColumns, Boolean expandRange);
 
         /// <summary>
         /// Inserts X number of rows on top of this range.
@@ -301,7 +305,7 @@ namespace ClosedXML.Excel
 
         IXLRange Sort(String columnsToSortBy, XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
 
-        IXLRange Sort(Int32 columnToSortBy, XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
+        IXLRange Sort(short columnToSortBy, XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
 
         IXLRange SortLeftToRight(XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
 

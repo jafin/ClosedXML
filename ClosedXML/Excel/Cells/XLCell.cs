@@ -103,7 +103,7 @@ namespace ClosedXML.Excel
         public XLWorksheet Worksheet { get; private set; }
 
         private int _rowNumber;
-        private int _columnNumber;
+        private short _columnNumber;
         private bool _fixedRow;
         private bool _fixedCol;
 
@@ -756,12 +756,12 @@ namespace ClosedXML.Excel
 
             if (transpose)
             {
-                maximumColumnNumber += reader.GetRecordsCount() - 1;
+                maximumColumnNumber += (short)(reader.GetRecordsCount() - 1);
                 maximumRowNumber += reader.GetPropertiesCount() - 1;
             }
             else
             {
-                maximumColumnNumber += reader.GetPropertiesCount() - 1;
+                maximumColumnNumber += (short)(reader.GetPropertiesCount() - 1);
                 maximumRowNumber += reader.GetRecordsCount() - 1;
             }
 
@@ -1143,12 +1143,12 @@ namespace ClosedXML.Excel
             return AsRange().InsertRowsBelow(numberOfRows).Cells();
         }
 
-        public IXLCells InsertCellsAfter(int numberOfColumns)
+        public IXLCells InsertCellsAfter(short numberOfColumns)
         {
             return AsRange().InsertColumnsAfter(numberOfColumns).Cells();
         }
 
-        public IXLCells InsertCellsBefore(int numberOfColumns)
+        public IXLCells InsertCellsBefore(short numberOfColumns)
         {
             return AsRange().InsertColumnsBefore(numberOfColumns).Cells();
         }
@@ -1949,7 +1949,7 @@ namespace ClosedXML.Excel
                 {
                     Worksheet.Cell(
                         _rowNumber + sourceCell.Address.RowNumber - minRow,
-                        _columnNumber + sourceCell.Address.ColumnNumber - minColumn
+                        (short)(_columnNumber + sourceCell.Address.ColumnNumber - minColumn)
                         ).CopyFromInternal(sourceCell as XLCell,
                         XLCellCopyOptions.All & ~XLCellCopyOptions.ConditionalFormats); //Conditional formats are copied separately
                 }
@@ -2043,7 +2043,7 @@ namespace ClosedXML.Excel
             int cCnt = minCo - fromRange.RangeAddress.FirstAddress.ColumnNumber + 1;
             rCnt = Math.Min(rCnt, fromRange.RowCount());
             cCnt = Math.Min(cCnt, fromRange.ColumnCount());
-            var toRange = Worksheet.Range(this, Worksheet.Cell(_rowNumber + rCnt - 1, _columnNumber + cCnt - 1));
+            var toRange = Worksheet.Range(this, Worksheet.Cell(_rowNumber + rCnt - 1, (short)(_columnNumber + cCnt - 1)));
             var formats = srcSheet.ConditionalFormats.Where(f => f.Ranges.GetIntersectedRanges(fromRange.RangeAddress).Any()).ToList();
 
             foreach (var cf in formats)
@@ -2245,7 +2245,7 @@ namespace ClosedXML.Excel
         {
             string columnToReturn;
             if (columnPart == "C")
-                columnToReturn = XLHelper.GetColumnLetterFromNumber(_columnNumber + columnsToShift);
+                columnToReturn = XLHelper.GetColumnLetterFromNumber((short)(_columnNumber + columnsToShift));
             else
             {
                 var bIndex = columnPart.IndexOf("[", StringComparison.Ordinal);
@@ -2253,21 +2253,21 @@ namespace ClosedXML.Excel
                 if (bIndex >= 0)
                 {
                     columnToReturn = XLHelper.GetColumnLetterFromNumber(
-                        _columnNumber +
-                        int.Parse(columnPart.Substring(bIndex + 1, columnPart.Length - bIndex - 2)) + columnsToShift
+                        (short)(_columnNumber +
+                        short.Parse(columnPart.Substring(bIndex + 1, columnPart.Length - bIndex - 2)) + columnsToShift)
                         );
                 }
                 else if (mIndex >= 0)
                 {
                     columnToReturn = XLHelper.GetColumnLetterFromNumber(
-                        _columnNumber + int.Parse(columnPart.Substring(mIndex)) + columnsToShift
+                        (short)(_columnNumber + short.Parse(columnPart.Substring(mIndex)) + columnsToShift)
                         );
                 }
                 else
                 {
                     columnToReturn = "$" +
-                                     XLHelper.GetColumnLetterFromNumber(int.Parse(columnPart.Substring(1)) +
-                                                                        columnsToShift);
+                                     XLHelper.GetColumnLetterFromNumber((short)(short.Parse(columnPart.Substring(1)) +
+                                                                        columnsToShift));
                 }
             }
 
@@ -2680,15 +2680,15 @@ namespace ClosedXML.Excel
                                     {
                                         column1 = "$" +
                                                     XLHelper.GetColumnLetterFromNumber(
-                                                        XLHelper.GetColumnNumberFromLetter(
-                                                            column1String.Substring(1)) + columnsShifted, true);
+                                                        (short)(XLHelper.GetColumnNumberFromLetter(
+                                                            column1String.Substring(1)) + columnsShifted), true);
                                     }
                                     else
                                     {
                                         column1 =
                                             XLHelper.GetColumnLetterFromNumber(
-                                                XLHelper.GetColumnNumberFromLetter(column1String) +
-                                                columnsShifted, true);
+                                                (short)(XLHelper.GetColumnNumberFromLetter(column1String) +
+                                                columnsShifted), true);
                                     }
 
                                     string column2;
@@ -2696,15 +2696,15 @@ namespace ClosedXML.Excel
                                     {
                                         column2 = "$" +
                                                     XLHelper.GetColumnLetterFromNumber(
-                                                        XLHelper.GetColumnNumberFromLetter(
-                                                            column2String.Substring(1)) + columnsShifted, true);
+                                                        (short)(XLHelper.GetColumnNumberFromLetter(
+                                                            column2String.Substring(1)) + columnsShifted), true);
                                     }
                                     else
                                     {
                                         column2 =
                                             XLHelper.GetColumnLetterFromNumber(
-                                                XLHelper.GetColumnNumberFromLetter(column2String) +
-                                                columnsShifted, true);
+                                                (short)(XLHelper.GetColumnNumberFromLetter(column2String) +
+                                                columnsShifted), true);
                                     }
 
                                     sb.Append(column1);
@@ -2776,9 +2776,9 @@ namespace ClosedXML.Excel
             return sb.ToString();
         }
 
-        private XLCell CellShift(int rowsToShift, int columnsToShift)
+        private XLCell CellShift(int rowsToShift, short columnsToShift)
         {
-            return Worksheet.Cell(_rowNumber + rowsToShift, _columnNumber + columnsToShift);
+            return Worksheet.Cell(_rowNumber + rowsToShift, (short)(_columnNumber + columnsToShift));
         }
 
         #region Nested type: FormulaConversionType
@@ -2858,7 +2858,7 @@ namespace ClosedXML.Excel
 
         public XLCell CellLeft(int step)
         {
-            return CellShift(0, step * -1);
+            return CellShift(0, (short)(step * -1));
         }
 
         #endregion XLCell Left
@@ -2882,7 +2882,7 @@ namespace ClosedXML.Excel
 
         public XLCell CellRight(int step)
         {
-            return CellShift(0, step);
+            return CellShift(0, (short)step);
         }
 
         #endregion XLCell Right
@@ -2902,12 +2902,12 @@ namespace ClosedXML.Excel
         /// </summary>
         /// <param name="cells"></param>
         /// <returns>minRow, maxRow, minCol, maxCol</returns>
-        private (int minRow, int maxRow, int minColumn, int MaxColumn) GetMinMaxCell(List<IXLCell> cells)
+        private (int minRow, int maxRow, short minColumn, short MaxColumn) GetMinMaxCell(List<IXLCell> cells)
         {
             var minRow = int.MaxValue;
             var maxRow = int.MinValue;
-            var minColumn = int.MaxValue;
-            var maxColumn = int.MinValue;
+            var minColumn = short.MaxValue;
+            var maxColumn = short.MinValue;
             
             foreach (var cell in cells)
             {

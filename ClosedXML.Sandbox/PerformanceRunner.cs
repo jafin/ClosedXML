@@ -140,14 +140,14 @@ namespace ClosedXML.Sandbox
         public static void PerformHeavyCalculation()
         {
             int rows = 200;
-            int columns = 200;
+            short columns = 200;
             using (var wb = new XLWorkbook())
             {
                 var sheet = wb.Worksheets.Add("TestSheet");
                 var lastColumnLetter = sheet.Column(columns).ColumnLetter();
                 for (int i = 1; i <= rows; i++)
                 {
-                    for (int j = 1; j <= columns; j++)
+                    for (short j = 1; j <= columns; j++)
                     {
                         if (i == 1)
                         {

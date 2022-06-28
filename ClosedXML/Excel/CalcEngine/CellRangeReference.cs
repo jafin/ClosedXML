@@ -33,7 +33,7 @@ namespace ClosedXML.Excel.CalcEngine
             var trimmedRange = (XLRangeBase)Range.Worksheet
                 .Range(
                     Range.FirstCell().Address,
-                    new XLAddress(maxRow, maxColumn, fixedRow: false, fixedColumn: false)
+                    new XLAddress(maxRow, (short)maxColumn, fixedRow: false, fixedColumn: false)
                 );
 
             foreach (var c in trimmedRange.CellValues())

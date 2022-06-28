@@ -27,12 +27,17 @@ namespace ClosedXML.Excel
             return Row(row);
         }
 
-        IXLRangeColumn IXLRange.Column(Int32 columnNumber)
+        IXLRangeColumn IXLRange.Column(short columnNumber)
         {
             return Column(columnNumber);
         }
 
-        IXLRangeColumn IXLRange.Column(String columnLetter)
+        IXLRangeColumn IXLRange.Column(int columnNumber)
+        {
+            return Column((short)columnNumber);
+        }
+
+        IXLRangeColumn IXLRange.Column(string columnLetter)
         {
             return Column(columnLetter);
         }
@@ -40,8 +45,8 @@ namespace ClosedXML.Excel
         public virtual IXLRangeColumns Columns(Func<IXLRangeColumn, Boolean> predicate = null)
         {
             var retVal = new XLRangeColumns();
-            Int32 columnCount = ColumnCount();
-            for (Int32 c = 1; c <= columnCount; c++)
+            short columnCount = ColumnCount();
+            for (short c = 1; c <= columnCount; c++)
             {
                 var column = Column(c);
                 if (predicate == null || predicate(column))
@@ -50,7 +55,7 @@ namespace ClosedXML.Excel
             return retVal;
         }
 
-        public virtual IXLRangeColumns Columns(Int32 firstColumn, Int32 lastColumn)
+        public virtual IXLRangeColumns Columns(short firstColumn, short lastColumn)
         {
             var retVal = new XLRangeColumns();
 
@@ -59,7 +64,7 @@ namespace ClosedXML.Excel
             return retVal;
         }
 
-        public virtual IXLRangeColumns Columns(String firstColumn, String lastColumn)
+        public virtual IXLRangeColumns Columns(string firstColumn, string lastColumn)
         {
             return Columns(XLHelper.GetColumnNumberFromLetter(firstColumn),
                            XLHelper.GetColumnNumberFromLetter(lastColumn));
@@ -86,9 +91,9 @@ namespace ClosedXML.Excel
                     lastColumn = tPair;
                 }
 
-                if (Int32.TryParse(firstColumn, out Int32 tmp))
+                if (short.TryParse(firstColumn, out short tmp))
                 {
-                    foreach (IXLRangeColumn col in Columns(Int32.Parse(firstColumn), Int32.Parse(lastColumn)))
+                    foreach (IXLRangeColumn col in Columns(short.Parse(firstColumn), short.Parse(lastColumn)))
                         retVal.Add(col);
                 }
                 else
@@ -100,9 +105,14 @@ namespace ClosedXML.Excel
             return retVal;
         }
 
-        IXLCell IXLRange.Cell(int row, int column)
+        IXLCell IXLRange.Cell(int row, short column)
         {
             return Cell(row, column);
+        }
+
+        IXLCell IXLRange.Cell(int row, int column)
+        {
+            return Cell(row, (short)column);
         }
 
         IXLCell IXLRange.Cell(string cellAddressInRange)
@@ -145,7 +155,7 @@ namespace ClosedXML.Excel
             return Range(firstCellAddress, lastCellAddress);
         }
 
-        IXLRange IXLRange.Range(int firstCellRow, int firstCellColumn, int lastCellRow, int lastCellColumn)
+        IXLRange IXLRange.Range(int firstCellRow, short firstCellColumn, int lastCellRow, short lastCellColumn)
         {
             return Range(firstCellRow, firstCellColumn, lastCellRow, lastCellColumn);
         }
@@ -213,7 +223,7 @@ namespace ClosedXML.Excel
                 RangeAddress.FirstAddress,
                 new XLAddress(Worksheet,
                               firstCell.Address.RowNumber + columnCount - 1,
-                              firstCell.Address.ColumnNumber + rowCount - 1,
+                              (short)(firstCell.Address.ColumnNumber + rowCount - 1),
                               RangeAddress.LastAddress.FixedRow,
                               RangeAddress.LastAddress.FixedColumn));
 
@@ -335,7 +345,7 @@ namespace ClosedXML.Excel
             return base.Sort(columnsToSortBy, sortOrder, matchCase, ignoreBlanks).AsRange();
         }
 
-        public new IXLRange Sort(Int32 columnToSortBy, XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true)
+        public new IXLRange Sort(short columnToSortBy, XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true)
         {
             return base.Sort(columnToSortBy, sortOrder, matchCase, ignoreBlanks).AsRange();
         }
@@ -730,16 +740,17 @@ namespace ClosedXML.Excel
         public virtual XLRangeColumn Column(Int32 columnNumber)
         {
             if (columnNumber <= 0 || columnNumber > XLHelper.MaxColumnNumber + RangeAddress.FirstAddress.ColumnNumber - 1)
-                throw new ArgumentOutOfRangeException(nameof(columnNumber), String.Format("Column number must be between 1 and {0}", XLHelper.MaxColumnNumber + RangeAddress.FirstAddress.ColumnNumber - 1));
+                throw new ArgumentOutOfRangeException(nameof(columnNumber),
+                    $"Column number must be between 1 and {XLHelper.MaxColumnNumber + RangeAddress.FirstAddress.ColumnNumber - 1}");
 
             var firstCellAddress = new XLAddress(Worksheet,
                                                  RangeAddress.FirstAddress.RowNumber,
-                                                 RangeAddress.FirstAddress.ColumnNumber + columnNumber - 1,
+                                                 (short)(RangeAddress.FirstAddress.ColumnNumber + columnNumber - 1),
                                                  false,
                                                  false);
             var lastCellAddress = new XLAddress(Worksheet,
                                                 RangeAddress.LastAddress.RowNumber,
-                                                RangeAddress.FirstAddress.ColumnNumber + columnNumber - 1,
+                                                (short)(RangeAddress.FirstAddress.ColumnNumber + columnNumber - 1),
                                                 false,
                                                 false);
             return Worksheet.RangeColumn(new XLRangeAddress(firstCellAddress, lastCellAddress));
@@ -772,29 +783,29 @@ namespace ClosedXML.Excel
             {
                 // to the top of the intersection
                 new XLRangeAddress(
-                    new XLAddress(thisRow1,thisColumn1, false, false),
-                    new XLAddress(otherRow1 - 1, thisColumn2, false, false)),
+                    new XLAddress(thisRow1,(short)thisColumn1, false, false),
+                    new XLAddress(otherRow1 - 1, (short)thisColumn2, false, false)),
 
                 // to the left of the intersection
                 new XLRangeAddress(
-                    new XLAddress(otherRow1,thisColumn1, false, false),
-                    new XLAddress(otherRow2, otherColumn1 - 1, false, false)),
+                    new XLAddress(otherRow1,(short)thisColumn1, false, false),
+                    new XLAddress(otherRow2, (short)(otherColumn1 - 1), false, false)),
 
                 includeIntersection
                     ? new XLRangeAddress(
-                        new XLAddress(otherRow1, otherColumn1, false, false),
-                        new XLAddress(otherRow2, otherColumn2, false, false))
+                        new XLAddress(otherRow1, (short)otherColumn1, false, false),
+                        new XLAddress(otherRow2, (short)otherColumn2, false, false))
                     : XLRangeAddress.Invalid,
 
                 // to the right of the intersection
                 new XLRangeAddress(
-                    new XLAddress(otherRow1,otherColumn2 + 1, false, false),
-                    new XLAddress(otherRow2, thisColumn2, false, false)),
+                    new XLAddress(otherRow1,(short)(otherColumn2 + 1), false, false),
+                    new XLAddress(otherRow2, (short)thisColumn2, false, false)),
 
                 // to the bottom of the intersection
                 new XLRangeAddress(
-                    new XLAddress(otherRow2 + 1,thisColumn1, false, false),
-                    new XLAddress(thisRow2, thisColumn2, false, false)),
+                    new XLAddress(otherRow2 + 1,(short)thisColumn1, false, false),
+                    new XLAddress(thisRow2, (short)thisColumn2, false, false)),
             };
 
             foreach (var rangeAddress in candidates.Where(c => c.IsValid && c.IsNormalized))
@@ -814,13 +825,13 @@ namespace ClosedXML.Excel
                 RangeAddress.FirstAddress.ColumnNumber + squareSide - 1);
 
             Int32 roCount = rngToTranspose.RowCount();
-            Int32 coCount = rngToTranspose.ColumnCount();
+            short coCount = rngToTranspose.ColumnCount();
             for (Int32 ro = 1; ro <= roCount; ro++)
             {
-                for (Int32 co = 1; co <= coCount; co++)
+                for (short co = 1; co <= coCount; co++)
                 {
                     var oldCell = rngToTranspose.Cell(ro, co);
-                    var newKey = rngToTranspose.Cell(co, ro).Address;
+                    var newKey = rngToTranspose.Cell(co, (short)ro).Address;
                     // new XLAddress(Worksheet, c.Address.ColumnNumber, c.Address.RowNumber);
                     var newCell = new XLCell(Worksheet, newKey, oldCell.StyleValue);
                     newCell.CopyFrom(oldCell, XLCellCopyOptions.All);
@@ -845,7 +856,7 @@ namespace ClosedXML.Excel
             {
                 merge.RangeAddress = new XLRangeAddress(
                     merge.RangeAddress.FirstAddress,
-                    rngToTranspose.Cell(merge.ColumnCount(), merge.RowCount()).Address);
+                    rngToTranspose.Cell(merge.ColumnCount(), (short)merge.RowCount()).Address);
             }
         }
 
@@ -854,7 +865,7 @@ namespace ClosedXML.Excel
             if (transposeOption == XLTransposeOptions.MoveCells)
             {
                 if (rowCount > columnCount)
-                    InsertColumnsAfter(false, rowCount - columnCount, false);
+                    InsertColumnsAfter(false, (short)(rowCount - columnCount), false);
                 else if (columnCount > rowCount)
                     InsertRowsBelow(false, columnCount - rowCount, false);
             }

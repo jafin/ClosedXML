@@ -17,7 +17,7 @@ namespace ClosedXML.Excel
         IEnumerable<IXLRangeRow> HiddenRows { get; }
         Boolean IsEnabled { get; set; }
         IXLRange Range { get; set; }
-        Int32 SortColumn { get; set; }
+        short SortColumn { get; set; }
         Boolean Sorted { get; set; }
         XLSortOrder SortOrder { get; set; }
         IEnumerable<IXLRangeRow> VisibleRows { get; }
@@ -26,10 +26,10 @@ namespace ClosedXML.Excel
 
         IXLFilterColumn Column(String column);
 
-        IXLFilterColumn Column(Int32 column);
+        IXLFilterColumn Column(short column);
 
         IXLAutoFilter Reapply();
 
-        IXLAutoFilter Sort(Int32 columnToSortBy = 1, XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
+        IXLAutoFilter Sort(short columnToSortBy = 1, XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
     }
 }

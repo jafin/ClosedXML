@@ -139,9 +139,14 @@ namespace ClosedXML.Excel
             return this;
         }
 
-        public IXLCell Cell(Int32 columnNumber)
+        public IXLCell Cell(short columnNumber)
         {
             return Cell(1, columnNumber);
+        }
+
+        public IXLCell Cell(int columnNumber)
+        {
+            return Cell((short)columnNumber);
         }
 
         public override XLCell Cell(String columnLetter)

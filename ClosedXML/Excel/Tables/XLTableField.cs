@@ -86,7 +86,7 @@ namespace ClosedXML.Excel
                 if (name == value) return;
 
                 if (table.ShowHeaderRow)
-                    (table.HeadersRow(false).Cell(Index + 1) as XLCell).SetValue(value, setTableHeader: false, checkMergedRanges: true);
+                    (table.HeadersRow(false).Cell((short)(Index + 1)) as XLCell).SetValue(value, setTableHeader: false, checkMergedRanges: true);
 
                 table.RenameField(name, value);
                 name = value;
@@ -108,21 +108,21 @@ namespace ClosedXML.Excel
 
         public String TotalsRowFormulaA1
         {
-            get { return table.TotalsRow().Cell(Index + 1).FormulaA1; }
+            get { return table.TotalsRow().Cell((short)(Index + 1)).FormulaA1; }
             set
             {
                 totalsRowFunction = XLTotalsRowFunction.Custom;
-                table.TotalsRow().Cell(Index + 1).FormulaA1 = value;
+                table.TotalsRow().Cell((short)(Index + 1)).FormulaA1 = value;
             }
         }
 
         public String TotalsRowFormulaR1C1
         {
-            get { return table.TotalsRow().Cell(Index + 1).FormulaR1C1; }
+            get { return table.TotalsRow().Cell((short)(Index + 1)).FormulaR1C1; }
             set
             {
                 totalsRowFunction = XLTotalsRowFunction.Custom;
-                table.TotalsRow().Cell(Index + 1).FormulaR1C1 = value;
+                table.TotalsRow().Cell((short)(Index + 1)).FormulaR1C1 = value;
             }
         }
 
@@ -142,7 +142,7 @@ namespace ClosedXML.Excel
             set
             {
                 totalsRowFunction = XLTotalsRowFunction.None;
-                (table.TotalsRow().Cell(Index + 1) as XLCell).SetValue(value, setTableHeader: false, checkMergedRanges:true);
+                (table.TotalsRow().Cell((short)(Index + 1)) as XLCell).SetValue(value, setTableHeader: false, checkMergedRanges:true);
                 totalsRowLabel = value;
             }
         }
@@ -222,7 +222,7 @@ namespace ClosedXML.Excel
         {
             if (TotalsRowFunction != XLTotalsRowFunction.None && TotalsRowFunction != XLTotalsRowFunction.Custom)
             {
-                var cell = table.TotalsRow().Cell(Index + 1);
+                var cell = table.TotalsRow().Cell((short)(Index + 1));
                 var formulaCode = String.Empty;
                 switch (TotalsRowFunction)
                 {
@@ -247,7 +247,7 @@ namespace ClosedXML.Excel
                 var prependTableName = modifiedName.Contains(" ");
 
                 cell.FormulaA1 = $"SUBTOTAL({formulaCode},{(prependTableName ? table.Name : string.Empty)}[{modifiedName}])";
-                var lastCell = table.LastRow().Cell(Index + 1);
+                var lastCell = table.LastRow().Cell((short)(Index + 1));
                 if (lastCell.DataType != XLDataType.Text)
                 {
                     cell.DataType = lastCell.DataType;

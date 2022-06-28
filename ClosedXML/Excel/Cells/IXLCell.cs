@@ -262,10 +262,10 @@ namespace ClosedXML.Excel
         T GetValue<T>();
 
         IXLCells InsertCellsAbove(int numberOfRows);
+        
+        IXLCells InsertCellsAfter(short numberOfColumns);
 
-        IXLCells InsertCellsAfter(int numberOfColumns);
-
-        IXLCells InsertCellsBefore(int numberOfColumns);
+        IXLCells InsertCellsBefore(short numberOfColumns);
 
         IXLCells InsertCellsBelow(int numberOfRows);
 

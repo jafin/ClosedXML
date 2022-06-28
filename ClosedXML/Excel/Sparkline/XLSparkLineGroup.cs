@@ -110,7 +110,7 @@ namespace ClosedXML.Excel
             {
                 if (locationRange.ColumnCount() != sourceDataRange.ColumnCount())
                     throw new ArgumentException("locationRange and sourceDataRange must have the same width");
-                for (int i = 1; i <= locationRange.ColumnCount(); i++)
+                for (short i = 1; i <= locationRange.ColumnCount(); i++)
                 {
                     newSparklines.Add(Add(locationRange.Cell(1, i), sourceDataRange.Column(i).AsRange()));
                 }

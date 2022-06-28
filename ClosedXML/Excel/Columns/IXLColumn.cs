@@ -20,7 +20,7 @@ namespace ClosedXML.Excel
         /// <summary>
         /// Gets this column's number
         /// </summary>
-        Int32 ColumnNumber();
+        short ColumnNumber();
 
         /// <summary>
         /// Gets this column's letter
@@ -32,14 +32,14 @@ namespace ClosedXML.Excel
         /// <para>All columns at the right will be shifted accordingly.</para>
         /// </summary>
         /// <param name="numberOfColumns">The number of columns to insert.</param>
-        IXLColumns InsertColumnsAfter(Int32 numberOfColumns);
+        IXLColumns InsertColumnsAfter(short numberOfColumns);
 
         /// <summary>
         /// Inserts X number of columns at the left of this one.
         /// <para>This column and all at the right will be shifted accordingly.</para>
         /// </summary>
         /// <param name="numberOfColumns">The number of columns to insert.</param>
-        IXLColumns InsertColumnsBefore(Int32 numberOfColumns);
+        IXLColumns InsertColumnsBefore(short numberOfColumns);
 
         /// <summary>
         /// Gets the cell in the specified row.

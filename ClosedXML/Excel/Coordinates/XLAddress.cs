@@ -1,4 +1,3 @@
-using ClosedXML.Extensions;
 using System;
 using System.Diagnostics;
 
@@ -82,7 +81,7 @@ namespace ClosedXML.Excel
         private readonly int _rowNumber;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly int _columnNumber;
+        private readonly short _columnNumber;
 
         private string _trimmedAddress;
 
@@ -122,7 +121,7 @@ namespace ClosedXML.Excel
         /// <param name = "columnNumber">The column number of the cell address.</param>
         /// <param name = "fixedRow"></param>
         /// <param name = "fixedColumn"></param>
-        public XLAddress(int rowNumber, int columnNumber, bool fixedRow, bool fixedColumn)
+        public XLAddress(int rowNumber, short columnNumber, bool fixedRow, bool fixedColumn)
                 : this(null, rowNumber, columnNumber, fixedRow, fixedColumn)
         {
         }
@@ -135,13 +134,25 @@ namespace ClosedXML.Excel
         /// <param name = "columnNumber">The column number of the cell address.</param>
         /// <param name = "fixedRow"></param>
         /// <param name = "fixedColumn"></param>
-        public XLAddress(XLWorksheet worksheet, int rowNumber, int columnNumber, bool fixedRow, bool fixedColumn) : this()
+        public XLAddress(XLWorksheet worksheet, int rowNumber, short columnNumber, bool fixedRow, bool fixedColumn) : this()
 
         {
             Worksheet = worksheet;
 
             _rowNumber = rowNumber;
             _columnNumber = columnNumber;
+            _fixedColumn = fixedColumn;
+            _fixedRow = fixedRow;
+        }
+
+
+        public XLAddress(XLWorksheet worksheet, int rowNumber, int columnNumber, bool fixedRow, bool fixedColumn) : this()
+
+        {
+            Worksheet = worksheet;
+
+            _rowNumber = rowNumber;
+            _columnNumber = (short)columnNumber;
             _fixedColumn = fixedColumn;
             _fixedRow = fixedRow;
         }
@@ -185,7 +196,7 @@ namespace ClosedXML.Excel
         /// <summary>
         /// Gets the column number of this address.
         /// </summary>
-        public Int32 ColumnNumber
+        public short ColumnNumber
         {
             get { return _columnNumber; }
         }
@@ -264,7 +275,7 @@ namespace ClosedXML.Excel
         {
             return new XLAddress(left.Worksheet,
                                  left.RowNumber + right.RowNumber,
-                                 left.ColumnNumber + right.ColumnNumber,
+                                 (short)(left.ColumnNumber + right.ColumnNumber),
                                  left._fixedRow,
                                  left._fixedColumn);
         }
@@ -273,7 +284,7 @@ namespace ClosedXML.Excel
         {
             return new XLAddress(left.Worksheet,
                                  left.RowNumber - right.RowNumber,
-                                 left.ColumnNumber - right.ColumnNumber,
+                                 (short)(left.ColumnNumber - right.ColumnNumber),
                                  left._fixedRow,
                                  left._fixedColumn);
         }
@@ -282,7 +293,7 @@ namespace ClosedXML.Excel
         {
             return new XLAddress(left.Worksheet,
                                  left.RowNumber + right,
-                                 left.ColumnNumber + right,
+                                 (short)(left.ColumnNumber + right),
                                  left._fixedRow,
                                  left._fixedColumn);
         }
@@ -291,7 +302,7 @@ namespace ClosedXML.Excel
         {
             return new XLAddress(left.Worksheet,
                                  left.RowNumber - right,
-                                 left.ColumnNumber - right,
+                                 (short)(left.ColumnNumber - right),
                                  left._fixedRow,
                                  left._fixedColumn);
         }

@@ -19,9 +19,14 @@ namespace ClosedXML.Excel
 
         #region IXLRangeRow Members
 
-        public IXLCell Cell(int column)
+        public IXLCell Cell(short column)
         {
             return Cell(1, column);
+        }
+
+        public IXLCell Cell(int column)
+        {
+            return Cell((short)column);
         }
 
         public override XLCell Cell(string columnLetter)
@@ -39,22 +44,22 @@ namespace ClosedXML.Excel
             Delete(XLShiftDeletedCells.ShiftCellsUp);
         }
 
-        public IXLCells InsertCellsAfter(int numberOfColumns)
+        public IXLCells InsertCellsAfter(short numberOfColumns)
         {
             return InsertCellsAfter(numberOfColumns, true);
         }
 
-        public IXLCells InsertCellsAfter(int numberOfColumns, bool expandRange)
+        public IXLCells InsertCellsAfter(short numberOfColumns, bool expandRange)
         {
             return InsertColumnsAfter(numberOfColumns, expandRange).Cells();
         }
 
-        public IXLCells InsertCellsBefore(int numberOfColumns)
+        public IXLCells InsertCellsBefore(short numberOfColumns)
         {
             return InsertCellsBefore(numberOfColumns, false);
         }
 
-        public IXLCells InsertCellsBefore(int numberOfColumns, bool expandRange)
+        public IXLCells InsertCellsBefore(short numberOfColumns, bool expandRange)
         {
             return InsertColumnsBefore(numberOfColumns, expandRange).Cells();
         }
@@ -68,7 +73,7 @@ namespace ClosedXML.Excel
             return retVal;
         }
 
-        public IXLCells Cells(int firstColumn, int lastColumn)
+        public IXLCells Cells(short firstColumn, short lastColumn)
         {
             return Cells(firstColumn + ":" + lastColumn);
         }
@@ -226,8 +231,8 @@ namespace ClosedXML.Excel
         {
             foreach (IXLSortElement e in columnsToSort)
             {
-                var thisCell = (XLCell)Cell(e.ElementNumber);
-                var otherCell = (XLCell)otherRow.Cell(e.ElementNumber);
+                var thisCell = (XLCell)Cell((short)e.ElementNumber);
+                var otherCell = (XLCell)otherRow.Cell((short)e.ElementNumber);
                 int comparison;
                 bool thisCellIsBlank = thisCell.IsEmpty();
                 bool otherCellIsBlank = otherCell.IsEmpty();

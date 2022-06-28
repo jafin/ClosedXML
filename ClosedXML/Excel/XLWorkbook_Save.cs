@@ -910,8 +910,8 @@ namespace ClosedXML.Excel
                     var minColumn = worksheet.PageSetup.FirstColumnToRepeatAtLeft;
                     var maxColumn = worksheet.PageSetup.LastColumnToRepeatAtLeft;
                     definedNameTextColumn = worksheet.Name.EscapeSheetName() + "!" +
-                                            XLHelper.GetColumnLetterFromNumber(minColumn)
-                                            + ":" + XLHelper.GetColumnLetterFromNumber(maxColumn);
+                                            XLHelper.GetColumnLetterFromNumber((short)minColumn)
+                                            + ":" + XLHelper.GetColumnLetterFromNumber((short)maxColumn);
                 }
 
                 string titles;
@@ -3573,7 +3573,7 @@ namespace ClosedXML.Excel
             var cWidth = c.Style.Size.Width;
             var fcNumber = c.Position.Column - 1;
             var fcOffset = Convert.ToInt32(c.Position.ColumnOffset * 7.5);
-            var widthFromColumns = cell.Worksheet.Column(c.Position.Column).Width - c.Position.ColumnOffset;
+            var widthFromColumns = cell.Worksheet.Column((short)c.Position.Column).Width - c.Position.ColumnOffset;
             var lastCell = cell.CellRight(c.Position.Column - cell.Address.ColumnNumber);
             while (widthFromColumns <= cWidth)
             {
@@ -4667,7 +4667,7 @@ namespace ClosedXML.Excel
             {
                 maxColumn = xlWorksheet.Internals.CellsCollection.MaxColumnUsed;
                 var maxRow = xlWorksheet.Internals.CellsCollection.MaxRowUsed;
-                sheetDimensionReference = "A1:" + XLHelper.GetColumnLetterFromNumber(maxColumn) +
+                sheetDimensionReference = "A1:" + XLHelper.GetColumnLetterFromNumber((short)maxColumn) +
                                           maxRow.ToInvariantString();
             }
 
@@ -4773,7 +4773,7 @@ namespace ClosedXML.Excel
             pane.ActivePane = (ySplit == 0 ? PaneValues.TopRight : 0)
                               | (hSplit == 0 ? PaneValues.BottomLeft : 0);
 
-            pane.TopLeftCell = XLHelper.GetColumnLetterFromNumber(xlWorksheet.SheetView.SplitColumn + 1)
+            pane.TopLeftCell = XLHelper.GetColumnLetterFromNumber((short)(xlWorksheet.SheetView.SplitColumn + 1))
                                + (xlWorksheet.SheetView.SplitRow + 1);
 
             if (hSplit == 0 && ySplit == 0)
@@ -5517,7 +5517,7 @@ namespace ClosedXML.Excel
                 var currentOpenXmlRowCells = row.Elements<Cell>()
                     .ToDictionary
                     (
-                        c => c.CellReference?.Value ?? XLHelper.GetColumnLetterFromNumber(++lastCell) + distinctRow,
+                        c => c.CellReference?.Value ?? XLHelper.GetColumnLetterFromNumber((short)(++lastCell)) + distinctRow,
                         c => c
                     );
 
@@ -5525,7 +5525,7 @@ namespace ClosedXML.Excel
                 {
                     foreach (var deletedColumn in deletedColumns.ToList())
                     {
-                        var key = $"{XLHelper.GetColumnLetterFromNumber(deletedColumn)}{distinctRow.ToInvariantString()}";
+                        var key = $"{XLHelper.GetColumnLetterFromNumber((short)deletedColumn)}{distinctRow.ToInvariantString()}";
 
                         if (!currentOpenXmlRowCells.TryGetValue(key, out Cell cell))
                             continue;
@@ -5545,7 +5545,7 @@ namespace ClosedXML.Excel
                     lastCell = 0;
                     var mRows = row.Elements<Cell>().ToDictionary(c => XLHelper.GetColumnNumberFromAddress(
                         c.CellReference == null
-                            ? (XLHelper.GetColumnLetterFromNumber(++lastCell) + distinctRow)
+                            ? (XLHelper.GetColumnLetterFromNumber((short)(++lastCell)) + distinctRow)
                             : c.CellReference.Value), c => c);
                     foreach (var xlCell in cells.Values
                                  .OrderBy(c => c.Address.ColumnNumber)
@@ -5744,7 +5744,7 @@ namespace ClosedXML.Excel
                 var sheetColumnsByMin = columns.Elements<Column>().ToDictionary(c => c.Min.Value, c => c);
                 //Dictionary<UInt32, Column> sheetColumnsByMax = columns.Elements<Column>().ToDictionary(c => c.Max.Value, c => c);
 
-                Int32 minInColumnsCollection;
+                short minInColumnsCollection;
                 Int32 maxInColumnsCollection;
                 if (xlWorksheet.Internals.ColumnsCollection.Count > 0)
                 {

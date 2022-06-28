@@ -1,9 +1,7 @@
-using ClosedXML.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using DocumentFormat.OpenXml.Bibliography;
 
 namespace ClosedXML.Excel
 {
@@ -12,6 +10,11 @@ namespace ClosedXML.Excel
         #region Static members
 
         public static XLRangeAddress EntireColumn(XLWorksheet worksheet, int column)
+        {
+            return EntireColumn(worksheet, (short)column);
+        }
+
+        public static XLRangeAddress EntireColumn(XLWorksheet worksheet, short column)
         {
             return new XLRangeAddress(
                 new XLAddress(worksheet, 1, column, false, false),
@@ -68,8 +71,8 @@ namespace ClosedXML.Excel
             }
             else
             {
-                firstPart = firstPart.Replace("$", String.Empty);
-                secondPart = secondPart.Replace("$", String.Empty);
+                firstPart = firstPart.Replace("$", string.Empty);
+                secondPart = secondPart.Replace("$", string.Empty);
                 if (char.IsDigit(firstPart[0]))
                 {
                     FirstAddress = XLAddress.Create(worksheet, "A" + firstPart);
@@ -158,7 +161,8 @@ namespace ClosedXML.Excel
                 FirstAddress.ColumnNumber <= LastAddress.ColumnNumber)
                 return this;
 
-            int firstRow, firstColumn, lastRow, lastColumn;
+            int firstRow, lastRow;
+            short firstColumn, lastColumn;
             bool firstRowFixed, firstColumnFixed, lastRowFixed, lastColumnFixed;
 
             if (FirstAddress.RowNumber <= LastAddress.RowNumber)
@@ -411,7 +415,7 @@ namespace ClosedXML.Excel
                 (
                     sheet,
                     this.FirstAddress.RowNumber - sourceRangeAddress.FirstAddress.RowNumber + targetRangeAddress.FirstAddress.RowNumber,
-                    this.FirstAddress.ColumnNumber - sourceRangeAddress.FirstAddress.ColumnNumber + targetRangeAddress.FirstAddress.ColumnNumber,
+                    (short)(this.FirstAddress.ColumnNumber - sourceRangeAddress.FirstAddress.ColumnNumber + targetRangeAddress.FirstAddress.ColumnNumber),
                     fixedRow: false,
                     fixedColumn: false
                 ),
@@ -419,7 +423,7 @@ namespace ClosedXML.Excel
                 (
                     sheet,
                     this.LastAddress.RowNumber - sourceRangeAddress.FirstAddress.RowNumber + targetRangeAddress.FirstAddress.RowNumber,
-                    this.LastAddress.ColumnNumber - sourceRangeAddress.FirstAddress.ColumnNumber + targetRangeAddress.FirstAddress.ColumnNumber,
+                    (short)(this.LastAddress.ColumnNumber - sourceRangeAddress.FirstAddress.ColumnNumber + targetRangeAddress.FirstAddress.ColumnNumber),
                     fixedRow: false,
                     fixedColumn: false
                 )

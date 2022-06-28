@@ -128,7 +128,9 @@ namespace ClosedXML.Excel
         /// Gets the cell in the specified column.
         /// </summary>
         /// <param name="columnNumber">The cell's column.</param>
-        IXLCell Cell(Int32 columnNumber);
+        IXLCell Cell(short columnNumber);
+
+        IXLCell Cell(int columnNumber);
 
         /// <summary>
         /// Gets the cell in the specified column.

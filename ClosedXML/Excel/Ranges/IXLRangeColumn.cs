@@ -29,18 +29,18 @@ namespace ClosedXML.Excel
         /// <para>All cells to the right of this range will be shifted X number of columns.</para>
         /// </summary>
         /// <param name="numberOfColumns">Number of columns to insert.</param>
-        IXLRangeColumns InsertColumnsAfter(int numberOfColumns);
-
-        IXLRangeColumns InsertColumnsAfter(int numberOfColumns, Boolean expandRange);
+        IXLRangeColumns InsertColumnsAfter(short numberOfColumns);
+        
+        IXLRangeColumns InsertColumnsAfter(short numberOfColumns, Boolean expandRange);
 
         /// <summary>
         /// Inserts X number of columns to the left of this range.
         /// <para>This range and all cells to the right of this range will be shifted X number of columns.</para>
         /// </summary>
         /// <param name="numberOfColumns">Number of columns to insert.</param>
-        IXLRangeColumns InsertColumnsBefore(int numberOfColumns);
+        IXLRangeColumns InsertColumnsBefore(short numberOfColumns);
 
-        IXLRangeColumns InsertColumnsBefore(int numberOfColumns, Boolean expandRange);
+        IXLRangeColumns InsertColumnsBefore(short numberOfColumns, Boolean expandRange);
 
         /// <summary>
         /// Inserts X number of cells on top of this column.
@@ -74,7 +74,7 @@ namespace ClosedXML.Excel
         /// <summary>
         /// Gets this column's number in the range
         /// </summary>
-        Int32 ColumnNumber();
+        short ColumnNumber();
 
         /// <summary>
         /// Gets this column's letter in the range
@@ -89,21 +89,21 @@ namespace ClosedXML.Excel
 
         IXLRangeColumn Sort(XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
 
-        IXLRangeColumn Column(Int32 start, Int32 end);
+        IXLRangeColumn Column(int start, int end);
 
         IXLRangeColumn Column(IXLCell start, IXLCell end);
 
-        IXLRangeColumns Columns(String columns);
+        IXLRangeColumns Columns(string columns);
 
         IXLRangeColumn SetDataType(XLDataType dataType);
 
         IXLRangeColumn ColumnLeft();
 
-        IXLRangeColumn ColumnLeft(Int32 step);
+        IXLRangeColumn ColumnLeft(short step);
 
-        IXLRangeColumn ColumnRight();
+        IXLRangeColumn ColumnRight();        
 
-        IXLRangeColumn ColumnRight(Int32 step);
+        IXLRangeColumn ColumnRight(short step);
 
         IXLColumn WorksheetColumn();
 

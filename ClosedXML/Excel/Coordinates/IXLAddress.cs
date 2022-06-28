@@ -6,7 +6,7 @@ namespace ClosedXML.Excel
     public interface IXLAddress : IEqualityComparer<IXLAddress>, IEquatable<IXLAddress>
     {
         String ColumnLetter { get; }
-        Int32 ColumnNumber { get; }
+        short ColumnNumber { get; }
         Boolean FixedColumn { get; }
         Boolean FixedRow { get; }
         Int32 RowNumber { get; }

@@ -330,7 +330,7 @@ namespace ClosedXML.Excel
 
         public IXLColumns Columns()
         {
-            var columnMap = new HashSet<Int32>();
+            var columnMap = new HashSet<short>();
 
             columnMap.UnionWith(Internals.CellsCollection.ColumnsUsed.Keys);
             columnMap.UnionWith(Internals.ColumnsCollection.Keys);
@@ -361,7 +361,7 @@ namespace ClosedXML.Excel
 
                 if (Int32.TryParse(firstColumn, out int tmp))
                 {
-                    foreach (IXLColumn col in Columns(Int32.Parse(firstColumn), Int32.Parse(lastColumn)))
+                    foreach (IXLColumn col in Columns(short.Parse(firstColumn), short.Parse(lastColumn)))
                         retVal.Add((XLColumn)col);
                 }
                 else
@@ -379,11 +379,11 @@ namespace ClosedXML.Excel
                            XLHelper.GetColumnNumberFromLetter(lastColumn));
         }
 
-        public IXLColumns Columns(Int32 firstColumn, Int32 lastColumn)
+        public IXLColumns Columns(short firstColumn, short lastColumn)
         {
             var retVal = new XLColumns(null, StyleValue);
 
-            for (int co = firstColumn; co <= lastColumn; co++)
+            for (var co = firstColumn; co <= lastColumn; co++)
                 retVal.Add(Column(co));
             return retVal;
         }
@@ -439,9 +439,14 @@ namespace ClosedXML.Excel
             return Row(row);
         }
 
-        IXLColumn IXLWorksheet.Column(Int32 column)
+        IXLColumn IXLWorksheet.Column(short column)
         {
             return Column(column);
+        }
+
+        IXLColumn IXLWorksheet.Column(int column)
+        {
+            return Column((short)column);
         }
 
         IXLColumn IXLWorksheet.Column(String column)
@@ -449,9 +454,14 @@ namespace ClosedXML.Excel
             return Column(column);
         }
 
-        IXLCell IXLWorksheet.Cell(int row, int column)
+        IXLCell IXLWorksheet.Cell(int row, short column)
         {
             return Cell(row, column);
+        }
+
+        IXLCell IXLWorksheet.Cell(int row, int column)
+        {
+            return Cell(row, (short)column);
         }
 
         IXLCell IXLWorksheet.Cell(string cellAddressInRange)
@@ -751,7 +761,7 @@ namespace ClosedXML.Excel
             return GetRangeForSort().Sort(columnsToSortBy, sortOrder, matchCase, ignoreBlanks);
         }
 
-        public new IXLRange Sort(Int32 columnToSortBy, XLSortOrder sortOrder = XLSortOrder.Ascending,
+        public new IXLRange Sort(short columnToSortBy, XLSortOrder sortOrder = XLSortOrder.Ascending,
                                  Boolean matchCase = false, Boolean ignoreBlanks = true)
         {
             return GetRangeForSort().Sort(columnToSortBy, sortOrder, matchCase, ignoreBlanks);
@@ -1002,7 +1012,7 @@ namespace ClosedXML.Excel
         public IXLColumns ColumnsUsed(XLCellsUsedOptions options = XLCellsUsedOptions.AllContents, Func<IXLColumn, Boolean> predicate = null)
         {
             var columns = new XLColumns(Worksheet, StyleValue);
-            var columnsUsed = new HashSet<Int32>();
+            var columnsUsed = new HashSet<short>();
             Internals.ColumnsCollection.Keys.ForEach(r => columnsUsed.Add(r));
             Internals.CellsCollection.ColumnsUsed.Keys.ForEach(r => columnsUsed.Add(r));
             foreach (var columnNum in columnsUsed)
@@ -1160,7 +1170,7 @@ namespace ClosedXML.Excel
             return Row(row, true);
         }
 
-        public XLColumn Column(Int32 columnNumber)
+        public XLColumn Column(short columnNumber)
         {
             if (columnNumber <= 0 || columnNumber > XLHelper.MaxColumnNumber)
                 throw new ArgumentOutOfRangeException(nameof(columnNumber), $"Column number must be between 1 and {XLHelper.MaxColumnNumber}");
@@ -1231,10 +1241,10 @@ namespace ClosedXML.Excel
         private void ShiftConditionalFormattingColumns(XLRange range, int columnsShifted)
         {
             if (!ConditionalFormats.Any()) return;
-            Int32 firstCol = range.RangeAddress.FirstAddress.ColumnNumber;
+            short firstCol = range.RangeAddress.FirstAddress.ColumnNumber;
             if (firstCol == 1) return;
 
-            int colNum = columnsShifted > 0 ? firstCol - 1 : firstCol;
+            var colNum = (short)(columnsShifted > 0 ? firstCol - 1 : firstCol);
             var model = Column(colNum).AsRange();
 
             foreach (var cf in ConditionalFormats.ToList())
@@ -1277,10 +1287,10 @@ namespace ClosedXML.Excel
         private void ShiftDataValidationColumns(XLRange range, int columnsShifted)
         {
             if (!DataValidations.Any()) return;
-            Int32 firstCol = range.RangeAddress.FirstAddress.ColumnNumber;
+            var firstCol = range.RangeAddress.FirstAddress.ColumnNumber;
             if (firstCol == 1) return;
 
-            int colNum = columnsShifted > 0 ? firstCol - 1 : firstCol;
+            short colNum = (short)(columnsShifted > 0 ? firstCol - 1 : firstCol);
             var model = Column(colNum).AsRange();
 
             foreach (var dv in DataValidations.ToList())
@@ -1326,7 +1336,7 @@ namespace ClosedXML.Excel
             {
                 var model = new XLRangeAddress(
                     range.RangeAddress.FirstAddress,
-                    new XLAddress(XLHelper.MaxRowNumber, range.RangeAddress.LastAddress.ColumnNumber, false, false));
+                    new XLAddress(XLHelper.MaxRowNumber, (short)range.RangeAddress.LastAddress.ColumnNumber, false, false));
                 var rangesToSplit = Worksheet.MergedRanges
                     .GetIntersectedRanges(model)
                     .Where(r => r.RangeAddress.FirstAddress.ColumnNumber < range.RangeAddress.FirstAddress.ColumnNumber ||
@@ -1831,11 +1841,11 @@ namespace ClosedXML.Excel
         internal void SetValue<T>(T value, int ro, int co) where T : class
         {
             if (value == null)
-                this.Cell(ro, co).SetValue(String.Empty, setTableHeader: true, checkMergedRanges: false);
+                this.Cell(ro, (short)co).SetValue(String.Empty, setTableHeader: true, checkMergedRanges: false);
             else if (value is IConvertible)
-                this.Cell(ro, co).SetValue((T)Convert.ChangeType(value, typeof(T)), setTableHeader: true, checkMergedRanges: false);
+                this.Cell(ro, (short)co).SetValue((T)Convert.ChangeType(value, typeof(T)), setTableHeader: true, checkMergedRanges: false);
             else
-                this.Cell(ro, co).SetValue(value, setTableHeader: true, checkMergedRanges: false);
+                this.Cell(ro, (short)co).SetValue(value, setTableHeader: true, checkMergedRanges: false);
         }
 
         /// <summary>
@@ -1931,15 +1941,15 @@ namespace ClosedXML.Excel
 
         internal void DeleteColumn(int columnNumber)
         {
-            Internals.ColumnsCollection.Remove(columnNumber);
+            Internals.ColumnsCollection.Remove((short)columnNumber);
 
-            var columnsToMove = new List<Int32>(Internals.ColumnsCollection.Where(c => c.Key > columnNumber).Select(c => c.Key).OrderBy(c => c));
-            foreach (int column in columnsToMove)
+            var columnsToMove = new List<short>(Internals.ColumnsCollection.Where(c => c.Key > columnNumber).Select(c => c.Key).OrderBy(c => c));
+            foreach (var column in columnsToMove)
             {
-                Internals.ColumnsCollection.Add(column - 1, Internals.ColumnsCollection[column]);
+                Internals.ColumnsCollection.Add((short)(column - 1), Internals.ColumnsCollection[column]);
                 Internals.ColumnsCollection.Remove(column);
 
-                Internals.ColumnsCollection[column - 1].SetColumnNumber(column - 1);
+                Internals.ColumnsCollection[(short)(column - 1)].SetColumnNumber((short)(column - 1));
             }
         }
 

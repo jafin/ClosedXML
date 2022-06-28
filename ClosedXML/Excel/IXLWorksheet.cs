@@ -146,7 +146,7 @@ namespace ClosedXML.Excel
         /// </summary>
         /// <param name="firstColumn">The first column to return.</param>
         /// <param name="lastColumn">The last column to return.</param>
-        IXLColumns Columns(Int32 firstColumn, Int32 lastColumn);
+        IXLColumns Columns(short firstColumn, short lastColumn);
 
         /// <summary>
         /// Gets a collection of all rows in this worksheet.
@@ -178,7 +178,9 @@ namespace ClosedXML.Excel
         /// Gets the specified column of the worksheet.
         /// </summary>
         /// <param name="column">The worksheet's column.</param>
-        IXLColumn Column(Int32 column);
+        IXLColumn Column(short column);
+
+        IXLColumn Column(int column);
 
         /// <summary>
         /// Gets the specified column of the worksheet.
@@ -191,6 +193,7 @@ namespace ClosedXML.Excel
         /// </summary>
         /// <param name="row">The cell's row.</param>
         /// <param name="column">The cell's column.</param>
+        IXLCell Cell(int row, short column);
         IXLCell Cell(int row, int column);
 
         /// <summary>Gets the cell at the specified address.</summary>
@@ -251,7 +254,7 @@ namespace ClosedXML.Excel
         int RowCount();
 
         /// <summary>Gets the number of columns in this worksheet.</summary>
-        int ColumnCount();
+        short ColumnCount();
 
         /// <summary>
         /// Collapses all outlined rows.
@@ -373,7 +376,7 @@ namespace ClosedXML.Excel
 
         IXLRange Sort(String columnsToSortBy, XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
 
-        IXLRange Sort(Int32 columnToSortBy, XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
+        IXLRange Sort(short columnToSortBy, XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
 
         IXLRange SortLeftToRight(XLSortOrder sortOrder = XLSortOrder.Ascending, Boolean matchCase = false, Boolean ignoreBlanks = true);
 

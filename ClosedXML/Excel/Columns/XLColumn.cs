@@ -18,7 +18,7 @@ namespace ClosedXML.Excel
         /// <summary>
         /// The direct constructor should only be used in <see cref="XLWorksheet.RangeFactory"/>.
         /// </summary>
-        public XLColumn(XLWorksheet worksheet, Int32 column)
+        public XLColumn(XLWorksheet worksheet, short column)
             : base(XLRangeAddress.EntireColumn(worksheet, column), worksheet.StyleValue)
         {
             SetColumnNumber(column);
@@ -107,28 +107,28 @@ namespace ClosedXML.Excel
             return Cells(firstRow + ":" + lastRow);
         }
 
-        public new IXLColumns InsertColumnsAfter(Int32 numberOfColumns)
+        public new IXLColumns InsertColumnsAfter(short numberOfColumns)
         {
-            int columnNum = ColumnNumber();
-            Worksheet.Internals.ColumnsCollection.ShiftColumnsRight(columnNum + 1, numberOfColumns);
+            var columnNum = ColumnNumber();
+            Worksheet.Internals.ColumnsCollection.ShiftColumnsRight((short)(columnNum + 1), numberOfColumns);
             Worksheet.Column(columnNum).InsertColumnsAfterVoid(true, numberOfColumns);
-            var newColumns = Worksheet.Columns(columnNum + 1, columnNum + numberOfColumns);
+            var newColumns = Worksheet.Columns((short)(columnNum + 1), (short)(columnNum + numberOfColumns));
             CopyColumns(newColumns);
             return newColumns;
         }
 
-        public new IXLColumns InsertColumnsBefore(Int32 numberOfColumns)
+        public new IXLColumns InsertColumnsBefore(short numberOfColumns)
         {
-            int columnNum = ColumnNumber();
+            var columnNum = ColumnNumber();
             if (columnNum > 1)
             {
-                return Worksheet.Column(columnNum - 1).InsertColumnsAfter(numberOfColumns);
+                return Worksheet.Column((short)(columnNum - 1)).InsertColumnsAfter(numberOfColumns);
             }
 
             Worksheet.Internals.ColumnsCollection.ShiftColumnsRight(columnNum, numberOfColumns);
-            Worksheet.Column(columnNum).InsertColumnsBeforeVoid(true, numberOfColumns);
+            Worksheet.Column((short)columnNum).InsertColumnsBeforeVoid(true, numberOfColumns);
 
-            return Worksheet.Columns(columnNum, columnNum + numberOfColumns - 1);
+            return Worksheet.Columns(columnNum, (short)(columnNum + numberOfColumns - 1));
         }
 
         private void CopyColumns(IXLColumns newColumns)
@@ -541,7 +541,7 @@ namespace ClosedXML.Excel
             //do nothing
         }
 
-        internal void SetColumnNumber(int column)
+        internal void SetColumnNumber(short column)
         {
             RangeAddress = new XLRangeAddress(
                 new XLAddress(Worksheet,
@@ -588,7 +588,7 @@ namespace ClosedXML.Excel
 
         private XLColumn ColumnShift(Int32 columnsToShift)
         {
-            return Worksheet.Column(ColumnNumber() + columnsToShift);
+            return Worksheet.Column((short)(ColumnNumber() + columnsToShift));
         }
 
         #region XLColumn Left

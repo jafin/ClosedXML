@@ -34,7 +34,7 @@ namespace ClosedXML.Excel
                     return CreateColumn(key.RangeAddress.FirstAddress.ColumnNumber);
 
                 case XLRangeType.Row:
-                    return CreateColumn(key.RangeAddress.FirstAddress.RowNumber);
+                    return CreateColumn((short)key.RangeAddress.FirstAddress.RowNumber);
 
                 case XLRangeType.RangeColumn:
                     return CreateRangeColumn(key.RangeAddress);
@@ -57,7 +57,7 @@ namespace ClosedXML.Excel
             return new XLRange(xlRangeParameters);
         }
 
-        public XLColumn CreateColumn(int columnNumber)
+        public XLColumn CreateColumn(short columnNumber)
         {
             return new XLColumn(Worksheet, columnNumber);
         }

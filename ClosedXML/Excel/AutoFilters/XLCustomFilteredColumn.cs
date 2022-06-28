@@ -6,10 +6,10 @@ namespace ClosedXML.Excel
     internal class XLCustomFilteredColumn : IXLCustomFilteredColumn
     {
         private readonly XLAutoFilter _autoFilter;
-        private readonly Int32 _column;
+        private readonly short _column;
         private readonly XLConnector _connector;
 
-        public XLCustomFilteredColumn(XLAutoFilter autoFilter, Int32 column, XLConnector connector)
+        public XLCustomFilteredColumn(XLAutoFilter autoFilter, short column, XLConnector connector)
         {
             _autoFilter = autoFilter;
             _column = column;

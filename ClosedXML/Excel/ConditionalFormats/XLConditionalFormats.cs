@@ -41,10 +41,10 @@ namespace ClosedXML.Excel
 
 
         // Get the top left corner of the rectangle covering all the ranges
-        private (int row, int col) GetTopLeftFromRange(IXLRanges ranges)
+        private (int row, short col) GetTopLeftFromRange(IXLRanges ranges)
         {
             var minRow = int.MaxValue;
-            var minCol = int.MaxValue;
+            var minCol = short.MaxValue;
             foreach (var range in ranges)
             {
                 if (range.RangeAddress.FirstAddress.RowNumber < minRow)
@@ -79,7 +79,7 @@ namespace ClosedXML.Excel
                                                                  && f.Ranges.First().Worksheet.Position == firstRange.Worksheet.Position
                                                                  && XLConditionalFormat.NoRangeComparer.Equals(f, item);
                     var topLeftAddress = GetTopLeftFromRange(item.Ranges);
-                    var baseAddress = new XLAddress(topLeftAddress.row,topLeftAddress.col, false, false);
+                    var baseAddress = new XLAddress(topLeftAddress.row,(short)topLeftAddress.col, false, false);
                     var baseCell = firstRange.Worksheet.Cell(baseAddress) as XLCell;
 
                     int i = 1;

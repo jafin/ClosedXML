@@ -5,9 +5,9 @@ namespace ClosedXML.Excel
     internal class XLFilteredColumn : IXLFilteredColumn
     {
         private readonly XLAutoFilter _autoFilter;
-        private readonly Int32 _column;
+        private readonly short _column;
 
-        public XLFilteredColumn(XLAutoFilter autoFilter, Int32 column)
+        public XLFilteredColumn(XLAutoFilter autoFilter, short column)
         {
             _autoFilter = autoFilter;
             _column = column;

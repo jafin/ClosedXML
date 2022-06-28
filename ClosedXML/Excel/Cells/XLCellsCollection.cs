@@ -6,11 +6,11 @@ namespace ClosedXML.Excel
 {
     internal class XLCellsCollection
     {
-        internal Dictionary<Int32, Int32> ColumnsUsed { get; } = new Dictionary<int, int>();
+        internal Dictionary<short, Int32> ColumnsUsed { get; } = new Dictionary<short, int>();
         internal Dictionary<Int32, HashSet<Int32>> Deleted { get; } = new Dictionary<int, HashSet<int>>();
         internal Dictionary<int, Dictionary<int, XLCell>> RowsCollection { get; } = new Dictionary<int, Dictionary<int, XLCell>>();
 
-        public Int32 MaxColumnUsed;
+        public short MaxColumnUsed;
         public Int32 MaxRowUsed;
         public Dictionary<Int32, Int32> RowsUsed = new Dictionary<int, int>();
 
@@ -26,7 +26,7 @@ namespace ClosedXML.Excel
             Add(sheetPoint.Row, sheetPoint.Column, cell);
         }
 
-        public void Add(Int32 row, Int32 column, XLCell cell)
+        public void Add(Int32 row, short column, XLCell cell)
         {
             Count++;
 
@@ -54,12 +54,36 @@ namespace ClosedXML.Excel
                 dictionary.Add(key, 1);
         }
 
+        private static void IncrementUsage(Dictionary<short, int> dictionary, short key)
+        {
+            if (dictionary.TryGetValue(key, out int value))
+                dictionary[key] = value + 1;
+            else
+                dictionary.Add(key, 1);
+        }
+
         /// <summary/>
         /// <returns>True if the number was lowered to zero so MaxColumnUsed or MaxRowUsed may require
         /// recomputation.</returns>
         private static bool DecrementUsage(Dictionary<int, int> dictionary, Int32 key)
         {
             if (!dictionary.TryGetValue(key, out Int32 count)) return false;
+
+            if (count > 1)
+            {
+                dictionary[key] = count - 1;
+                return false;
+            }
+            else
+            {
+                dictionary.Remove(key);
+                return true;
+            }
+        }
+
+        private static bool DecrementUsage(Dictionary<short, int> dictionary, short key)
+        {
+            if (!dictionary.TryGetValue(key, out int count)) return false;
 
             if (count > 1)
             {
@@ -89,7 +113,7 @@ namespace ClosedXML.Excel
             Remove(sheetPoint.Row, sheetPoint.Column);
         }
 
-        public void Remove(Int32 row, Int32 column)
+        public void Remove(Int32 row, short column)
         {
             Count--;
             var rowRemoved = DecrementUsage(RowsUsed, row);
@@ -106,7 +130,7 @@ namespace ClosedXML.Excel
             {
                 MaxColumnUsed = ColumnsUsed.Keys.Any()
                     ? ColumnsUsed.Keys.Max()
-                    : 0;
+                    : (short)0;
             }
 
             if (Deleted.TryGetValue(row, out HashSet<Int32> delHash))
@@ -248,16 +272,16 @@ namespace ClosedXML.Excel
             return maxCo;
         }
 
-        public void RemoveAll(Int32 rowStart, Int32 columnStart,
-                              Int32 rowEnd, Int32 columnEnd)
+        public void RemoveAll(Int32 rowStart, short columnStart,
+                              Int32 rowEnd, short columnEnd)
         {
             int finalRow = rowEnd > MaxRowUsed ? MaxRowUsed : rowEnd;
-            int finalColumn = columnEnd > MaxColumnUsed ? MaxColumnUsed : columnEnd;
+            short finalColumn = columnEnd > MaxColumnUsed ? MaxColumnUsed : columnEnd;
             for (int ro = rowStart; ro <= finalRow; ro++)
             {
                 if (RowsCollection.TryGetValue(ro, out Dictionary<int, XLCell> columnsCollection))
                 {
-                    for (int co = columnStart; co <= finalColumn; co++)
+                    for (short co = columnStart; co <= finalColumn; co++)
                     {
                         if (columnsCollection.ContainsKey(co))
                             Remove(ro, co);
@@ -266,8 +290,8 @@ namespace ClosedXML.Excel
             }
         }
 
-        public IEnumerable<XLSheetPoint> GetSheetPoints(Int32 rowStart, Int32 columnStart,
-                                                        Int32 rowEnd, Int32 columnEnd)
+        public IEnumerable<XLSheetPoint> GetSheetPoints(Int32 rowStart, short columnStart,
+                                                        Int32 rowEnd, short columnEnd)
         {
             int finalRow = rowEnd > MaxRowUsed ? MaxRowUsed : rowEnd;
             int finalColumn = columnEnd > MaxColumnUsed ? MaxColumnUsed : columnEnd;
@@ -275,7 +299,7 @@ namespace ClosedXML.Excel
             {
                 if (RowsCollection.TryGetValue(ro, out Dictionary<Int32, XLCell> columnsCollection))
                 {
-                    for (int co = columnStart; co <= finalColumn; co++)
+                    for (short co = columnStart; co <= finalColumn; co++)
                     {
                         if (columnsCollection.ContainsKey(co))
                             yield return new XLSheetPoint(ro, co);
@@ -309,8 +333,8 @@ namespace ClosedXML.Excel
             {
                 for (int column = 0; column < columnCount; column++)
                 {
-                    var sp1 = new XLSheetPoint(sheetRange1.FirstPoint.Row + row, sheetRange1.FirstPoint.Column + column);
-                    var sp2 = new XLSheetPoint(sheetRange2.FirstPoint.Row + row, sheetRange2.FirstPoint.Column + column);
+                    var sp1 = new XLSheetPoint(sheetRange1.FirstPoint.Row + row, (short)(sheetRange1.FirstPoint.Column + column));
+                    var sp2 = new XLSheetPoint(sheetRange2.FirstPoint.Row + row, (short)(sheetRange2.FirstPoint.Column + column));
                     var cell1 = GetCell(sp1);
                     var cell2 = GetCell(sp2);
 

@@ -100,7 +100,7 @@ namespace ClosedXML.Excel.CalcEngine.Functions
             if (range.ColumnCount() > 1 && range.RowCount() > 1)
             {
                 var row_num = (int)p[1];
-                var column_num = (int)p[2];
+                var column_num = (short)p[2];
 
                 if (row_num > range.RowCount())
                     throw new CellReferenceException("Out of bound row number");
@@ -120,14 +120,14 @@ namespace ClosedXML.Excel.CalcEngine.Functions
             }
             else
             {
-                int column_num = 1;
+                short column_num = 1;
                 int row_num = 1;
 
                 if (!(p[1] is EmptyValueExpression))
                     row_num = (int)p[1];
 
                 if (!(p[2] is EmptyValueExpression))
-                    column_num = (int)p[2];
+                    column_num = (short)p[2];
 
                 var rangeIsRow = range.RowCount() == 1;
                 if (rangeIsRow && row_num > 1)
@@ -218,7 +218,7 @@ namespace ClosedXML.Excel.CalcEngine.Functions
         {
             var lookup_value = p[0];
             var range = ExtractRange(p[1]);
-            var col_index_num = (int)p[2];
+            var col_index_num = (short)p[2];
             var range_lookup = p.Count < 4
                                || p[3] is EmptyValueExpression
                                || (bool)(p[3]);

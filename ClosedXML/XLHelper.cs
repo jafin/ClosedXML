@@ -13,9 +13,9 @@ namespace ClosedXML.Excel
     public static partial class XLHelper
     {
         public const int MinRowNumber = 1;
-        public const int MinColumnNumber = 1;
+        public const short MinColumnNumber = 1;
         public const int MaxRowNumber = 1048576;
-        public const int MaxColumnNumber = 16384;
+        public const short MaxColumnNumber = 16384;
         public const String MaxColumnLetter = "XFD";
         public const Double Epsilon = 1e-10;
 
@@ -87,18 +87,18 @@ namespace ClosedXML.Excel
         /// Gets the column number of a given column letter.
         /// </summary>
         /// <param name="columnLetter"> The column letter to translate into a column number. </param>
-        public static int GetColumnNumberFromLetter(string columnLetter)
+        public static short GetColumnNumberFromLetter(string columnLetter)
         {
             if (string.IsNullOrEmpty(columnLetter)) throw new ArgumentNullException("columnLetter");
 
             //Extra check because we allow users to pass row col positions in as strings
             if (columnLetter[0] <= '9')
             {
-                return Int32.Parse(columnLetter, XLHelper.NumberStyle, XLHelper.ParseCulture);
+                return short.Parse(columnLetter, XLHelper.NumberStyle, XLHelper.ParseCulture);
             }
 
             if (letterIndexes.TryGetValue(columnLetter, out var retVal))
-                return retVal;
+                return (short)retVal;
 
             throw new ArgumentOutOfRangeException(columnLetter + " is not recognized as a column letter");
         }
@@ -120,9 +120,9 @@ namespace ClosedXML.Excel
             return allLetters[columnNumber - 1];
         }
 
-        internal static int TrimColumnNumber(int columnNumber)
+        internal static short TrimColumnNumber(int columnNumber)
         {
-            return Math.Max(XLHelper.MinColumnNumber, Math.Min(XLHelper.MaxColumnNumber, columnNumber));
+            return (short)Math.Max(XLHelper.MinColumnNumber, Math.Min(XLHelper.MaxColumnNumber, columnNumber));
         }
 
         internal static int TrimRowNumber(int rowNumber)

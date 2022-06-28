@@ -16,13 +16,13 @@ namespace ClosedXML.Excel
 
         public IXLCell Field(Int32 index)
         {
-            return Cell(index + 1);
+            return Cell((short)(index + 1));
         }
 
         public IXLCell Field(String name)
         {
             Int32 fieldIndex = _tableRange.Table.GetFieldIndex(name);
-            return Cell(fieldIndex + 1);
+            return Cell((short)(fieldIndex + 1));
         }
 
         public new IXLTableRow Sort()
