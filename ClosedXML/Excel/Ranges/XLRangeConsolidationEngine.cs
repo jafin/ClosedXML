@@ -116,7 +116,7 @@ namespace ClosedXML.Excel
             #region Private Fields
 
             private readonly IXLWorksheet _worksheet;
-            private ConcurrentDictionary<int, BitArray> _bitMatrix;
+            private Dictionary<int, BitArray> _bitMatrix;
             private int _maxColumn = 0;
             private int _minColumn = XLHelper.MaxColumnNumber + 1;
 
@@ -175,9 +175,8 @@ namespace ClosedXML.Excel
 
             private void PrepareBitMatrix(IEnumerable<IXLRange> ranges)
             {
-                _bitMatrix = new ConcurrentDictionary<int, BitArray>();
-
-                Parallel.ForEach(ranges, range =>
+                _bitMatrix = new Dictionary<int, BitArray>();
+                foreach (var range in ranges)
                 {
                     var address = range.RangeAddress;
                     _minColumn = (_minColumn <= address.FirstAddress.ColumnNumber)
@@ -186,18 +185,22 @@ namespace ClosedXML.Excel
                     _maxColumn = (_maxColumn >= address.LastAddress.ColumnNumber)
                         ? _maxColumn
                         : address.LastAddress.ColumnNumber;
-                
+
                     if (!_bitMatrix.ContainsKey(address.FirstAddress.RowNumber))
-                        _bitMatrix.TryAdd(address.FirstAddress.RowNumber, null);
+                        _bitMatrix.Add(address.FirstAddress.RowNumber, null);
                     if (!_bitMatrix.ContainsKey(address.LastAddress.RowNumber))
-                        _bitMatrix.TryAdd(address.LastAddress.RowNumber, null);
+                        _bitMatrix.Add(address.LastAddress.RowNumber, null);
                     if (!_bitMatrix.ContainsKey(address.LastAddress.RowNumber + 1))
-                        _bitMatrix.TryAdd(address.LastAddress.RowNumber + 1, null);
-                });
+                        _bitMatrix.Add(address.LastAddress.RowNumber + 1, null);
+                }
 
                 var keys = _bitMatrix.Keys.ToList();
-                Parallel.ForEach(keys, rowNum => _bitMatrix[rowNum] = new BitArray(_maxColumn - _minColumn + 3, false));
+                foreach (var rowNum in keys)
+                {
+                    _bitMatrix[rowNum] = new BitArray(_maxColumn - _minColumn + 3, false);
+                }
             }
+            
             private bool RowIncludesRange(BitArray rowArray, Tuple<int, int> rangeBoundaries)
             {
                 for (int i = rangeBoundaries.Item1; i <= rangeBoundaries.Item2; i++)
