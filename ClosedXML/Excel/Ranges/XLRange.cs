@@ -211,7 +211,7 @@ namespace ClosedXML.Excel
         public void Transpose(XLTransposeOptions transposeOption)
         {
             int rowCount = RowCount();
-            int columnCount = ColumnCount();
+            short columnCount = ColumnCount();
             int squareSide = rowCount > columnCount ? rowCount : columnCount;
 
             var firstCell = FirstCell();
@@ -302,7 +302,7 @@ namespace ClosedXML.Excel
             Int32 lastRowNumber = target.Address.RowNumber + RowCount() - 1;
             if (lastRowNumber > XLHelper.MaxRowNumber)
                 lastRowNumber = XLHelper.MaxRowNumber;
-            Int32 lastColumnNumber = target.Address.ColumnNumber + ColumnCount() - 1;
+            short lastColumnNumber = (short)(target.Address.ColumnNumber + ColumnCount() - 1);
             if (lastColumnNumber > XLHelper.MaxColumnNumber)
                 lastColumnNumber = XLHelper.MaxColumnNumber;
 
@@ -319,7 +319,7 @@ namespace ClosedXML.Excel
             Int32 lastRowNumber = target.RangeAddress.FirstAddress.RowNumber + RowCount() - 1;
             if (lastRowNumber > XLHelper.MaxRowNumber)
                 lastRowNumber = XLHelper.MaxRowNumber;
-            Int32 lastColumnNumber = target.RangeAddress.FirstAddress.ColumnNumber + ColumnCount() - 1;
+            short lastColumnNumber = (short)(target.RangeAddress.FirstAddress.ColumnNumber + ColumnCount() - 1);
             if (lastColumnNumber > XLHelper.MaxColumnNumber)
                 lastColumnNumber = XLHelper.MaxColumnNumber;
 
@@ -377,8 +377,8 @@ namespace ClosedXML.Excel
             if (predicate == null)
                 return Column(1);
 
-            Int32 columnCount = ColumnCount();
-            for (Int32 c = 1; c <= columnCount; c++)
+            short columnCount = ColumnCount();
+            for (short c = 1; c <= columnCount; c++)
             {
                 var column = Column(c);
                 if (predicate(column)) return column;
@@ -394,11 +394,11 @@ namespace ClosedXML.Excel
 
         internal XLRangeColumn LastColumn(Func<IXLRangeColumn, Boolean> predicate = null)
         {
-            Int32 columnCount = ColumnCount();
+            short columnCount = ColumnCount();
             if (predicate == null)
                 return Column(columnCount);
 
-            for (Int32 c = columnCount; c >= 1; c--)
+            for (short c = columnCount; c >= 1; c--)
             {
                 var column = Column(c);
                 if (predicate(column)) return column;
@@ -435,7 +435,7 @@ namespace ClosedXML.Excel
         {
             if (predicate == null)
             {
-                Int32 firstColumnUsed = Worksheet.Internals.CellsCollection.FirstColumnUsed(
+                var firstColumnUsed = Worksheet.Internals.CellsCollection.FirstColumnUsed(
                     RangeAddress.FirstAddress.RowNumber,
                     RangeAddress.FirstAddress.ColumnNumber,
                     RangeAddress.LastAddress.RowNumber,
@@ -445,8 +445,8 @@ namespace ClosedXML.Excel
                 return firstColumnUsed == 0 ? null : Column(firstColumnUsed - RangeAddress.FirstAddress.ColumnNumber + 1);
             }
 
-            Int32 columnCount = ColumnCount();
-            for (Int32 co = 1; co <= columnCount; co++)
+            short columnCount = ColumnCount();
+            for (short co = 1; co <= columnCount; co++)
             {
                 var column = Column(co);
 
@@ -484,7 +484,7 @@ namespace ClosedXML.Excel
         {
             if (predicate == null)
             {
-                Int32 lastColumnUsed = Worksheet.Internals.CellsCollection.LastColumnUsed(
+                var lastColumnUsed = Worksheet.Internals.CellsCollection.LastColumnUsed(
                     RangeAddress.FirstAddress.RowNumber,
                     RangeAddress.FirstAddress.ColumnNumber,
                     RangeAddress.LastAddress.RowNumber,
@@ -494,8 +494,8 @@ namespace ClosedXML.Excel
                 return lastColumnUsed == 0 ? null : Column(lastColumnUsed - RangeAddress.FirstAddress.ColumnNumber + 1);
             }
 
-            Int32 columnCount = ColumnCount();
-            for (Int32 co = columnCount; co >= 1; co--)
+            short columnCount = ColumnCount();
+            for (short co = columnCount; co >= 1; co--)
             {
                 var column = Column(co);
 
@@ -916,8 +916,8 @@ namespace ClosedXML.Excel
 
         public IXLRangeColumn FindColumn(Func<IXLRangeColumn, bool> predicate)
         {
-            Int32 columnCount = ColumnCount();
-            for (Int32 c = 1; c <= columnCount; c++)
+            short columnCount = ColumnCount();
+            for (short c = 1; c <= columnCount; c++)
             {
                 var column = Column(c);
                 if (predicate == null || predicate(column))

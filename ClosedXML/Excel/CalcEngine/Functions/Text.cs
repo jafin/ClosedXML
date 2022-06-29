@@ -184,9 +184,9 @@ namespace ClosedXML.Excel.CalcEngine
             if (s.Length == 0) return rep;
 
             var sb = new StringBuilder();
-            sb.Append(s.Substring(0, start));
+            sb.Append(s, 0, start);
             sb.Append(rep);
-            sb.Append(s.Substring(start + len));
+            sb.Append(s, start + len, s.Length - start + len);
 
             return sb.ToString();
         }

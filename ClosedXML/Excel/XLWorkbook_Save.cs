@@ -208,8 +208,7 @@ namespace ClosedXML.Excel
             {
                 var calChainEntries = calChainPart.CalculationChain.Descendants<CalculationCell>().Where(c => c.SheetId == sheetId);
                 List<CalculationCell> calcsToDelete = new List<CalculationCell>();
-                foreach (CalculationCell Item in calChainEntries)
-                    calcsToDelete.Add(Item);
+                calcsToDelete.AddRange(calChainEntries);
 
                 foreach (CalculationCell Item in calcsToDelete)
                     Item.Remove();
@@ -237,7 +236,7 @@ namespace ClosedXML.Excel
 
             if (workbookPart.Workbook != null && workbookPart.Workbook.PivotCaches != null)
             {
-                var pivotCachesToRemove = workbookPart.Workbook.PivotCaches.Where(pc => pivotCacheDefinitionsToRemove.Select(pcd => workbookPart.GetIdOfPart(pcd)).ToList().Contains(((PivotCache)pc).Id)).Distinct().ToList();
+                var pivotCachesToRemove = workbookPart.Workbook.PivotCaches.Where(pc => pivotCacheDefinitionsToRemove.ConvertAll(pcd => workbookPart.GetIdOfPart(pcd)).Contains(((PivotCache)pc).Id)).Distinct().ToList();
                 pivotCachesToRemove.ForEach(c => workbookPart.Workbook.PivotCaches.RemoveChild(c));
             }
 
@@ -3205,7 +3204,7 @@ namespace ClosedXML.Excel
             using (var ms = new MemoryStream())
             using (var stream = vmlDrawingPart.GetStream(FileMode.OpenOrCreate))
             {
-                CopyStream(stream, ms);
+                stream.CopyTo(ms);
                 stream.Position = 0;
                 var writer = new XmlTextWriter(stream, Encoding.UTF8);
 
@@ -5745,7 +5744,7 @@ namespace ClosedXML.Excel
                 //Dictionary<UInt32, Column> sheetColumnsByMax = columns.Elements<Column>().ToDictionary(c => c.Max.Value, c => c);
 
                 short minInColumnsCollection;
-                Int32 maxInColumnsCollection;
+                short maxInColumnsCollection;
                 if (xlWorksheet.Internals.ColumnsCollection.Count > 0)
                 {
                     minInColumnsCollection = xlWorksheet.Internals.ColumnsCollection.Keys.Min();
@@ -5828,7 +5827,7 @@ namespace ClosedXML.Excel
                     col.CustomWidth = true;
 
                     if ((Int32)col.Max.Value > maxInColumnsCollection)
-                        maxInColumnsCollection = (Int32)col.Max.Value;
+                        maxInColumnsCollection = (short)col.Max.Value;
                 }
 
                 if (maxInColumnsCollection < XLHelper.MaxColumnNumber && worksheetStyleId != 0)

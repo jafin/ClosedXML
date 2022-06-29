@@ -94,10 +94,10 @@ namespace ClosedXML.Excel
         {
             base.CopyTo(target);
 
-            int lastRowNumber = target.Address.RowNumber + RowCount() - 1;
+            var lastRowNumber = target.Address.RowNumber + RowCount() - 1;
             if (lastRowNumber > XLHelper.MaxRowNumber)
                 lastRowNumber = XLHelper.MaxRowNumber;
-            int lastColumnNumber = target.Address.ColumnNumber + ColumnCount() - 1;
+            var lastColumnNumber = target.Address.ColumnNumber + ColumnCount() - 1;
             if (lastColumnNumber > XLHelper.MaxColumnNumber)
                 lastColumnNumber = XLHelper.MaxColumnNumber;
 
@@ -113,10 +113,10 @@ namespace ClosedXML.Excel
         {
             base.CopyTo(target);
 
-            int lastRowNumber = target.RangeAddress.FirstAddress.RowNumber + RowCount() - 1;
+            var lastRowNumber = target.RangeAddress.FirstAddress.RowNumber + RowCount() - 1;
             if (lastRowNumber > XLHelper.MaxRowNumber)
                 lastRowNumber = XLHelper.MaxRowNumber;
-            int lastColumnNumber = target.RangeAddress.FirstAddress.ColumnNumber + ColumnCount() - 1;
+            var lastColumnNumber = target.RangeAddress.FirstAddress.ColumnNumber + ColumnCount() - 1;
             if (lastColumnNumber > XLHelper.MaxColumnNumber)
                 lastColumnNumber = XLHelper.MaxColumnNumber;
 
@@ -271,10 +271,10 @@ namespace ClosedXML.Excel
 
             return 0;
         }
-
+        
         private XLRangeColumn ColumnShift(Int32 columnsToShift)
         {
-            Int32 columnNumber = ColumnNumber() + columnsToShift;
+            var columnNumber = ColumnNumber() + columnsToShift;
             return Worksheet.Range(
                 RangeAddress.FirstAddress.RowNumber,
                 columnNumber,

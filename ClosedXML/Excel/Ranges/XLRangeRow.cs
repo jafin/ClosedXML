@@ -107,7 +107,7 @@ namespace ClosedXML.Excel
             int lastRowNumber = target.Address.RowNumber + RowCount() - 1;
             if (lastRowNumber > XLHelper.MaxRowNumber)
                 lastRowNumber = XLHelper.MaxRowNumber;
-            int lastColumnNumber = target.Address.ColumnNumber + ColumnCount() - 1;
+            var lastColumnNumber = target.Address.ColumnNumber + ColumnCount() - 1;
             if (lastColumnNumber > XLHelper.MaxColumnNumber)
                 lastColumnNumber = XLHelper.MaxColumnNumber;
 
@@ -118,14 +118,14 @@ namespace ClosedXML.Excel
                 lastColumnNumber)
                 .Row(1);
         }
-
+        
         public new IXLRangeRow CopyTo(IXLRangeBase target)
         {
             base.CopyTo(target);
             int lastRowNumber = target.RangeAddress.FirstAddress.RowNumber + RowCount() - 1;
             if (lastRowNumber > XLHelper.MaxRowNumber)
                 lastRowNumber = XLHelper.MaxRowNumber;
-            int lastColumnNumber = target.RangeAddress.LastAddress.ColumnNumber + ColumnCount() - 1;
+            var lastColumnNumber = target.RangeAddress.LastAddress.ColumnNumber + ColumnCount() - 1;
             if (lastColumnNumber > XLHelper.MaxColumnNumber)
                 lastColumnNumber = XLHelper.MaxColumnNumber;
 

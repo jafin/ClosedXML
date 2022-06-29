@@ -29,7 +29,7 @@ namespace ClosedXML.Excel.Patterns
         /// <summary>
         /// Minimum column included in this quadrant.
         /// </summary>
-        public int MinimumColumn { get; }
+        public short MinimumColumn { get; }
 
         /// <summary>
         /// Minimum row included in this quadrant.
@@ -39,7 +39,7 @@ namespace ClosedXML.Excel.Patterns
         /// <summary>
         /// Maximum column included in this quadrant.
         /// </summary>
-        public int MaximumColumn { get; }
+        public short MaximumColumn { get; }
 
         /// <summary>
         /// Maximum row included in this quadrant.
@@ -77,11 +77,11 @@ namespace ClosedXML.Excel.Patterns
             X = x;
             Y = y;
 
-            MinimumColumn = (Level == 0) ? 1 : 1 + XLHelper.MaxColumnNumber / (int)Math.Pow(2, Level) * X;
+            MinimumColumn = (short)((Level == 0) ? 1 : 1 + XLHelper.MaxColumnNumber / (int)Math.Pow(2, Level) * X);
             MinimumRow = (Level == 0) ? 1 : 1 + XLHelper.MaxColumnNumber / (int)Math.Pow(2, Level) * Y; //MaxColumnNumber here is not a mistake
-            MaximumColumn = (Level == 0)
+            MaximumColumn = (short)((Level == 0)
                 ? XLHelper.MaxColumnNumber
-                : XLHelper.MaxColumnNumber / (int)Math.Pow(2, Level) * (X + 1);
+                : XLHelper.MaxColumnNumber / (int)Math.Pow(2, Level) * (X + 1));
             MaximumRow = (Level == 0)
                 ? XLHelper.MaxRowNumber
                 : XLHelper.MaxColumnNumber / (int)Math.Pow(2, Level) * (Y + 1); //MaxColumnNumber here is not a mistake

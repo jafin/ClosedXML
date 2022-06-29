@@ -29,7 +29,7 @@ namespace ClosedXML.Excel
         }
 
         public Boolean FreezePanes { get; set; }
-        public Int32 SplitColumn { get; set; }
+        public short SplitColumn { get; set; }
         public Int32 SplitRow { get; set; }
 
         IXLAddress IXLSheetView.TopLeftCellAddress { get => TopLeftCellAddress; set => TopLeftCellAddress = (XLAddress)value; }
@@ -83,13 +83,13 @@ namespace ClosedXML.Excel
         public void Freeze(Int32 rows, Int32 columns)
         {
             SplitRow = rows;
-            SplitColumn = columns;
+            SplitColumn = (short)columns;
             FreezePanes = true;
         }
 
         public void FreezeColumns(Int32 columns)
         {
-            SplitColumn = columns;
+            SplitColumn = (short)columns;
             FreezePanes = true;
         }
 

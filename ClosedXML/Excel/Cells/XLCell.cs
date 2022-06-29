@@ -702,7 +702,7 @@ namespace ClosedXML.Excel
             bool transpose)
         {
             if (createTable && this.Worksheet.Tables.Any(t => t.Contains(this)))
-                throw new InvalidOperationException($"This cell '{this.Address.ToString()}' is already part of a table.");
+                throw new InvalidOperationException($"This cell '{this.Address}' is already part of a table.");
 
             var range = InsertDataInternal(reader, addHeadings, transpose);
 
@@ -1642,7 +1642,7 @@ namespace ClosedXML.Excel
                 {
                     var matchString = match.Value;
                     var matchIndex = match.Index;
-                    sb.Append(s.Substring(lastIndex, matchIndex - lastIndex));
+                    sb.Append(s, lastIndex, matchIndex - lastIndex);
 
                     sb.Append((char)int.Parse(match.Groups[1].Value, NumberStyles.AllowHexSpecifier));
 
@@ -1650,7 +1650,7 @@ namespace ClosedXML.Excel
                 }
 
                 if (lastIndex < s.Length)
-                    sb.Append(s.Substring(lastIndex));
+                    sb.Append(s, lastIndex, s.Length - lastIndex);
 
                 value = (T)Convert.ChangeType(sb.ToString(), typeof(T));
                 return true;
@@ -1915,8 +1915,8 @@ namespace ClosedXML.Excel
                 _dataType = XLDataType.Text;
                 return true;
             }
-            else
-                return false;
+
+            return false;
         }
 
         private bool SetRange(object rangeObject)
@@ -2025,18 +2025,32 @@ namespace ClosedXML.Excel
             }
         }
 
+        private (int row, short col) GetMaxRowAndColumn(IXLRange[] rage)
+        {
+            var rowMax = int.MinValue;
+            var colMax = short.MinValue;
+            foreach (var row in rage)
+            {
+                if (row.RangeAddress.LastAddress.RowNumber > rowMax)
+                    rowMax = row.RangeAddress.LastAddress.RowNumber;
+                if (row.RangeAddress.LastAddress.ColumnNumber > colMax)
+                    colMax = row.RangeAddress.LastAddress.ColumnNumber;
+            }
+
+            return (rowMax, colMax);
+        }
+
         private void CopyConditionalFormatsFrom(XLRangeBase fromRange)
         {
             var srcSheet = fromRange.Worksheet;
-            int minRo = fromRange.RangeAddress.FirstAddress.RowNumber;
-            int minCo = fromRange.RangeAddress.FirstAddress.ColumnNumber;
+            var minRo = fromRange.RangeAddress.FirstAddress.RowNumber;
+            var minCo = fromRange.RangeAddress.FirstAddress.ColumnNumber;
             if (srcSheet.ConditionalFormats.Any(r => r.Ranges.GetIntersectedRanges(fromRange.RangeAddress).Any()))
             {
                 var fs = srcSheet.ConditionalFormats.SelectMany(cf => cf.Ranges.GetIntersectedRanges(fromRange.RangeAddress)).ToArray();
-                if (fs.Any())
+                if (fs.Length > 0)
                 {
-                    minRo = fs.Max(r => r.RangeAddress.LastAddress.RowNumber);
-                    minCo = fs.Max(r => r.RangeAddress.LastAddress.ColumnNumber);
+                    (minRo, minCo) = GetMaxRowAndColumn(fs);
                 }
             }
             int rCnt = minRo - fromRange.RangeAddress.FirstAddress.RowNumber + 1;
@@ -2167,7 +2181,7 @@ namespace ClosedXML.Excel
             if (string.IsNullOrWhiteSpace(strValue))
                 return string.Empty;
 
-            var value = ">" + strValue + "<";
+            var value = $">{strValue}<";
 
             var regex = conversionType == FormulaConversionType.A1ToR1C1 ? A1Regex : R1C1Regex;
 
@@ -2178,25 +2192,32 @@ namespace ClosedXML.Excel
             {
                 var matchString = match.Value;
                 var matchIndex = match.Index;
-                if (value.Substring(0, matchIndex).CharCount('"') % 2 == 0
-                    && value.Substring(0, matchIndex).CharCount('\'') % 2 == 0)
+                ReadOnlySpan<char> valueSpan = value.AsSpan();
+                if (valueSpan.Slice(0, matchIndex).ToString().CharCount('"') % 2 == 0
+                    && valueSpan.Slice(0,matchIndex).ToString().CharCount('\'') % 2 == 0)
+                // if (value.Substring(0, matchIndex).CharCount('"') % 2 == 0
+                //     && value.Substring(0, matchIndex).CharCount('\'') % 2 == 0)
                 {
                     // Check if the match is in between quotes
-                    sb.Append(value.Substring(lastIndex, matchIndex - lastIndex));
+                    sb.Append(value, lastIndex, matchIndex - lastIndex);
                     sb.Append(conversionType == FormulaConversionType.A1ToR1C1
                         ? GetR1C1Address(matchString, rowsToShift, columnsToShift)
                         : GetA1Address(matchString, rowsToShift, columnsToShift));
                 }
                 else
-                    sb.Append(value.Substring(lastIndex, matchIndex - lastIndex + matchString.Length));
+                    sb.Append(value, lastIndex, matchIndex - lastIndex + matchString.Length);
                 lastIndex = matchIndex + matchString.Length;
             }
 
             if (lastIndex < value.Length)
-                sb.Append(value.Substring(lastIndex));
+                sb.Append(value, lastIndex, value.Length - lastIndex);
 
-            var retVal = sb.ToString();
-            return retVal.Substring(1, retVal.Length - 2);
+            return sb.ToString(1,sb.Length-2);
+        }
+
+        private string ToA1Address(string leftPart, string rightPart)
+        {
+            return $"{leftPart}:{rightPart}";
         }
 
         private string GetA1Address(string r1C1Address, int rowsToShift, int columnsToShift)
@@ -2208,20 +2229,14 @@ namespace ClosedXML.Excel
                 var parts = addressToUse.Split(':');
                 var p1 = parts[0];
                 var p2 = parts[1];
-                string leftPart;
-                string rightPart;
                 if (p1.StartsWith("R"))
                 {
-                    leftPart = GetA1Row(p1, rowsToShift);
-                    rightPart = GetA1Row(p2, rowsToShift);
+                    return ToA1Address(GetA1Row(p1, rowsToShift), GetA1Row(p2, rowsToShift));
                 }
                 else
                 {
-                    leftPart = GetA1Column(p1, columnsToShift);
-                    rightPart = GetA1Column(p2, columnsToShift);
+                    return ToA1Address(GetA1Column(p1, columnsToShift), GetA1Column(p2, columnsToShift)) ;
                 }
-
-                return leftPart + ":" + rightPart;
             }
 
             try
@@ -2232,8 +2247,7 @@ namespace ClosedXML.Excel
                 var columnPart = addressToUse.Substring(addressToUse.IndexOf("C",StringComparison.Ordinal));
                 var columnToReturn = GetA1Column(columnPart, columnsToShift);
 
-                var retAddress = columnToReturn + rowToReturn;
-                return retAddress;
+                return columnToReturn + rowToReturn;
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -2253,12 +2267,11 @@ namespace ClosedXML.Excel
                 if (bIndex >= 0)
                 {
                     columnToReturn = XLHelper.GetColumnLetterFromNumber(
-                        (short)(_columnNumber +
-                        short.Parse(columnPart.Substring(bIndex + 1, columnPart.Length - bIndex - 2)) + columnsToShift)
-                        );
+                            short.Parse(columnPart.Substring(bIndex + 1, columnPart.Length - bIndex - 2)) + columnsToShift);
                 }
                 else if (mIndex >= 0)
                 {
+              
                     columnToReturn = XLHelper.GetColumnLetterFromNumber(
                         (short)(_columnNumber + short.Parse(columnPart.Substring(mIndex)) + columnsToShift)
                         );
@@ -2276,23 +2289,17 @@ namespace ClosedXML.Excel
 
         private string GetA1Row(string rowPart, int rowsToShift)
         {
-            string rowToReturn;
             if (rowPart == "R")
-                rowToReturn = (_rowNumber + rowsToShift).ToString();
-            else
+                return (_rowNumber + rowsToShift).ToString();
+            var bIndex = rowPart.IndexOf("[", StringComparison.Ordinal);
+            if (bIndex >= 0)
             {
-                var bIndex = rowPart.IndexOf("[", StringComparison.Ordinal);
-                if (bIndex >= 0)
-                {
-                    rowToReturn =
-                        (_rowNumber + int.Parse(rowPart.Substring(bIndex + 1, rowPart.Length - bIndex - 2)) +
-                         rowsToShift).ToString();
-                }
-                else
-                    rowToReturn = "$" + (int.Parse(rowPart.Substring(1)) + rowsToShift);
+                return
+                    (_rowNumber + int.Parse(rowPart.Substring(bIndex + 1, rowPart.Length - bIndex - 2)) +
+                     rowsToShift).ToString();
             }
 
-            return rowToReturn;
+            return "$" + (int.Parse(rowPart.Substring(1)) + rowsToShift);
         }
 
         private string GetR1C1Address(string a1Address, int rowsToShift, int columnsToShift)
@@ -2329,28 +2336,20 @@ namespace ClosedXML.Excel
 
         private string GetR1C1Row(int rowNumber, bool fixedRow, int rowsToShift)
         {
-            string rowPart;
             rowNumber += rowsToShift;
             var rowDiff = rowNumber - _rowNumber;
             if (rowDiff != 0 || fixedRow)
-                rowPart = fixedRow ? "R" + rowNumber : "R[" + rowDiff + "]";
-            else
-                rowPart = "R";
-
-            return rowPart;
+                return fixedRow ? "R" + rowNumber : "R[" + rowDiff + "]";
+            return "R";
         }
 
         private string GetR1C1Column(int columnNumber, bool fixedColumn, int columnsToShift)
         {
-            string columnPart;
             columnNumber += columnsToShift;
             var columnDiff = columnNumber - _columnNumber;
             if (columnDiff != 0 || fixedColumn)
-                columnPart = fixedColumn ? "C" + columnNumber : "C[" + columnDiff + "]";
-            else
-                columnPart = "C";
-
-            return columnPart;
+                return fixedColumn ? "C" + columnNumber : "C[" + columnDiff + "]";
+            return "C";
         }
 
         internal void CopyValuesFrom(XLCell source)
@@ -2489,7 +2488,7 @@ namespace ClosedXML.Excel
                 if (value.Substring(0, matchIndex).CharCount('"') % 2 == 0)
                 {
                     // Check that the match is not between quotes
-                    sb.Append(value.Substring(lastIndex, matchIndex - lastIndex));
+                    sb.Append(value, lastIndex, matchIndex - lastIndex);
                     string sheetName;
                     var useSheetName = false;
                     if (matchString.Contains('!'))
@@ -2600,13 +2599,13 @@ namespace ClosedXML.Excel
                         sb.Append(matchString);
                 }
                 else
-                    sb.Append(value.Substring(lastIndex, matchIndex - lastIndex + matchString.Length));
+                    sb.Append(value, lastIndex, matchIndex - lastIndex + matchString.Length);
 
                 lastIndex = matchIndex + matchString.Length;
             }
 
             if (lastIndex < value.Length)
-                sb.Append(value.Substring(lastIndex));
+                sb.Append(value, lastIndex, value.Length - lastIndex);
 
             return sb.ToString();
         }
@@ -2635,7 +2634,7 @@ namespace ClosedXML.Excel
                 if (value.Substring(0, matchIndex).CharCount('"') % 2 == 0)
                 {
                     // Check that the match is not between quotes
-                    sb.Append(value.Substring(lastIndex, matchIndex - lastIndex));
+                    sb.Append(value, lastIndex, matchIndex - lastIndex);
                     string sheetName;
                     var useSheetName = false;
                     if (matchString.Contains('!'))
@@ -2766,12 +2765,12 @@ namespace ClosedXML.Excel
                         sb.Append(matchString);
                 }
                 else
-                    sb.Append(value.Substring(lastIndex, matchIndex - lastIndex + matchString.Length));
+                    sb.Append(value, lastIndex, matchIndex - lastIndex + matchString.Length);
                 lastIndex = matchIndex + matchString.Length;
             }
 
             if (lastIndex < value.Length)
-                sb.Append(value.Substring(lastIndex));
+                sb.Append(value, lastIndex, value.Length - lastIndex);
 
             return sb.ToString();
         }

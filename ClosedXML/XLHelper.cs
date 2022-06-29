@@ -120,9 +120,9 @@ namespace ClosedXML.Excel
             return allLetters[columnNumber - 1];
         }
 
-        internal static short TrimColumnNumber(int columnNumber)
+        internal static int TrimColumnNumber(int columnNumber)
         {
-            return (short)Math.Max(XLHelper.MinColumnNumber, Math.Min(XLHelper.MaxColumnNumber, columnNumber));
+            return Math.Max(XLHelper.MinColumnNumber, Math.Min(XLHelper.MaxColumnNumber, columnNumber));
         }
 
         internal static int TrimRowNumber(int rowNumber)
@@ -132,7 +132,7 @@ namespace ClosedXML.Excel
 
         public static bool IsValidColumn(string column)
         {
-            if (String.IsNullOrWhiteSpace(column))
+            if (string.IsNullOrWhiteSpace(column))
                 return false;
             var length = column.Length;
             if (length > 3)
@@ -163,7 +163,7 @@ namespace ClosedXML.Excel
 
         public static bool IsValidRow(string rowString)
         {
-            if (Int32.TryParse(rowString, out int row))
+            if (int.TryParse(rowString, out int row))
                 return row > 0 && row <= MaxRowNumber;
             return false;
         }

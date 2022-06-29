@@ -164,7 +164,7 @@ namespace ClosedXML.Excel
 
             Position = new XLDrawingPosition
             {
-                Column = cell.Address.ColumnNumber + 1,
+                Column = (short)(cell.Address.ColumnNumber + 1),
                 ColumnOffset = 2,
                 Row = previousRowNumber,
                 RowOffset = previousRowOffset

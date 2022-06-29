@@ -465,7 +465,7 @@ namespace ClosedXML.Excel
                 else
                 {
                     UnsupportedSheet unsupportedSheet =
-                        UnsupportedSheets.FirstOrDefault(us => us.Position == (Int32)(workbookView.ActiveTab.Value + 1));
+                        UnsupportedSheets.Find(us => us.Position == (Int32)(workbookView.ActiveTab.Value + 1));
                     if (unsupportedSheet != null)
                         unsupportedSheet.IsActive = true;
                     else
@@ -1454,7 +1454,7 @@ namespace ClosedXML.Excel
         private static void LoadClientDataAnchor<T>(IXLDrawing<T> drawing, XElement anchor)
         {
             var location = anchor.Value.Split(',');
-            drawing.Position.Column = int.Parse(location[0]) + 1;
+            drawing.Position.Column = (short)(int.Parse(location[0]) + 1);
             drawing.Position.ColumnOffset = Double.Parse(location[1], CultureInfo.InvariantCulture) / 7.5;
             drawing.Position.Row = int.Parse(location[2]) + 1;
             drawing.Position.RowOffset = Double.Parse(location[3], CultureInfo.InvariantCulture);
@@ -1643,7 +1643,7 @@ namespace ClosedXML.Excel
         private static void ParseReference(string item, out string sheetName, out string sheetArea)
         {
             var sections = item.Trim().Split('!');
-            if (sections.Count() == 1)
+            if (sections.Length == 1)
             {
                 sheetName = string.Empty;
                 sheetArea = item;
@@ -1655,7 +1655,7 @@ namespace ClosedXML.Excel
             }
         }
 
-        private Int32 lastColumnNumber;
+        private short lastColumnNumber;
 
         private void LoadCells(SharedStringItem[] sharedStrings, Stylesheet s, NumberingFormats numberingFormats,
                                Fills fills, Borders borders, Fonts fonts, Dictionary<uint, string> sharedFormulasR1C1,
@@ -3012,9 +3012,9 @@ namespace ClosedXML.Excel
             if (new[] { PaneStateValues.Frozen, PaneStateValues.FrozenSplit }.Contains(pane?.State?.Value ?? PaneStateValues.Split))
             {
                 if (pane.HorizontalSplit != null)
-                    ws.SheetView.SplitColumn = (Int32)pane.HorizontalSplit.Value;
+                    ws.SheetView.SplitColumn = (short)pane.HorizontalSplit.Value;
                 if (pane.VerticalSplit != null)
-                    ws.SheetView.SplitRow = (Int32)pane.VerticalSplit.Value;
+                    ws.SheetView.SplitRow = (int)pane.VerticalSplit.Value;
             }
 
             if (XLHelper.IsValidA1Address(sheetView.TopLeftCell))

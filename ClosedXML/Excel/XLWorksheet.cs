@@ -338,6 +338,7 @@ namespace ClosedXML.Excel
             var retVal = new XLColumns(this, StyleValue, columnMap.Select(Column));
             return retVal;
         }
+   
 
         public IXLColumns Columns(String columns)
         {

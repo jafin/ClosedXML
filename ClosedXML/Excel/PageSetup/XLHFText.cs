@@ -34,7 +34,7 @@ namespace ClosedXML.Excel
             StringBuilder sb = new StringBuilder();
 
             if (RichText.FontName != null && RichText.FontName != wsFont.FontName)
-                sb.Append("&\"" + RichText.FontName);
+                sb.Append("&\"").Append(RichText.FontName);
             else
                 sb.Append("&\"-");
 
@@ -48,7 +48,7 @@ namespace ClosedXML.Excel
                 sb.Append(",Regular\"");
 
             if (RichText.FontSize > 0 && Math.Abs(RichText.FontSize - wsFont.FontSize) > XLHelper.Epsilon)
-                sb.Append("&" + RichText.FontSize);
+                sb.Append('&').Append(RichText.FontSize);
 
             if (RichText.Strikethrough && !wsFont.Strikethrough)
                 sb.Append("&S");
@@ -75,7 +75,7 @@ namespace ClosedXML.Excel
                 (lastColorPosition >= 0 && !RichText.FontColor.Equals(XLColor.FromHtml("#" + prevText.Substring(lastColorPosition + 2, 6))))
                 || (lastColorPosition == -1 && !RichText.FontColor.Equals(wsFont.FontColor))
                 )
-                sb.Append("&K" + RichText.FontColor.Color.ToHex().Substring(2));
+                sb.Append("&K").Append(RichText.FontColor.Color.ToHex().Substring(2));
 
             sb.Append(RichText.Text);
 

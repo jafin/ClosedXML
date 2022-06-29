@@ -10,7 +10,7 @@ namespace ClosedXML.Excel
         /// <summary>
         /// Gets or sets the column after which the horizontal split should take place.
         /// </summary>
-        Int32 SplitColumn { get; set; }
+        short SplitColumn { get; set; }
 
         /// <summary>
         /// Gets or sets the row after which the vertical split should take place.

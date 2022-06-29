@@ -44,10 +44,10 @@ namespace ClosedXML.Excel
             LastAddress = lastAddress;
         }
 
-        public XLRangeAddress(XLWorksheet worksheet, String rangeAddress) : this()
+        public XLRangeAddress(XLWorksheet worksheet, string rangeAddress) : this()
         {
             string addressToUse = rangeAddress.Contains("!")
-                ? rangeAddress.Substring(rangeAddress.LastIndexOf("!") + 1)
+                ? rangeAddress.Substring(rangeAddress.LastIndexOf("!", StringComparison.Ordinal) + 1)
                 : rangeAddress;
 
             string firstPart;
@@ -98,21 +98,18 @@ namespace ClosedXML.Excel
 
         public XLAddress LastAddress { get; }
 
-        IXLWorksheet IXLRangeAddress.Worksheet
-        {
-            get { return Worksheet; }
-        }
+        IXLWorksheet IXLRangeAddress.Worksheet => Worksheet;
 
         IXLAddress IXLRangeAddress.FirstAddress
         {
             [DebuggerStepThrough]
-            get { return FirstAddress; }
+            get => FirstAddress;
         }
 
         IXLAddress IXLRangeAddress.LastAddress
         {
             [DebuggerStepThrough]
-            get { return LastAddress; }
+            get => LastAddress;
         }
 
         public bool IsValid => FirstAddress.IsValid && LastAddress.IsValid;
@@ -355,12 +352,11 @@ namespace ClosedXML.Excel
 
         public override bool Equals(object obj)
         {
-            if (!(obj is XLRangeAddress))
+            if (!(obj is XLRangeAddress address))
             {
                 return false;
             }
 
-            var address = (XLRangeAddress)obj;
             return FirstAddress.Equals(address.FirstAddress) &&
                    LastAddress.Equals(address.LastAddress) &&
                    EqualityComparer<XLWorksheet>.Default.Equals(Worksheet, address.Worksheet);

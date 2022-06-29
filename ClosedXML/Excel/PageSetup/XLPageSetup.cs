@@ -84,8 +84,8 @@ namespace ClosedXML.Excel
             FirstRowToRepeatAtTop = firstRowToRepeatAtTop;
             LastRowToRepeatAtTop = lastRowToRepeatAtTop;
         }
-        public Int32 FirstColumnToRepeatAtLeft { get; private set; }
-        public Int32 LastColumnToRepeatAtLeft { get; private set; }
+        public short FirstColumnToRepeatAtLeft { get; private set; }
+        public short LastColumnToRepeatAtLeft { get; private set; }
         public void SetColumnsToRepeatAtLeft(String range)
         {
             var arrRange = range.Replace("$", "").Split(':');
@@ -103,8 +103,8 @@ namespace ClosedXML.Excel
             if (firstColumnToRepeatAtLeft <= 0) throw new ArgumentOutOfRangeException(nameof(firstColumnToRepeatAtLeft),"The first column has to be greater than zero.");
             if (firstColumnToRepeatAtLeft > lastColumnToRepeatAtLeft) throw new ArgumentOutOfRangeException(nameof(firstColumnToRepeatAtLeft),"The first column has to be less than the second column.");
 
-            FirstColumnToRepeatAtLeft = firstColumnToRepeatAtLeft;
-            LastColumnToRepeatAtLeft = lastColumnToRepeatAtLeft;
+            FirstColumnToRepeatAtLeft = (short)firstColumnToRepeatAtLeft;
+            LastColumnToRepeatAtLeft = (short)lastColumnToRepeatAtLeft;
         }
 
         public XLPageOrientation PageOrientation { get; set; }

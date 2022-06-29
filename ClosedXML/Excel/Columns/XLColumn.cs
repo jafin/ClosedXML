@@ -39,7 +39,7 @@ namespace ClosedXML.Excel
             {
                 yield return Style;
 
-                int column = ColumnNumber();
+                var column = ColumnNumber();
 
                 foreach (XLCell cell in Worksheet.Internals.CellsCollection.GetCellsInColumn(column))
                     yield return cell.Style;
@@ -50,7 +50,7 @@ namespace ClosedXML.Excel
         {
             get
             {
-                int column = ColumnNumber();
+                var column = ColumnNumber();
                 foreach (XLCell cell in Worksheet.Internals.CellsCollection.GetCellsInColumn(column))
                     yield return cell;
             }
@@ -64,7 +64,7 @@ namespace ClosedXML.Excel
 
         public void Delete()
         {
-            int columnNumber = ColumnNumber();
+            var columnNumber = ColumnNumber();
             Delete(XLShiftDeletedCells.ShiftCellsLeft);
             Worksheet.DeleteColumn(columnNumber);
         }
@@ -206,7 +206,7 @@ namespace ClosedXML.Excel
                         {
                             String formattedString = rt.Text;
                             var arr = formattedString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                            Int32 arrCount = arr.Count();
+                            Int32 arrCount = arr.Length;
                             for (Int32 i = 0; i < arrCount; i++)
                             {
                                 String s = arr[i];
@@ -220,7 +220,7 @@ namespace ClosedXML.Excel
                     {
                         String formattedString = c.GetFormattedString();
                         var arr = formattedString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                        Int32 arrCount = arr.Count();
+                        Int32 arrCount = arr.Length;
                         for (Int32 i = 0; i < arrCount; i++)
                         {
                             String s = arr[i];

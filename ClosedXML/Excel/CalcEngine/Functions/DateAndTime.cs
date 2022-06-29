@@ -229,7 +229,7 @@ namespace ClosedXML.Excel.CalcEngine.Functions
 
         private static Double GetYearAverage(DateTime date1, DateTime date2)
         {
-            var daysInYears = new List<Int32>();
+            var daysInYears = new List<int>();
             for (int year = date1.Year; year <= date2.Year; year++)
                 daysInYears.Add(DateTime.IsLeapYear(year) ? 366 : 365);
             return daysInYears.Average();

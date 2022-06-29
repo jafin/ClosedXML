@@ -10,7 +10,7 @@ namespace ClosedXML.Excel
     {
         private static readonly Regex RegexNewLine = new Regex(@"((?<!\r)\n|\r\n)", RegexOptions.Compiled);
 
-        public static Int32 CharCount(this String instance, Char c)
+        public static int CharCount(this string instance, char c)
         {
             return instance.Length - instance.Replace(c.ToString(), "").Length;
         }

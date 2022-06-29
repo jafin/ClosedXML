@@ -431,11 +431,9 @@ namespace ClosedXML.Excel
             {
                 _originalStream.Position = 0;
 
-                using (var fileStream = File.Create(file))
-                {
-                    CopyStream(_originalStream, fileStream);
-                    CreatePackage(fileStream, false, _spreadsheetDocumentType, options);
-                }
+                using var fileStream = File.Create(file);
+                _originalStream.CopyTo(fileStream);
+                CreatePackage(fileStream, false, _spreadsheetDocumentType, options);
             }
 
             _loadSource = XLLoadSource.File;
@@ -524,7 +522,7 @@ namespace ClosedXML.Excel
                         // but for better understanding and if somebody in the future
                         // provide an changed version of CopyStream
                         ms.Position = 0;
-                        CopyStream(ms, stream);
+                        ms.CopyTo(stream);
                     }
                 }
             }
@@ -532,7 +530,7 @@ namespace ClosedXML.Excel
             {
                 using (var fileStream = new FileStream(_originalFile, FileMode.Open, FileAccess.Read))
                 {
-                    CopyStream(fileStream, stream);
+                    fileStream.CopyTo(stream);
                 }
                 CreatePackage(stream, false, _spreadsheetDocumentType, options);
             }
@@ -540,7 +538,7 @@ namespace ClosedXML.Excel
             {
                 _originalStream.Position = 0;
                 if (_originalStream != stream)
-                    CopyStream(_originalStream, stream);
+                    _originalStream.CopyTo(stream);
 
                 CreatePackage(stream, false, _spreadsheetDocumentType, options);
             }
@@ -548,19 +546,6 @@ namespace ClosedXML.Excel
             _loadSource = XLLoadSource.Stream;
             _originalStream = stream;
             _originalFile = null;
-        }
-
-        internal static void CopyStream(Stream input, Stream output)
-        {
-            var buffer = new byte[8 * 1024];
-            int len;
-            // dm 20130422, it is always a good idea to rewind the input stream, or not?
-            if (input.CanSeek)
-                input.Seek(0, SeekOrigin.Begin);
-            while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
-                output.Write(buffer, 0, len);
-            // dm 20130422, and flushing the output after write
-            output.Flush();
         }
 
         public IXLTable Table(string tableName, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase)
@@ -575,7 +560,7 @@ namespace ClosedXML.Excel
             return table;
         }
 
-        public IXLWorksheet Worksheet(String name)
+        public IXLWorksheet Worksheet(string name)
         {
             return WorksheetsInternal.Worksheet(name);
         }

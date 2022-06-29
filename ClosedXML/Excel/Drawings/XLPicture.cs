@@ -418,10 +418,9 @@ namespace ClosedXML.Excel.Drawings
 
         private static ImageFormat FromMimeType(string mimeType)
         {
-            var guid = ImageCodecInfo.GetImageDecoders().FirstOrDefault(c => c.MimeType.Equals(mimeType, StringComparison.OrdinalIgnoreCase))?.FormatID;
+            var guid = Array.Find(ImageCodecInfo.GetImageDecoders(), c => c.MimeType.Equals(mimeType, StringComparison.OrdinalIgnoreCase))?.FormatID;
             if (!guid.HasValue) return null;
-            var property = typeof(System.Drawing.Imaging.ImageFormat).GetProperties(BindingFlags.Public | BindingFlags.Static)
-                .FirstOrDefault(pi => (pi.GetValue(null, null) as ImageFormat).Guid.Equals(guid.Value));
+            var property = Array.Find(typeof(System.Drawing.Imaging.ImageFormat).GetProperties(BindingFlags.Public | BindingFlags.Static), pi => (pi.GetValue(null, null) as ImageFormat).Guid.Equals(guid.Value));
 
             if (property == null) return null;
             return (property.GetValue(null, null) as ImageFormat);

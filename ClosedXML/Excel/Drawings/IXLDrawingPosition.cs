@@ -7,7 +7,7 @@ namespace ClosedXML.Excel
 {
     public interface IXLDrawingPosition
     {
-        Int32 Column { get; set; }
+        short Column { get; set; }
         IXLDrawingPosition SetColumn(Int32 column);
         Double ColumnOffset { get; set; }
         IXLDrawingPosition SetColumnOffset(Double columnOffset);

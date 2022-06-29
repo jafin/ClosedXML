@@ -280,8 +280,8 @@ namespace ClosedXML.Excel
         {
             get
             {
-                Int32 columnCount = ColumnCount();
-                for (int co = 0; co < columnCount; co++)
+                var columnCount = ColumnCount();
+                for (short co = 0; co < columnCount; co++)
                     yield return Field(co);
             }
         }

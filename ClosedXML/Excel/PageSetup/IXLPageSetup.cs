@@ -107,10 +107,10 @@ namespace ClosedXML.Excel
 
         /// <summary>Gets the first column to repeat on the left of the printed pages.</summary>
         /// <value>The first column to repeat on the left of the printed pages.</value>
-        Int32 FirstColumnToRepeatAtLeft { get; }
+        short FirstColumnToRepeatAtLeft { get; }
         /// <summary>Gets the last column to repeat on the left of the printed pages.</summary>
         /// <value>The last column to repeat on the left of the printed pages.</value>
-        Int32 LastColumnToRepeatAtLeft { get; }
+        short  LastColumnToRepeatAtLeft { get; }
         /// <summary>
         /// Sets the rows to repeat on the left of the printed pages.
         /// </summary>

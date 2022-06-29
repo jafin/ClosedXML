@@ -52,7 +52,7 @@ namespace ClosedXML.Examples.Tables
                     table.Field("Age").TotalsRowFunction = XLTotalsRowFunction.Average;
 
                     // Copy all the headers
-                    Int32 columnWithHeaders = lastCell.Address.ColumnNumber + 3;
+                    var columnWithHeaders = lastCell.Address.ColumnNumber + 3;
                     Int32 currentRow = table.RangeAddress.FirstAddress.RowNumber;
                     ws.Cell(currentRow, columnWithHeaders).Value = "Table Headers";
                     foreach (var cell in table.HeadersRow().Cells())
@@ -73,7 +73,7 @@ namespace ClosedXML.Examples.Tables
                     headersTable.Field(0).TotalsRowFormulaA1 = "CONCATENATE(\"Count: \", CountA(Headers[Table Headers]))";
 
                     // Copy the names
-                    Int32 columnWithNames = columnWithHeaders + 2;
+                    var columnWithNames = columnWithHeaders + 2;
                     currentRow = table.RangeAddress.FirstAddress.RowNumber; // reset the currentRow
                     ws.Cell(currentRow, columnWithNames).Value = "Names";
                     foreach (var row in table.DataRange.Rows())
