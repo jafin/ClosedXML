@@ -1049,7 +1049,7 @@ namespace ClosedXML.Excel
                     return String.Format("XLWorkbook({0})", _originalFile);
 
                 case XLLoadSource.Stream:
-                    return String.Format("XLWorkbook({0})", _originalStream.ToString());
+                    return String.Format("XLWorkbook({0})", _originalStream);
 
                 default:
                     throw new NotImplementedException();

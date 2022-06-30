@@ -6102,7 +6102,7 @@ namespace ClosedXML.Excel
             }
         }
 
-    
+
         private static void MergeCells(WorksheetPart worksheetPart, XLWorksheet xlWorksheet, XLWorksheetContentManager cm)
         {
             if ((xlWorksheet).Internals.MergedRanges.Any())
@@ -6118,7 +6118,7 @@ namespace ClosedXML.Excel
                 mergeCells.RemoveAllChildren<MergeCell>();
 
                 foreach (var mergeCell in xlWorksheet.Internals.MergedRanges.Select(
-                             m => m.RangeAddress.FirstAddress.ToString() + ":" + m.RangeAddress.LastAddress.ToString()).Select(
+                             m => m.RangeAddress.FirstAddress + ":" + m.RangeAddress.LastAddress).Select(
                              merged => new MergeCell { Reference = merged }).ToList())
                     mergeCells.AppendChild(mergeCell);
 

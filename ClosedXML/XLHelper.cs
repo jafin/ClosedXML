@@ -60,7 +60,7 @@ namespace ClosedXML.Excel
                       RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture
                 );
 
-        private static readonly string[] letters = new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+        private static readonly string[] letters = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
         private static readonly string[] allLetters;
         private static readonly Dictionary<string, int> letterIndexes;

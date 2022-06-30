@@ -220,8 +220,7 @@ namespace ClosedXML.Excel
 
                 using (var reader = OpenXmlReader.Create(worksheetPart))
                 {
-                    Type[] ignoredElements = new Type[]
-                    {
+                    Type[] ignoredElements = {
                         typeof(CustomSheetViews) // Custom sheet views contain its own auto filter data, and more, which should be ignored for now
                     };
 
@@ -2325,7 +2324,7 @@ namespace ClosedXML.Excel
                     else if (filterColumn.Filters.Elements().All(element => element is DateGroupItem))
                         autoFilter.Column(column).FilterType = XLFilterType.DateTimeGrouping;
                     else
-                        throw new NotSupportedException(String.Format("Mixing regular filters and date group filters in a single autofilter column is not supported. Column {0} of {1}", column, autoFilter.Range.ToString()));
+                        throw new NotSupportedException(String.Format("Mixing regular filters and date group filters in a single autofilter column is not supported. Column {0} of {1}", column, autoFilter.Range));
 
                     var filterList = new List<XLFilter>();
 
