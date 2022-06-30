@@ -23,7 +23,7 @@ namespace ClosedXML.Excel
         /// <value>
         /// The scroll position's top left cell.
         /// </value>
-        IXLAddress TopLeftCellAddress { get; set; }
+        XLAddress TopLeftCellAddress { get; set; }
 
         XLSheetViewOptions View { get; set; }
 

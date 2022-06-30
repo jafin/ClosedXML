@@ -48,7 +48,7 @@ namespace ClosedXML.Excel
         /// Filter ranges from a collection that intersect the specified address. Is much more efficient
         /// that using Linq expression .Where().
         /// </summary>
-        IEnumerable<IXLRange> GetIntersectedRanges(IXLAddress address);
+        IEnumerable<IXLRange> GetIntersectedRanges(XLAddress address);
 
         /// <summary>
         /// Filter ranges from a collection that intersect the specified cell. Is much more efficient

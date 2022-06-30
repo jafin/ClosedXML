@@ -209,7 +209,7 @@ namespace ClosedXML.Excel
 
         /// <summary>Gets the cell at the specified address.</summary>
         /// <param name="cellAddressInRange">The cell address in the worksheet.</param>
-        IXLCell Cell(IXLAddress cellAddressInRange);
+        IXLCell Cell(XLAddress cellAddressInRange);
 
         /// <summary>
         /// Returns the specified range.
@@ -235,7 +235,7 @@ namespace ClosedXML.Excel
         /// <summary>Returns the specified range.</summary>
         /// <param name="firstCellAddress">The first cell address in the worksheet.</param>
         /// <param name="lastCellAddress"> The last cell address in the worksheet.</param>
-        IXLRange Range(IXLAddress firstCellAddress, IXLAddress lastCellAddress);
+        IXLRange Range(XLAddress firstCellAddress, XLAddress lastCellAddress);
 
         /// <summary>Returns a collection of ranges, separated by commas.</summary>
         /// <para>e.g. Ranges("A1"), Ranges("A1:C2"), Ranges("A1:B2,D1:D4")</para>
@@ -304,6 +304,8 @@ namespace ClosedXML.Excel
         /// Deletes this worksheet.
         /// </summary>
         void Delete();
+
+        bool IsDeleted { get; }
 
         /// <summary>
         /// Gets an object to manage this worksheet's named ranges.

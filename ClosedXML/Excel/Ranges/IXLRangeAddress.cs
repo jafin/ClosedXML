@@ -16,7 +16,7 @@ namespace ClosedXML.Excel
         /// <value>
         /// The first address.
         /// </value>
-        IXLAddress FirstAddress { get; }
+        XLAddress FirstAddress { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this range is valid.
@@ -32,7 +32,7 @@ namespace ClosedXML.Excel
         /// <value>
         /// The last address.
         /// </value>
-        IXLAddress LastAddress { get; }
+        XLAddress LastAddress { get; }
 
         /// <summary>
         /// Gets the number of cells in the area covered by the range address.
@@ -49,7 +49,7 @@ namespace ClosedXML.Excel
         /// <summary>Allocates the current range address in the internal range repository and returns it</summary>
         IXLRange AsRange();
 
-        Boolean Contains(IXLAddress address);
+        Boolean Contains(XLAddress address);
 
         /// <summary>
         /// Returns the intersection of this range address with another range address on the same worksheet.

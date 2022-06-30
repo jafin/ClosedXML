@@ -61,7 +61,7 @@ namespace ClosedXML.Excel
 
         public XLWorksheet Worksheet
         {
-            get { return RangeAddress.Worksheet; }
+            get { return (XLWorksheet)RangeAddress.Worksheet; }
         }
 
         public IXLDataValidation CreateDataValidation()
@@ -774,11 +774,6 @@ namespace ClosedXML.Excel
             return Cell(new XLAddress(Worksheet, row, column, false, false));
         }
 
-        public XLCell Cell(IXLAddress cellAddressInRange)
-        {
-            return Cell(cellAddressInRange.RowNumber, cellAddressInRange.ColumnNumber);
-        }
-
         public XLCell Cell(XLAddress cellAddressInRange)
         {
             Int32 absRow = cellAddressInRange.RowNumber + RangeAddress.FirstAddress.RowNumber - 1;
@@ -925,7 +920,7 @@ namespace ClosedXML.Excel
             }
 
             if (newFirstCellAddress.Worksheet != null)
-                return newFirstCellAddress.Worksheet.GetOrCreateRange(xlRangeParameters);
+                return ((XLWorksheet)(newFirstCellAddress.Worksheet)).GetOrCreateRange(xlRangeParameters);
             else if (Worksheet != null)
                 return Worksheet.GetOrCreateRange(xlRangeParameters);
             else
@@ -963,7 +958,7 @@ namespace ClosedXML.Excel
             return Range(rangeAddress);
         }
 
-        public XLRange Range(IXLAddress firstCellAddress, IXLAddress lastCellAddress)
+        public XLRange Range(XLAddress firstCellAddress, XLAddress lastCellAddress)
         {
             var rangeAddress = new XLRangeAddress((XLAddress)firstCellAddress, (XLAddress)lastCellAddress);
             return Range(rangeAddress);
@@ -1169,8 +1164,8 @@ namespace ClosedXML.Excel
                     cell.ShiftFormulaColumns(AsRange(), numberOfColumns);
             }
 
-            var cellsToInsert = new Dictionary<IXLAddress, XLCell>();
-            var cellsToDelete = new List<IXLAddress>();
+            var cellsToInsert = new Dictionary<XLAddress, XLCell>();
+            var cellsToDelete = new List<XLAddress>();
             short firstColumn = RangeAddress.FirstAddress.ColumnNumber;
             int firstRow = RangeAddress.FirstAddress.RowNumber;
             int lastRow = RangeAddress.FirstAddress.RowNumber + RowCount() - 1;
@@ -1386,8 +1381,8 @@ namespace ClosedXML.Excel
                     cell.ShiftFormulaRows(asRange, numberOfRows);
             }
 
-            var cellsToInsert = new Dictionary<IXLAddress, XLCell>();
-            var cellsToDelete = new List<IXLAddress>();
+            var cellsToInsert = new Dictionary<XLAddress, XLCell>();
+            var cellsToDelete = new List<XLAddress>();
             int firstRow = RangeAddress.FirstAddress.RowNumber;
             var firstColumn = RangeAddress.FirstAddress.ColumnNumber;
             short lastColumn = (short)Math.Min(
@@ -1554,8 +1549,8 @@ namespace ClosedXML.Excel
             }
 
             // Range to shift...
-            var cellsToInsert = new Dictionary<IXLAddress, XLCell>();
-            var cellsToDelete = new List<IXLAddress>();
+            var cellsToInsert = new Dictionary<XLAddress, XLCell>();
+            var cellsToDelete = new List<XLAddress>();
 
             Int32 columnModifier = 0;
             Int32 rowModifier = 0;

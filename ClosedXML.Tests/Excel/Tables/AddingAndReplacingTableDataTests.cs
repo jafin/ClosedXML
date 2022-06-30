@@ -203,7 +203,7 @@ namespace ClosedXML.Tests.Excel.Tables
             using (var ms = new MemoryStream())
             {
                 var value = "Some value that will be overwritten";
-                IXLAddress address;
+                XLAddress address;
                 using (var wb = PrepareWorkbook())
                 {
                     var ws = wb.Worksheets.First();

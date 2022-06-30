@@ -36,7 +36,7 @@ namespace ClosedXML.Excel
         /// <summary>Gets the cell at the specified address.</summary>
         /// <para>The cell address is relative to the parent range.</para>
         /// <param name="cellAddressInRange">The cell address in the parent range.</param>
-        IXLCell Cell(IXLAddress cellAddressInRange);
+        IXLCell Cell(XLAddress cellAddressInRange);
 
         /// <summary>
         /// Gets the specified column of the range.
@@ -197,7 +197,7 @@ namespace ClosedXML.Excel
         /// <summary>Returns the specified range.</summary>
         /// <param name="firstCellAddress">The first cell address in the range.</param>
         /// <param name="lastCellAddress"> The last cell address in the range.</param>
-        IXLRange Range(IXLAddress firstCellAddress, IXLAddress lastCellAddress);
+        IXLRange Range(XLAddress firstCellAddress, XLAddress lastCellAddress);
 
         /// <summary>Returns a collection of ranges, separated by commas.</summary>
         /// <para>e.g. Ranges("A1"), Ranges("A1:C2"), Ranges("A1:B2,D1:D4")</para>

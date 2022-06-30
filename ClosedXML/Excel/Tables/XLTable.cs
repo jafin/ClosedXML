@@ -306,7 +306,7 @@ namespace ClosedXML.Excel
             return Resize(Worksheet.Range(firstCellAddress, lastCellAddress));
         }
 
-        public IXLTable Resize(IXLAddress firstCellAddress, IXLAddress lastCellAddress)
+        public IXLTable Resize(XLAddress firstCellAddress, XLAddress lastCellAddress)
         {
             return Resize(Worksheet.Range(firstCellAddress, lastCellAddress));
         }

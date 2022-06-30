@@ -92,7 +92,7 @@ namespace ClosedXML.Excel
 
         #region Public properties
 
-        public XLWorksheet Worksheet { get; }
+        public IXLWorksheet Worksheet { get; }
 
         public XLAddress FirstAddress { get; }
 
@@ -100,13 +100,13 @@ namespace ClosedXML.Excel
 
         IXLWorksheet IXLRangeAddress.Worksheet => Worksheet;
 
-        IXLAddress IXLRangeAddress.FirstAddress
+        XLAddress IXLRangeAddress.FirstAddress
         {
             [DebuggerStepThrough]
             get => FirstAddress;
         }
 
-        IXLAddress IXLRangeAddress.LastAddress
+        XLAddress IXLRangeAddress.LastAddress
         {
             [DebuggerStepThrough]
             get => LastAddress;
@@ -213,12 +213,6 @@ namespace ClosedXML.Excel
                 );
         }
 
-        public bool Contains(IXLAddress address)
-        {
-            var xlAddress = (XLAddress)address;
-            return Contains(xlAddress);
-        }
-
         internal IXLRangeAddress WithoutWorksheet()
         {
             return new XLRangeAddress(
@@ -226,7 +220,7 @@ namespace ClosedXML.Excel
                 LastAddress.WithoutWorksheet());
         }
 
-        internal bool Contains(XLAddress address)
+        public bool Contains(XLAddress address)
         {
             return FirstAddress.RowNumber <= address.RowNumber &&
                    address.RowNumber <= LastAddress.RowNumber &&
@@ -359,12 +353,12 @@ namespace ClosedXML.Excel
 
             return FirstAddress.Equals(address.FirstAddress) &&
                    LastAddress.Equals(address.LastAddress) &&
-                   EqualityComparer<XLWorksheet>.Default.Equals(Worksheet, address.Worksheet);
+                   EqualityComparer<IXLWorksheet>.Default.Equals(Worksheet, address.Worksheet);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(FirstAddress, LastAddress) * -1521134295 + EqualityComparer<XLWorksheet>.Default.GetHashCode(Worksheet);
+            return HashCode.Combine(FirstAddress, LastAddress) * -1521134295 + EqualityComparer<IXLWorksheet>.Default.GetHashCode(Worksheet);
         }
 
         public bool Equals(XLRangeAddress other)

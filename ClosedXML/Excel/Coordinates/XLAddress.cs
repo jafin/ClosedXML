@@ -1,10 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace ClosedXML.Excel
 {
-    internal struct XLAddress : IXLAddress, IEquatable<XLAddress>
+    public struct XLAddress : IEquatable<XLAddress>, IEqualityComparer<XLAddress>
     {
+        public override bool Equals(object obj)
+        {
+            return obj is XLAddress other && Equals(other);
+        }
+
         #region Static
         /// <summary>
         /// Create address without worksheet. For calculation only!
@@ -16,7 +22,7 @@ namespace ClosedXML.Excel
             return Create(null, cellAddressString);
         }
 
-        public static XLAddress Create(XLWorksheet worksheet, string cellAddressString)
+        public static XLAddress Create(IXLWorksheet worksheet, string cellAddressString)
         {
             var fixedColumn = cellAddressString[0] == '$';
             var startPos = fixedColumn ? 1 : 0;
@@ -101,7 +107,7 @@ namespace ClosedXML.Excel
         /// <param name = "columnLetter">The column letter of the cell address.</param>
         /// <param name = "fixedRow"></param>
         /// <param name = "fixedColumn"></param>
-        public XLAddress(XLWorksheet worksheet, int rowNumber, string columnLetter, bool fixedRow, bool fixedColumn)
+        public XLAddress(IXLWorksheet worksheet, int rowNumber, string columnLetter, bool fixedRow, bool fixedColumn)
                 : this(worksheet, rowNumber, XLHelper.GetColumnNumberFromLetter(columnLetter), fixedRow, fixedColumn)
         {
         }
@@ -126,7 +132,7 @@ namespace ClosedXML.Excel
         /// <param name = "columnNumber">The column number of the cell address.</param>
         /// <param name = "fixedRow"></param>
         /// <param name = "fixedColumn"></param>
-        public XLAddress(XLWorksheet worksheet, int rowNumber, short columnNumber, bool fixedRow, bool fixedColumn) : this()
+        public XLAddress(IXLWorksheet worksheet, int rowNumber, short columnNumber, bool fixedRow, bool fixedColumn) : this()
 
         {
             Worksheet = worksheet;
@@ -138,7 +144,7 @@ namespace ClosedXML.Excel
         }
 
 
-        public XLAddress(XLWorksheet worksheet, int rowNumber, int columnNumber, bool fixedRow, bool fixedColumn) : this()
+        public XLAddress(IXLWorksheet worksheet, int rowNumber, int columnNumber, bool fixedRow, bool fixedColumn) : this()
 
         {
             Worksheet = worksheet;
@@ -153,13 +159,7 @@ namespace ClosedXML.Excel
 
         #region Properties
 
-        public XLWorksheet Worksheet { get; internal set; }
-
-        IXLWorksheet IXLAddress.Worksheet
-        {
-            [DebuggerStepThrough]
-            get => Worksheet;
-        }
+        public IXLWorksheet Worksheet { get; }
 
         public bool HasWorksheet
         {
@@ -304,7 +304,7 @@ namespace ClosedXML.Excel
 
         #region IEqualityComparer<XLCellAddress> Members
 
-        public bool Equals(IXLAddress x, IXLAddress y)
+        public bool Equals(XLAddress x, XLAddress y)
         {
             return x == y;
         }
@@ -318,7 +318,7 @@ namespace ClosedXML.Excel
 
         #region IEquatable<XLCellAddress> Members
 
-        public bool Equals(IXLAddress other)
+        public bool Equals(XLAddress other)
         {
             if (other == null)
                 return false;
@@ -329,25 +329,12 @@ namespace ClosedXML.Excel
                    _fixedColumn == other.FixedColumn;
         }
 
-        public bool Equals(XLAddress other)
-        {
-            return _rowNumber == other._rowNumber &&
-                   _columnNumber == other._columnNumber &&
-                   _fixedRow == other._fixedRow &&
-                   _fixedColumn == other._fixedColumn;
-        }
-
-        public override bool Equals(object other)
-        {
-            return Equals(other as IXLAddress);
-        }
-
         public override int GetHashCode()
         {
             return HashCode.Combine(_fixedRow, _fixedColumn, _rowNumber, _columnNumber);
         }
 
-        public int GetHashCode(IXLAddress obj)
+        public int GetHashCode(XLAddress obj)
         {
             return HashCode.Combine((XLAddress)obj);
         }
@@ -380,7 +367,7 @@ namespace ClosedXML.Excel
             return address;
         }
 
-        internal XLAddress WithoutWorksheet()
+        public XLAddress WithoutWorksheet()
         {
             return new XLAddress(RowNumber, ColumnNumber, FixedRow, FixedColumn);
         }
@@ -431,6 +418,8 @@ namespace ClosedXML.Excel
 
             return address;
         }
+
+       
 
         public string UniqueId => RowNumber.ToString("0000000") + ColumnNumber.ToString("00000");
 

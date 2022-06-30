@@ -5463,7 +5463,7 @@ namespace ClosedXML.Excel
                 xlWorksheet.Internals.CellsCollection.Deleted.Remove(r.Key);
             }
 
-            var tableTotalCells = new HashSet<IXLAddress>(
+            var tableTotalCells = new HashSet<XLAddress>(
                 xlWorksheet.Tables
                     .Where(table => table.ShowTotalsRow)
                     .SelectMany(table =>

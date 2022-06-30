@@ -173,7 +173,7 @@ namespace ClosedXML.Excel.Patterns
         /// <summary>
         /// Get all ranges from the quadrant and all child quadrants (recursively) that cover the specified address.
         /// </summary>
-        public IEnumerable<IXLAddressable> GetIntersectedRanges(IXLAddress address)
+        public IEnumerable<IXLAddressable> GetIntersectedRanges(XLAddress address)
         {
             if (Ranges != null)
             {
@@ -188,7 +188,7 @@ namespace ClosedXML.Excel.Patterns
             {
                 foreach (var childQuadrant in Children)
                 {
-                    if (childQuadrant.Covers(in address))
+                    if (childQuadrant.Covers(address))
                     {
                         var childRanges = childQuadrant.GetIntersectedRanges(address);
                         foreach (var range in childRanges)
@@ -308,7 +308,7 @@ namespace ClosedXML.Excel.Patterns
         /// <summary>
         /// Check if the current quadrant covers the specified address.
         /// </summary>
-        private bool Covers(in IXLAddress address)
+        private bool Covers(XLAddress address)
         {
             return MinimumColumn <= address.ColumnNumber &&
                    MaximumColumn >= address.ColumnNumber &&
@@ -374,7 +374,7 @@ namespace ClosedXML.Excel.Patterns
             return base.GetIntersectedRanges(rangeAddress).Cast<T>();
         }
 
-        public new IEnumerable<T> GetIntersectedRanges(IXLAddress address)
+        public new IEnumerable<T> GetIntersectedRanges(XLAddress address)
         {
             return base.GetIntersectedRanges(address).Cast<T>();
         }

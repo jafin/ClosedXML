@@ -38,7 +38,7 @@ namespace ClosedXML.Excel
             ranges.Add(worksheet.Range(firstCellAddress, lastCellAddress));
         }
 
-        public void Add(IXLAddress firstCellAddress, IXLAddress lastCellAddress)
+        public void Add(XLAddress firstCellAddress, XLAddress lastCellAddress)
         {
             ranges.Add(worksheet.Range(firstCellAddress, lastCellAddress));
         }

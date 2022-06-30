@@ -10,7 +10,7 @@ namespace ClosedXML.Tests
         public void ToStringTest()
         {
             var ws = new XLWorkbook().Worksheets.Add("Sheet1");
-            IXLAddress address = ws.Cell(1, 1).Address;
+            XLAddress address = ws.Cell(1, 1).Address;
 
             Assert.AreEqual("A1", address.ToString());
             Assert.AreEqual("A1", address.ToString(XLReferenceStyle.A1));
@@ -34,7 +34,7 @@ namespace ClosedXML.Tests
         public void ToStringTestWithSpace()
         {
             IXLWorksheet ws = new XLWorkbook().Worksheets.Add("Sheet 1");
-            IXLAddress address = ws.Cell(1, 1).Address;
+            XLAddress address = ws.Cell(1, 1).Address;
 
             Assert.AreEqual("A1", address.ToString());
             Assert.AreEqual("A1", address.ToString(XLReferenceStyle.A1));
@@ -161,7 +161,7 @@ namespace ClosedXML.Tests
 
         #region Private Methods
 
-        private IXLAddress ProduceInvalidAddress()
+        private XLAddress ProduceInvalidAddress()
         {
             IXLWorksheet ws = new XLWorkbook().Worksheets.Add("Sheet 1");
             var range = ws.Range("A1:B2");
@@ -170,7 +170,7 @@ namespace ClosedXML.Tests
             return range.RangeAddress.FirstAddress;
         }
 
-        private IXLAddress ProduceAddressOnDeletedWorksheet()
+        private XLAddress ProduceAddressOnDeletedWorksheet()
         {
             IXLWorksheet ws = new XLWorkbook().Worksheets.Add("Sheet 1");
             var address = ws.Cell("A1").Address;
@@ -179,7 +179,7 @@ namespace ClosedXML.Tests
             return address;
         }
 
-        private IXLAddress ProduceInvalidAddressOnDeletedWorksheet()
+        private XLAddress ProduceInvalidAddressOnDeletedWorksheet()
         {
             var address = ProduceInvalidAddress();
             address.Worksheet.Delete();

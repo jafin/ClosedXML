@@ -159,7 +159,7 @@ namespace ClosedXML.Excel
         /// <param name="firstCellAddress">The first cell address in the worksheet.</param>
         /// <param name="lastCellAddress">The last cell address in the worksheet.</param>
         /// <returns></returns>
-        IXLTable Resize(IXLAddress firstCellAddress, IXLAddress lastCellAddress);
+        IXLTable Resize(XLAddress firstCellAddress, XLAddress lastCellAddress);
 
         /// <summary>
         /// Resizes the table to the specified range.

@@ -152,7 +152,7 @@ namespace ClosedXML.Excel
 
         IXLWorksheet IXLCell.Worksheet => Worksheet;
 
-        IXLAddress IXLCell.Address => Address;
+        XLAddress IXLCell.Address => Address;
 
         IXLRange IXLCell.AsRange()
         {

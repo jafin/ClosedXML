@@ -6,7 +6,7 @@ namespace ClosedXML.Excel
 {
     using System.Linq;
 
-    internal class XLCells : XLStylizedBase, IXLCells, IXLStylized, IEnumerable<XLCell>
+    internal class XLCells : XLStylizedBase, IXLCells, IXLStylized, IEnumerable<IXLCell>
     {
         #region Fields
 
@@ -32,7 +32,7 @@ namespace ClosedXML.Excel
 
         #region IEnumerable<XLCell> Members
 
-        private IEnumerable<XLCell> GetAllCells()
+        private IEnumerable<IXLCell> GetAllCells()
         {
             var groupedAddresses = _rangeAddresses.GroupBy(addr => addr.Worksheet);
             foreach (var worksheetGroup in groupedAddresses)
@@ -78,7 +78,7 @@ namespace ClosedXML.Excel
 
                 var usedCellsCandidates = GetUsedCellsCandidates(ws);
 
-                var cells = worksheetGroup.SelectMany(addr => GetUsedCellsInRange(addr, ws, usedCellsCandidates))
+                var cells = worksheetGroup.SelectMany(addr => GetUsedCellsInRange(addr, (XLWorksheet)ws, usedCellsCandidates))
                     .OrderBy(cell => cell.Address.RowNumber)
                     .ThenBy(cell => cell.Address.ColumnNumber);
 
@@ -127,13 +127,13 @@ namespace ClosedXML.Excel
             }
         }
 
-        private IEnumerable<XLSheetPoint> GetUsedCellsCandidates(XLWorksheet worksheet)
+        private IEnumerable<XLSheetPoint> GetUsedCellsCandidates(IXLWorksheet worksheet)
         {
             var candidates = Enumerable.Empty<XLSheetPoint>();
 
             if (_options.HasFlag(XLCellsUsedOptions.MergedRanges))
                 candidates = candidates.Union(
-                    worksheet.Internals.MergedRanges.SelectMany(r => GetAllCellsInRange(r.RangeAddress)));
+                    ((XLWorksheet)worksheet).Internals.MergedRanges.SelectMany(r => GetAllCellsInRange(r.RangeAddress)));
 
             if (_options.HasFlag(XLCellsUsedOptions.ConditionalFormats))
                 candidates = candidates.Union(
@@ -146,7 +146,7 @@ namespace ClosedXML.Excel
             return candidates.Distinct();
         }
 
-        public IEnumerator<XLCell> GetEnumerator()
+        public IEnumerator<IXLCell> GetEnumerator()
         {
             var cells = (_usedCellsOnly) ? GetUsedCells() : GetAllCells();
             foreach (var cell in cells)
@@ -172,44 +172,44 @@ namespace ClosedXML.Excel
 
         public Object Value
         {
-            set { this.ForEach<XLCell>(c => c.Value = value); }
+            set { this.ForEach<IXLCell>(c => c.Value = value); }
         }
 
         public IXLCells SetDataType(XLDataType dataType)
         {
-            this.ForEach<XLCell>(c => c.DataType = dataType);
+            this.ForEach<IXLCell>(c => c.DataType = dataType);
             return this;
         }
 
         public XLDataType DataType
         {
-            set { this.ForEach<XLCell>(c => c.DataType = value); }
+            set { this.ForEach<IXLCell>(c => c.DataType = value); }
         }
 
         public IXLCells Clear(XLClearOptions clearOptions = XLClearOptions.All)
         {
-            this.ForEach<XLCell>(c => c.Clear(clearOptions));
+            this.ForEach<IXLCell>(c => c.Clear(clearOptions));
             return this;
         }
 
         public void DeleteComments()
         {
-            this.ForEach<XLCell>(c => c.DeleteComment());
+            this.ForEach<IXLCell>(c => c.DeleteComment());
         }
 
         public void DeleteSparklines()
         {
-            this.ForEach<XLCell>(c => c.DeleteSparkline());
+            this.ForEach<IXLCell>(c => c.DeleteSparkline());
         }
 
         public String FormulaA1
         {
-            set { this.ForEach<XLCell>(c => c.FormulaA1 = value); }
+            set { this.ForEach<IXLCell>(c => c.FormulaA1 = value); }
         }
 
         public String FormulaR1C1
         {
-            set { this.ForEach<XLCell>(c => c.FormulaR1C1 = value); }
+            set { this.ForEach<IXLCell>(c => c.FormulaR1C1 = value); }
         }
 
         #endregion IXLCells Members
@@ -240,7 +240,7 @@ namespace ClosedXML.Excel
             get
             {
                 var retVal = new XLRanges();
-                this.ForEach<XLCell>(c => retVal.Add(c.AsRange()));
+                this.ForEach<IXLCell>(c => retVal.Add(c.AsRange()));
                 return retVal;
             }
         }

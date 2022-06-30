@@ -125,7 +125,7 @@ namespace ClosedXML.Excel
             return Cell(row, column);
         }
 
-        IXLCell IXLRange.Cell(IXLAddress cellAddressInRange)
+        IXLCell IXLRange.Cell(XLAddress cellAddressInRange)
         {
             return Cell(cellAddressInRange);
         }
@@ -150,7 +150,7 @@ namespace ClosedXML.Excel
             return Range(firstCellAddress, lastCellAddress);
         }
 
-        IXLRange IXLRange.Range(IXLAddress firstCellAddress, IXLAddress lastCellAddress)
+        IXLRange IXLRange.Range(XLAddress firstCellAddress, XLAddress lastCellAddress)
         {
             return Range(firstCellAddress, lastCellAddress);
         }

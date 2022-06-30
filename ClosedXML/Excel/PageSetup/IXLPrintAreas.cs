@@ -27,6 +27,6 @@ namespace ClosedXML.Excel
         /// <summary>Adds a range to the print areas.</summary>
         /// <param name="firstCellAddress">The first cell address.</param>
         /// <param name="lastCellAddress"> The last cell address.</param>
-        void Add(IXLAddress firstCellAddress, IXLAddress lastCellAddress);
+        void Add(XLAddress firstCellAddress, XLAddress lastCellAddress);
     }
 }

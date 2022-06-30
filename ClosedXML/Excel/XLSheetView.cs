@@ -32,7 +32,7 @@ namespace ClosedXML.Excel
         public short SplitColumn { get; set; }
         public Int32 SplitRow { get; set; }
 
-        IXLAddress IXLSheetView.TopLeftCellAddress { get => TopLeftCellAddress; set => TopLeftCellAddress = (XLAddress)value; }
+        XLAddress IXLSheetView.TopLeftCellAddress { get => TopLeftCellAddress; set => TopLeftCellAddress = (XLAddress)value; }
 
         public XLAddress TopLeftCellAddress
         {

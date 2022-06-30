@@ -12,11 +12,14 @@ namespace ClosedXML.Excel
 
     public interface IXLCell
     {
+
+        void DeleteComment();
+        void DeleteSparkline();
         Boolean Active { get; set; }
 
         /// <summary>Gets this cell's address, relative to the worksheet.</summary>
         /// <value>The cell's address.</value>
-        IXLAddress Address { get; }
+        XLAddress Address { get; }
 
         /// <summary>
         /// Calculated value of cell formula. Is used for decreasing number of computations performed.

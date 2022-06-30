@@ -54,7 +54,7 @@ namespace ClosedXML.Excel.CalcEngine
             if (!String.IsNullOrWhiteSpace(expression))
             {
                 var ranges = GetPrecedentRanges(expression);
-                var visitedCells = new HashSet<IXLAddress>(new XLAddressComparer(true));
+                var visitedCells = new HashSet<XLAddress>(new XLAddressComparer(true));
                 var cells = ranges.SelectMany(range => range.Cells()).Distinct();
                 foreach (var cell in cells)
                 {
