@@ -2924,7 +2924,7 @@ namespace ClosedXML.Excel
         public Boolean HasArrayFormula
         { get { return FormulaA1.StartsWith("{"); } }
 
-        public IXLRangeAddress FormulaReference { get; set; }
+        public XLRangeAddress FormulaReference { get; set; }
 
         public IXLRange CurrentRegion => this.Worksheet.Range(FindCurrentRegion(this.AsRange()));
 
@@ -2955,7 +2955,7 @@ namespace ClosedXML.Excel
             return (minRow, maxRow, minColumn, maxColumn);
         }
 
-        internal IXLRangeAddress FindCurrentRegion(IXLRangeBase range)
+        internal XLRangeAddress FindCurrentRegion(IXLRangeBase range)
         {
             while (true)
             {

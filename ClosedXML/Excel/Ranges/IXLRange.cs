@@ -177,7 +177,7 @@ namespace ClosedXML.Excel
         /// Returns the specified range.
         /// </summary>
         /// <param name="rangeAddress">The range boundaries.</param>
-        IXLRange Range(IXLRangeAddress rangeAddress);
+        IXLRange Range(XLRangeAddress rangeAddress);
 
         /// <summary>Returns the specified range.</summary>
         /// <para>e.g. Range("A1"), Range("A1:C2")</para>

@@ -58,7 +58,7 @@ namespace ClosedXML.Excel
         /// <value>The formula with R1C1 references.</value>
         String FormulaR1C1 { get; set; }
 
-        IXLRangeAddress FormulaReference { get; set; }
+        XLRangeAddress FormulaReference { get; set; }
 
         Boolean HasArrayFormula { get; }
 

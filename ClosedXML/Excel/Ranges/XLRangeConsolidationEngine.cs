@@ -124,7 +124,7 @@ namespace ClosedXML.Excel
 
             #region Private Methods
 
-            private void AddToBitMatrix(IXLRangeAddress rangeAddress)
+            private void AddToBitMatrix(XLRangeAddress rangeAddress)
             {
                 var rows = _bitMatrix.Keys
                     .Where(k => k >= rangeAddress.FirstAddress.RowNumber &&

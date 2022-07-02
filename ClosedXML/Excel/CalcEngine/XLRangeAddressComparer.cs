@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ClosedXML.Excel.CalcEngine
 {
-    internal class XLRangeAddressComparer : IEqualityComparer<IXLRangeAddress>
+    internal class XLRangeAddressComparer : IEqualityComparer<XLRangeAddress>
     {
         private readonly XLAddressComparer _addressComparer;
 
@@ -12,7 +12,7 @@ namespace ClosedXML.Excel.CalcEngine
             _addressComparer = new XLAddressComparer(ignoreFixed);
         }
 
-        public bool Equals(IXLRangeAddress x, IXLRangeAddress y)
+        public bool Equals(XLRangeAddress x, XLRangeAddress y)
         {
             return (x == null && y == null) ||
                    (x != null && y != null &&
@@ -20,7 +20,7 @@ namespace ClosedXML.Excel.CalcEngine
                     _addressComparer.Equals(x.LastAddress, y.LastAddress));
         }
 
-        public int GetHashCode(IXLRangeAddress obj)
+        public int GetHashCode(XLRangeAddress obj)
         {
             return HashCode.Combine(_addressComparer.GetHashCode(obj.FirstAddress), _addressComparer.GetHashCode(obj.LastAddress));
         }

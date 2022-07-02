@@ -49,7 +49,7 @@ namespace ClosedXML.Excel
             }
         }
 
-        private IEnumerable<XLSheetPoint> GetAllCellsInRange(IXLRangeAddress rangeAddress)
+        private IEnumerable<XLSheetPoint> GetAllCellsInRange(XLRangeAddress rangeAddress)
         {
             if (!rangeAddress.IsValid)
                 yield break;

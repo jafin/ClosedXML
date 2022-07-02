@@ -480,7 +480,7 @@ namespace ClosedXML.Excel
             return Cell(cellAddressInRange);
         }
 
-        IXLRange IXLWorksheet.Range(IXLRangeAddress rangeAddress)
+        IXLRange IXLWorksheet.Range(XLRangeAddress rangeAddress)
         {
             return Range(rangeAddress);
         }

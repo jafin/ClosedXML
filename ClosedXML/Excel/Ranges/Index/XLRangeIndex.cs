@@ -111,7 +111,7 @@ namespace ClosedXML.Excel.Ranges.Index
             return _quadTree.GetIntersectedRanges(rangeAddress).Any();
         }
 
-        public bool Remove(IXLRangeAddress rangeAddress)
+        public bool Remove(XLRangeAddress rangeAddress)
         {
             if (rangeAddress == null)
                 throw new ArgumentNullException(nameof(rangeAddress));

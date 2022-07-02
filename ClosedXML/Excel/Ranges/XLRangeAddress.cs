@@ -1,27 +1,26 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace ClosedXML.Excel
 {
-    internal struct XLRangeAddress : IXLRangeAddress, IEquatable<XLRangeAddress>
+    public readonly struct XLRangeAddress : IEquatable<XLRangeAddress>
     {
         #region Static members
 
-        public static XLRangeAddress EntireColumn(XLWorksheet worksheet, int column)
+        public static XLRangeAddress EntireColumn(IXLWorksheet worksheet, int column)
         {
             return EntireColumn(worksheet, (short)column);
         }
 
-        public static XLRangeAddress EntireColumn(XLWorksheet worksheet, short column)
+        public static XLRangeAddress EntireColumn(IXLWorksheet worksheet, short column)
         {
             return new XLRangeAddress(
                 new XLAddress(worksheet, 1, column, false, false),
                 new XLAddress(worksheet, XLHelper.MaxRowNumber, column, false, false));
         }
 
-        public static XLRangeAddress EntireRow(XLWorksheet worksheet, int row)
+        public static XLRangeAddress EntireRow(IXLWorksheet worksheet, int row)
         {
             return new XLRangeAddress(
                 new XLAddress(worksheet, row, 1, false, false),
@@ -44,7 +43,7 @@ namespace ClosedXML.Excel
             LastAddress = lastAddress;
         }
 
-        public XLRangeAddress(XLWorksheet worksheet, string rangeAddress) : this()
+        public XLRangeAddress(IXLWorksheet worksheet, string rangeAddress) : this()
         {
             string addressToUse = rangeAddress.Contains("!")
                 ? rangeAddress.Substring(rangeAddress.LastIndexOf("!", StringComparison.Ordinal) + 1)
@@ -94,26 +93,33 @@ namespace ClosedXML.Excel
 
         public IXLWorksheet Worksheet { get; }
 
+        /// <summary>
+        /// Gets or sets the first address in the range.
+        /// </summary>
+        /// <value>
+        /// The first address.
+        /// </value>
         public XLAddress FirstAddress { get; }
 
+        /// <summary>
+        /// Gets or sets the last address in the range.
+        /// </summary>
+        /// <value>
+        /// The last address.
+        /// </value>
         public XLAddress LastAddress { get; }
 
-        IXLWorksheet IXLRangeAddress.Worksheet => Worksheet;
-
-        XLAddress IXLRangeAddress.FirstAddress
-        {
-            [DebuggerStepThrough]
-            get => FirstAddress;
-        }
-
-        XLAddress IXLRangeAddress.LastAddress
-        {
-            [DebuggerStepThrough]
-            get => LastAddress;
-        }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this range is valid.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is valid; otherwise, <c>false</c>.
+        /// </value>
         public bool IsValid => FirstAddress.IsValid && LastAddress.IsValid;
 
+        /// <summary>
+        /// Gets the number of columns in the area covered by the range address.
+        /// </summary>
         public int ColumnSpan
         {
             get
@@ -125,8 +131,14 @@ namespace ClosedXML.Excel
             }
         }
 
+        /// <summary>
+        /// Gets the number of cells in the area covered by the range address.
+        /// </summary>
         public int NumberOfCells => ColumnSpan * RowSpan;
 
+        /// <summary>
+        /// Gets the number of rows in the area covered by the range address.
+        /// </summary>
         public int RowSpan
         {
             get
@@ -197,15 +209,14 @@ namespace ClosedXML.Excel
                 new XLAddress(LastAddress.Worksheet, lastRow, lastColumn, lastRowFixed, lastColumnFixed));
         }
 
-        public bool Intersects(IXLRangeAddress otherAddress)
+        /// <summary>
+        /// See if the two ranges intersect
+        /// </summary>
+        /// <param name="otherAddress"></param>
+        /// <returns></returns>
+        public bool Intersects(XLRangeAddress otherAddress)
         {
-            var xlOtherAddress = (XLRangeAddress)otherAddress;
-            return Intersects(xlOtherAddress);
-        }
-
-        internal bool Intersects(XLRangeAddress otherAddress)
-        {
-            return !( // See if the two ranges intersect...
+            return !(
                        otherAddress.FirstAddress.ColumnNumber > LastAddress.ColumnNumber
                     || otherAddress.LastAddress.ColumnNumber < FirstAddress.ColumnNumber
                     || otherAddress.FirstAddress.RowNumber > LastAddress.RowNumber
@@ -213,7 +224,7 @@ namespace ClosedXML.Excel
                 );
         }
 
-        internal IXLRangeAddress WithoutWorksheet()
+        internal XLRangeAddress WithoutWorksheet()
         {
             return new XLRangeAddress(
                 FirstAddress.WithoutWorksheet(),
@@ -368,6 +379,12 @@ namespace ClosedXML.Excel
                    LastAddress == other.LastAddress;
         }
 
+        /// <summary>
+        /// Determines whether range address spans the entire column.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if is entire column; otherwise, <c>false</c>.
+        /// </returns>        
         public bool IsEntireColumn()
         {
             return IsValid
@@ -375,6 +392,12 @@ namespace ClosedXML.Excel
                    && LastAddress.RowNumber == XLHelper.MaxRowNumber;
         }
 
+        /// <summary>
+        /// Determines whether range address spans the entire row.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if is entire row; otherwise, <c>false</c>.
+        /// </returns>
         public bool IsEntireRow()
         {
             return IsValid
@@ -382,20 +405,25 @@ namespace ClosedXML.Excel
                    && LastAddress.ColumnNumber == XLHelper.MaxColumnNumber;
         }
 
+        /// <summary>
+        /// Determines whether the range address spans the entire worksheet.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if is entire sheet; otherwise, <c>false</c>.
+        /// </returns>        
         public bool IsEntireSheet()
         {
             return IsValid && IsEntireColumn() && IsEntireRow();
         }
 
-        public IXLRangeAddress Relative(IXLRangeAddress sourceRangeAddress, IXLRangeAddress targetRangeAddress)
-        {
-            var xlSourceRangeAddress = (XLRangeAddress)sourceRangeAddress;
-            var xlTargetRangeAddress = (XLRangeAddress)targetRangeAddress;
-
-            return Relative(xlSourceRangeAddress, xlTargetRangeAddress);
-        }
-
-        internal XLRangeAddress Relative(XLRangeAddress sourceRangeAddress, XLRangeAddress targetRangeAddress)
+        /// <summary>
+        /// Returns a range address so that its offset from the target base address is equal to the offset of the current range address to the source base address.
+        /// For example, if the current range address is D4:E4, the source base address is A1:C3, then the relative address to the target base address B10:D13 is E14:F14
+        /// </summary>
+        /// <param name="sourceRangeAddress">The source base range address.</param>
+        /// <param name="targetRangeAddress">The target base range address.</param>
+        /// <returns>The relative range</returns>        
+        public XLRangeAddress Relative(XLRangeAddress sourceRangeAddress, XLRangeAddress targetRangeAddress)
         {
             var sheet = targetRangeAddress.Worksheet;
 
@@ -420,16 +448,12 @@ namespace ClosedXML.Excel
             );
         }
 
-        public IXLRangeAddress Intersection(IXLRangeAddress otherRangeAddress)
-        {
-            if (otherRangeAddress == null)
-                throw new ArgumentNullException(nameof(otherRangeAddress));
-
-            var xlOtherRangeAddress = (XLRangeAddress)otherRangeAddress;
-            return Intersection(xlOtherRangeAddress);
-        }
-
-        internal XLRangeAddress Intersection(XLRangeAddress otherRangeAddress)
+        /// <summary>
+        /// Returns the intersection of this range address with another range address on the same worksheet.
+        /// </summary>
+        /// <param name="otherRangeAddress">The other range address.</param>
+        /// <returns>The intersection's range address</returns>        
+        public XLRangeAddress Intersection(XLRangeAddress otherRangeAddress)
         {
             if (!this.Worksheet.Equals(otherRangeAddress.Worksheet))
                 throw new ArgumentOutOfRangeException(nameof(otherRangeAddress), "The other range address is on a different worksheet");
@@ -452,6 +476,7 @@ namespace ClosedXML.Excel
             );
         }
 
+        /// <summary>Allocates the current range address in the internal range repository and returns it</summary>
         public IXLRange AsRange()
         {
             if (this.Worksheet == null)

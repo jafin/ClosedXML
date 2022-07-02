@@ -145,7 +145,7 @@ namespace ClosedXML.Excel.Patterns
         /// <summary>
         /// Get all ranges from the quadrant and all child quadrants (recursively) that intersect the specified address.
         /// </summary>
-        public IEnumerable<IXLAddressable> GetIntersectedRanges(IXLRangeAddress rangeAddress)
+        public IEnumerable<IXLAddressable> GetIntersectedRanges(XLRangeAddress rangeAddress)
         {
             if (Ranges != null)
             {
@@ -202,7 +202,7 @@ namespace ClosedXML.Excel.Patterns
         /// Remove the range from the quadrant or from child quadrants (recursively).
         /// </summary>
         /// <returns>True if the range was removed, false if it does not exist in the QuadTree.</returns>
-        public bool Remove(IXLRangeAddress rangeAddress)
+        public bool Remove(XLRangeAddress rangeAddress)
         {
             bool res = false;
 
@@ -230,14 +230,14 @@ namespace ClosedXML.Excel.Patterns
 
         /// <summary>
         /// Remove all the ranges matching specified criteria from the quadrant and its child quadrants (recursively).
-        /// Don't use it for searching intersections as it would be much less efficient than <see cref="GetIntersectedRanges(IXLRangeAddress)"/>.
+        /// Don't use it for searching intersections as it would be much less efficient than <see cref="GetIntersectedRanges(XLRangeAddress)"/>.
         /// </summary>
         public IEnumerable<IXLAddressable> RemoveAll(Predicate<IXLAddressable> predicate)
         {
             if (_ranges != null)
             {
                 var ranges = _ranges.Values.Where(r => predicate(r));
-                var keysToRemove = new List<IXLRangeAddress>();
+                var keysToRemove = new List<XLRangeAddress>();
                 foreach (var range in ranges)
                 {
                     keysToRemove.Add(range.RangeAddress);
@@ -272,7 +272,7 @@ namespace ClosedXML.Excel.Patterns
         /// <summary>
         /// Collection of ranges belonging to the current quadrant (that cannot fit into child quadrants).
         /// </summary>
-        private Dictionary<IXLRangeAddress, IXLAddressable> _ranges;
+        private Dictionary<XLRangeAddress, IXLAddressable> _ranges;
 
         #endregion Private Fields
 
@@ -285,7 +285,7 @@ namespace ClosedXML.Excel.Patterns
         private bool AddInternal(IXLAddressable range)
         {
             if (_ranges == null)
-                _ranges = new Dictionary<IXLRangeAddress, IXLAddressable>();
+                _ranges = new Dictionary<XLRangeAddress, IXLAddressable>();
 
             if (_ranges.ContainsKey(range.RangeAddress))
                 return false;
@@ -297,7 +297,7 @@ namespace ClosedXML.Excel.Patterns
         /// <summary>
         /// Check if the current quadrant fully covers the specified address.
         /// </summary>
-        private bool Covers(in IXLRangeAddress rangeAddress)
+        private bool Covers(in XLRangeAddress rangeAddress)
         {
             return MinimumColumn <= rangeAddress.FirstAddress.ColumnNumber &&
                    MaximumColumn >= rangeAddress.LastAddress.ColumnNumber &&
@@ -319,7 +319,7 @@ namespace ClosedXML.Excel.Patterns
         /// <summary>
         /// Check if the current quadrant intersects the specified address.
         /// </summary>
-        private bool Intersects(in IXLRangeAddress rangeAddress)
+        private bool Intersects(in XLRangeAddress rangeAddress)
         {
             return ((MinimumRow <= rangeAddress.FirstAddress.RowNumber && rangeAddress.FirstAddress.RowNumber <= MaximumRow) ||
                     (rangeAddress.FirstAddress.RowNumber <= MinimumRow && MinimumRow <= rangeAddress.LastAddress.RowNumber))
@@ -369,7 +369,7 @@ namespace ClosedXML.Excel.Patterns
             return base.GetAll().Cast<T>();
         }
 
-        public new IEnumerable<T> GetIntersectedRanges(IXLRangeAddress rangeAddress)
+        public new IEnumerable<T> GetIntersectedRanges(XLRangeAddress rangeAddress)
         {
             return base.GetIntersectedRanges(rangeAddress).Cast<T>();
         }

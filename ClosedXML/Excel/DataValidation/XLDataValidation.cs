@@ -85,7 +85,7 @@ namespace ClosedXML.Excel
                    (!String.IsNullOrWhiteSpace(ErrorTitle) || !String.IsNullOrWhiteSpace(ErrorMessage)));
         }
 
-        internal void SplitBy(IXLRangeAddress rangeAddress)
+        internal void SplitBy(XLRangeAddress rangeAddress)
         {
             var rangesToSplit = _ranges.GetIntersectedRanges(rangeAddress).ToList();
 

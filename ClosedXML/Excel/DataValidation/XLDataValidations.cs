@@ -87,7 +87,7 @@ namespace ClosedXML.Excel
         /// <summary>
         /// Get all data validation rules applied to ranges that intersect the specified range.
         /// </summary>
-        public IEnumerable<IXLDataValidation> GetAllInRange(IXLRangeAddress rangeAddress)
+        public IEnumerable<IXLDataValidation> GetAllInRange(XLRangeAddress rangeAddress)
         {
             if (rangeAddress == null || !rangeAddress.IsValid)
                 return Enumerable.Empty<IXLDataValidation>();
@@ -116,7 +116,7 @@ namespace ClosedXML.Excel
         /// For example, if the rule is applied to ranges A1:A3,C1:C3 then this method will
         /// return True for ranges A1:A3, C1:C2, A2:A3, and False for ranges A1:C3, A1:C1, etc.</param>
         /// <returns>True is the data validation rule was found, false otherwise.</returns>
-        public bool TryGet(IXLRangeAddress rangeAddress, out IXLDataValidation dataValidation)
+        public bool TryGet(XLRangeAddress rangeAddress, out IXLDataValidation dataValidation)
         {
             dataValidation = null;
             if (rangeAddress == null || !rangeAddress.IsValid)
@@ -238,7 +238,7 @@ namespace ClosedXML.Excel
             }
         }
 
-        private void SplitExistingRanges(IXLRangeAddress rangeAddress)
+        private void SplitExistingRanges(XLRangeAddress rangeAddress)
         {
             if (_skipSplittingExistingRanges) return;
 
@@ -266,7 +266,7 @@ namespace ClosedXML.Excel
         /// </summary>
         private class XLDataValidationIndexEntry : IXLAddressable
         {
-            public XLDataValidationIndexEntry(IXLRangeAddress rangeAddress, XLDataValidation dataValidation)
+            public XLDataValidationIndexEntry(XLRangeAddress rangeAddress, XLDataValidation dataValidation)
             {
                 RangeAddress = rangeAddress;
                 DataValidation = dataValidation;
@@ -277,7 +277,7 @@ namespace ClosedXML.Excel
             /// <summary>
             ///   Gets an object with the boundaries of this range.
             /// </summary>
-            public IXLRangeAddress RangeAddress { get; }
+            public XLRangeAddress RangeAddress { get; }
         }
     }
 }

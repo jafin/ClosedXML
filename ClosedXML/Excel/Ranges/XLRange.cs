@@ -130,7 +130,7 @@ namespace ClosedXML.Excel
             return Cell(cellAddressInRange);
         }
 
-        IXLRange IXLRange.Range(IXLRangeAddress rangeAddress)
+        IXLRange IXLRange.Range(XLRangeAddress rangeAddress)
         {
             return Range(rangeAddress);
         }
@@ -761,7 +761,7 @@ namespace ClosedXML.Excel
             return Column(XLHelper.GetColumnNumberFromLetter(columnLetter));
         }
 
-        internal IEnumerable<XLRange> Split(IXLRangeAddress anotherRange, bool includeIntersection)
+        internal IEnumerable<XLRange> Split(XLRangeAddress anotherRange, bool includeIntersection)
         {
             if (!RangeAddress.Intersects(anotherRange))
             {

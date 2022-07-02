@@ -128,7 +128,7 @@ namespace ClosedXML.Excel
         /// </summary>
         /// <param name="rangeAddress">The range boundaries.</param>
         /// <returns></returns>
-        IXLTable Resize(IXLRangeAddress rangeAddress);
+        IXLTable Resize(XLRangeAddress rangeAddress);
 
         /// <summary>
         /// Resizes the table to the specified range address.

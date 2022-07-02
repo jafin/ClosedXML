@@ -11,7 +11,7 @@ namespace ClosedXML.Tests
         public void ToStringTest()
         {
             IXLWorksheet ws = new XLWorkbook().Worksheets.Add("Sheet1");
-            IXLRangeAddress address = ws.Cell(1, 1).AsRange().RangeAddress;
+            XLRangeAddress address = ws.Cell(1, 1).AsRange().RangeAddress;
 
             Assert.AreEqual("A1:A1", address.ToString());
             Assert.AreEqual("Sheet1!R1C1:R1C1", address.ToString(XLReferenceStyle.R1C1, true));
@@ -32,7 +32,7 @@ namespace ClosedXML.Tests
         public void ToStringTestWithSpace()
         {
             IXLWorksheet ws = new XLWorkbook().Worksheets.Add("Sheet 1");
-            IXLRangeAddress address = ws.Cell(1, 1).AsRange().RangeAddress;
+            XLRangeAddress address = ws.Cell(1, 1).AsRange().RangeAddress;
 
             Assert.AreEqual("A1:A1", address.ToString());
             Assert.AreEqual("'Sheet 1'!R1C1:R1C1", address.ToString(XLReferenceStyle.R1C1, true));
@@ -266,7 +266,7 @@ namespace ClosedXML.Tests
         {
             var ws = new XLWorkbook().AddWorksheet();
 
-            IXLRangeAddress rangeAddress;
+            XLRangeAddress rangeAddress;
 
             rangeAddress = ws.Range("D4:E4").RangeAddress.Relative(ws.Range("A1:E4").RangeAddress, ws.Range("B10:F14").RangeAddress);
             Assert.IsTrue(rangeAddress.IsValid);
@@ -295,13 +295,13 @@ namespace ClosedXML.Tests
             var ws = new XLWorkbook().AddWorksheet() as XLWorksheet;
 
             var range = ws.Range("B3:E5");
-            var rangeAddress = range.RangeAddress as IXLRangeAddress;
+            var rangeAddress = range.RangeAddress;
             Assert.AreEqual(4, rangeAddress.ColumnSpan);
             Assert.AreEqual(3, rangeAddress.RowSpan);
             Assert.AreEqual(12, rangeAddress.NumberOfCells);
 
             range = ws.Range("E5:B3");
-            rangeAddress = range.RangeAddress as IXLRangeAddress;
+            rangeAddress = range.RangeAddress;
             Assert.AreEqual(4, rangeAddress.ColumnSpan);
             Assert.AreEqual(3, rangeAddress.RowSpan);
             Assert.AreEqual(12, rangeAddress.NumberOfCells);
@@ -319,7 +319,7 @@ namespace ClosedXML.Tests
 
         #region Private Methods
 
-        private IXLRangeAddress ProduceInvalidAddress()
+        private XLRangeAddress ProduceInvalidAddress()
         {
             IXLWorksheet ws = new XLWorkbook().Worksheets.Add("Sheet 1");
             var range = ws.Range("A1:B2");
@@ -328,7 +328,7 @@ namespace ClosedXML.Tests
             return range.RangeAddress;
         }
 
-        private IXLRangeAddress ProduceAddressOnDeletedWorksheet()
+        private XLRangeAddress ProduceAddressOnDeletedWorksheet()
         {
             IXLWorksheet ws = new XLWorkbook().Worksheets.Add("Sheet 1");
             var address = ws.Range("A1:B2").RangeAddress;
@@ -337,7 +337,7 @@ namespace ClosedXML.Tests
             return address;
         }
 
-        private IXLRangeAddress ProduceInvalidAddressOnDeletedWorksheet()
+        private XLRangeAddress ProduceInvalidAddressOnDeletedWorksheet()
         {
             var address = ProduceInvalidAddress();
             address.Worksheet.Delete();

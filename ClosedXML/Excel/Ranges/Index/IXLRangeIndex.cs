@@ -10,7 +10,7 @@ namespace ClosedXML.Excel.Ranges.Index
     {
         bool Add(IXLAddressable range);
 
-        bool Remove(IXLRangeAddress rangeAddress);
+        bool Remove(XLRangeAddress rangeAddress);
 
         int RemoveAll(Predicate<IXLAddressable> predicate = null);
 

@@ -198,7 +198,7 @@ namespace ClosedXML.Excel
             return A1SimpleRegex.IsMatch(rangeAddress);
         }
 
-        public static Boolean IsValidRangeAddress(IXLRangeAddress rangeAddress)
+        public static Boolean IsValidRangeAddress(XLRangeAddress rangeAddress)
         {
             return rangeAddress.IsValid
                    && rangeAddress.FirstAddress.RowNumber >= 1 && rangeAddress.LastAddress.RowNumber <= MaxRowNumber

@@ -350,7 +350,7 @@ namespace ClosedXML.Excel
         /// <param name="thisRangePredicate">Predicate applied to this range's cells.</param>
         /// <param name="otherRangePredicate">Predicate applied to the other range's cells.</param>
         /// <returns>The range address of the intersection</returns>
-        IXLRangeAddress Intersection(IXLRangeBase otherRange, Func<IXLCell, Boolean> thisRangePredicate = null, Func<IXLCell, Boolean> otherRangePredicate = null);
+        XLRangeAddress Intersection(IXLRangeBase otherRange, Func<IXLCell, Boolean> thisRangePredicate = null, Func<IXLCell, Boolean> otherRangePredicate = null);
 
         /// <summary>
         /// Returns the set of cells surrounding the current range.

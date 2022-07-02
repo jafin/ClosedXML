@@ -124,13 +124,7 @@ namespace ClosedXML.Excel
         /// Filter ranges from a collection that intersect the specified address. Is much more efficient
         /// that using LINQ expression .Where().
         /// </summary>
-        public IEnumerable<IXLRange> GetIntersectedRanges(IXLRangeAddress rangeAddress)
-        {
-            var xlRangeAddress = (XLRangeAddress)rangeAddress;
-            return GetIntersectedRanges(xlRangeAddress);
-        }
-
-        internal IEnumerable<IXLRange> GetIntersectedRanges(XLRangeAddress rangeAddress)
+        public IEnumerable<IXLRange> GetIntersectedRanges(XLRangeAddress rangeAddress)
         {
             return GetRangeIndex(rangeAddress.Worksheet)
                 .GetIntersectedRanges(rangeAddress);

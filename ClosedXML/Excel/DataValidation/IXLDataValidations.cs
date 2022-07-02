@@ -26,7 +26,7 @@ namespace ClosedXML.Excel
         /// <summary>
         /// Get all data validation rules applied to ranges that intersect the specified range.
         /// </summary>
-        IEnumerable<IXLDataValidation> GetAllInRange(IXLRangeAddress rangeAddress);
+        IEnumerable<IXLDataValidation> GetAllInRange(XLRangeAddress rangeAddress);
 
         /// <summary>
         /// Get the data validation rule for the range with the specified address if it exists.
@@ -37,6 +37,6 @@ namespace ClosedXML.Excel
         /// For example, if the rule is applied to ranges A1:A3,C1:C3 then this method will
         /// return True for ranges A1:A3, C1:C2, A2:A3, and False for ranges A1:C3, A1:C1, etc.</param>
         /// <returns>True is the data validation rule was found, false otherwise.</returns>
-        bool TryGet(IXLRangeAddress rangeAddress, out IXLDataValidation dataValidation);
+        bool TryGet(XLRangeAddress rangeAddress, out IXLDataValidation dataValidation);
     }
 }

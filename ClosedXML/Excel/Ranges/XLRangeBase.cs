@@ -80,7 +80,7 @@ namespace ClosedXML.Excel
 
         #region IXLRangeBase Members
 
-        IXLRangeAddress IXLAddressable.RangeAddress
+        XLRangeAddress IXLAddressable.RangeAddress
         {
             get { return RangeAddress; }
         }
@@ -964,13 +964,7 @@ namespace ClosedXML.Excel
             return Range(rangeAddress);
         }
 
-        public XLRange Range(IXLRangeAddress rangeAddress)
-        {
-            var xlRangeAddress = (XLRangeAddress)rangeAddress;
-            return Range(xlRangeAddress);
-        }
-
-        internal XLRange Range(XLRangeAddress rangeAddress)
+        public XLRange Range(XLRangeAddress rangeAddress)
         {
             var ws = rangeAddress.FirstAddress.Worksheet ??
                      rangeAddress.LastAddress.Worksheet ??
@@ -1637,7 +1631,7 @@ namespace ClosedXML.Excel
                 RangeAddress.LastAddress);
         }
 
-        protected IXLRangeAddress ShiftColumns(IXLRangeAddress thisRangeAddress, XLRange shiftedRange, int columnsShifted)
+        protected XLRangeAddress ShiftColumns(XLRangeAddress thisRangeAddress, XLRange shiftedRange, int columnsShifted)
         {
             if (!thisRangeAddress.IsValid || !shiftedRange.RangeAddress.IsValid) return thisRangeAddress;
 
@@ -1694,7 +1688,7 @@ namespace ClosedXML.Excel
             return new XLRangeAddress(firstAddress, lastAddress);
         }
 
-        protected IXLRangeAddress ShiftRows(IXLRangeAddress thisRangeAddress, XLRange shiftedRange, int rowsShifted)
+        protected XLRangeAddress ShiftRows(XLRangeAddress thisRangeAddress, XLRange shiftedRange, int rowsShifted)
         {
             if (!thisRangeAddress.IsValid || !shiftedRange.RangeAddress.IsValid) return thisRangeAddress;
 
@@ -2153,13 +2147,13 @@ namespace ClosedXML.Excel
             return this.Worksheet.Range(firstRow, firstColumn, lastRow, lastColumn);
         }
 
-        public IXLRangeAddress Intersection(IXLRangeBase otherRange, Func<IXLCell, Boolean> thisRangePredicate = null, Func<IXLCell, Boolean> otherRangePredicate = null)
+        public XLRangeAddress Intersection(IXLRangeBase otherRange, Func<IXLCell, Boolean> thisRangePredicate = null, Func<IXLCell, Boolean> otherRangePredicate = null)
         {
             if (otherRange == null)
-                return null;
-
+                return default;
+            
             if (!this.Worksheet.Equals(otherRange.Worksheet))
-                return null;
+                return default;
 
             if (thisRangePredicate == null && otherRangePredicate == null)
             {
@@ -2174,7 +2168,7 @@ namespace ClosedXML.Excel
                 var intersectionCells = this.Cells(c => thisRangePredicate(c) && otherRange.Cells(otherRangePredicate).Contains(c));
 
                 if (!intersectionCells.Any())
-                    return null;
+                    return default;
 
                 var firstRow = intersectionCells.Min(c => c.Address.RowNumber);
                 var firstColumn = intersectionCells.Min(c => c.Address.ColumnNumber);

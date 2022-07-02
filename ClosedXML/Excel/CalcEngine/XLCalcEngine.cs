@@ -38,7 +38,7 @@ namespace ClosedXML.Excel.CalcEngine
             Parse(expression);
             var ranges = _cellRanges;
             _cellRanges = null;
-            var visitedRanges = new HashSet<IXLRangeAddress>(new XLRangeAddressComparer(true));
+            var visitedRanges = new HashSet<XLRangeAddress>(new XLRangeAddressComparer(true));
             foreach (var range in ranges)
             {
                 if (!visitedRanges.Contains(range.RangeAddress))

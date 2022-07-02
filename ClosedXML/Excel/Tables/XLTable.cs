@@ -38,7 +38,7 @@ namespace ClosedXML.Excel
             get { return XLRangeType.Table; }
         }
 
-        private IXLRangeAddress _lastRangeAddress;
+        private XLRangeAddress _lastRangeAddress;
         private Dictionary<String, IXLTableField> _fieldNames = null;
 
         public Dictionary<String, IXLTableField> FieldNames
@@ -286,7 +286,7 @@ namespace ClosedXML.Excel
             }
         }
 
-        public IXLTable Resize(IXLRangeAddress rangeAddress)
+        public IXLTable Resize(XLRangeAddress rangeAddress)
         {
             return Resize(Worksheet.Range(RangeAddress));
         }
