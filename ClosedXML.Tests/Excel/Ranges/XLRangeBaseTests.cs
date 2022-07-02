@@ -239,11 +239,11 @@ namespace ClosedXML.Tests
                 rangeAddress = (XLRangeAddress)ws.Cell("A1").AsRange().Intersection(ws.Cell("C3").AsRange());
                 Assert.IsFalse(rangeAddress.IsValid);
 
-                Assert.Null(ws.Range("A1:C3").Intersection(null));
-
+                var rangeAddressDefault = (XLRangeAddress)default;
+                Assert.AreEqual(rangeAddressDefault,ws.Range("A1:C3").Intersection(null));
                 var otherWs = wb.AddWorksheet("Sheet2");
-                Assert.Null(ws.Intersection(otherWs));
-                Assert.Null(ws.Cell("A1").AsRange().Intersection(otherWs.Cell("A2").AsRange()));
+                Assert.AreEqual(rangeAddressDefault,ws.Intersection(otherWs));
+                Assert.AreEqual(rangeAddressDefault,ws.Cell("A1").AsRange().Intersection(otherWs.Cell("A2").AsRange()));
             }
         }
 

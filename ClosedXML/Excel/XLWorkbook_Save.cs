@@ -1160,7 +1160,7 @@ namespace ClosedXML.Excel
                 {
                     if (c.HasArrayFormula)
                     {
-                        if (c.FormulaReference == null)
+                        if (c.FormulaReference == default)
                             c.FormulaReference = c.AsRange().RangeAddress;
 
                         if (c.FormulaReference.FirstAddress.Equals(c.Address))
@@ -5610,7 +5610,7 @@ namespace ClosedXML.Excel
                                     formula = formula.Substring(1, formula.Length - 2);
                                     var f = new CellFormula { FormulaType = CellFormulaValues.Array };
 
-                                    if (xlCell.FormulaReference == null)
+                                    if (xlCell.FormulaReference == default)
                                         xlCell.FormulaReference = xlCell.AsRange().RangeAddress;
 
                                     if (xlCell.FormulaReference.FirstAddress.Equals(xlCell.Address))

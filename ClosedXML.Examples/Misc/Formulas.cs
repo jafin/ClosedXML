@@ -1,11 +1,10 @@
 using ClosedXML.Excel;
-using System;
 
 namespace ClosedXML.Examples.Misc
 {
     public class Formulas : IXLExample
     {
-        public virtual void Create(String filePath)
+        public virtual void Create(string filePath)
         {
             var wb = new XLWorkbook();
             var ws = wb.Worksheets.Add("Formulas");
