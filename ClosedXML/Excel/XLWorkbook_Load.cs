@@ -1740,9 +1740,9 @@ namespace ClosedXML.Excel
 
                 if (cell.CellFormula.Reference != null)
                 {
-                    foreach (var childCell in ws.Range(cell.CellFormula.Reference.Value).Cells(c => c.FormulaReference == null || !c.HasFormula))
+                    foreach (var childCell in ws.Range(cell.CellFormula.Reference.Value).Cells(c => c.FormulaReference == default || !c.HasFormula))
                     {
-                        if (childCell.FormulaReference == null)
+                        if (childCell.FormulaReference == default)
                             childCell.FormulaReference = ws.Range(cell.CellFormula.Reference.Value).RangeAddress;
 
                         if (!childCell.HasFormula)
