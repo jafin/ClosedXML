@@ -5495,7 +5495,6 @@ namespace ClosedXML.Excel
                     {
                         row.Height = thisRow.Height.SaveRound();
                         row.CustomHeight = true;
-                        row.CustomFormat = true;
                     }
 
                     if (thisRow.StyleValue != xlWorksheet.StyleValue)
